@@ -21,8 +21,16 @@
         $prixht = $_POST["prixht"];
         $quantite_stock = $_POST["quantite_stock"];
         $description = $_POST["description"];
-        //$imagesproduit = $_POST["images_produit"];
-    
+
+        //image name
+        $imagesproduit1 = $_POST["images_produit1"]['name]'];
+        $imagesproduit2 = $_POST["images_produit2"]['name]'];
+        $imagesproduit3 = $_POST["images_produit3"]['name]'];
+        // image tmp name 
+        $temp_imagesproduit1 = $_POST["images_produit1"]['tmp_name]'];
+        $temp_imagesproduit2 = $_POST["images_produit2"]['tmp_name]'];
+        $temp_imagesproduit3 = $_POST["images_produit3"]['tmp_name]'];
+
     //check unique email query
     $select_query1 = "SELECT * FROM produit 
         WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
@@ -38,18 +46,41 @@
     // If there are any errors, do not proceed with the insertion
     if ($Err1 || $Err2) {
         // Handle errors here if needed
-    } else {
-    //insert query
+    } else {    
+        //upload image in folder
+            //move_uploaded_file($temp_imagesproduit1,"../images/$imagesproduit1");
+            //move_uploaded_file($temp_imagesproduit2,"../images/$imagesproduit2");
+            //move_uploaded_file($temp_imagesproduit3,"../images/$imagesproduit3");
+
+        //insert query
         $insert_query = "INSERT INTO 
             produit (nom_produit, categorie_produit, marque_produit,prixht_produit, quantitestock_produit,description_produit,id_fournisseur) 
             VALUES ('$nom_produit','$categorie','$marque','$prixht','$quantite_stock','$description','$user')";
         $sql_execute=mysqli_query($con,$insert_query);
+
+        //check unique email query
+        $select_query2 = "SELECT * FROM produit 
+            WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
+        $result2 = mysqli_query($con,$select_query2);
+        $rows_count2= mysqli_num_rows($result2);
+
+        $insert_query2 = "INSERT INTO 
+            photo (file_produit_produit,id_produit) 
+            VALUES ('$imagesproduit1','$id_produit')";
+        $sql_execute2=mysqli_query($con,$insert_query2);
     
         if ($sql_execute) {
             echo "<script>alert('Produit ajouté avec succès')</script>";
             //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
         } else {
-            echo "Erreur SQLquery 42-45 : ";
+            echo "Erreur SQLquery1_insprod1 : ";
+            die(mysqli_error($con));
+        }
+        if ($sql_execute2) {
+            echo "<script>alert('Images ajoutées avec succès')</script>";
+            //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
+        } else {
+            echo "Erreur SQLquery_insimg2 : ";
             die(mysqli_error($con));
         }
     }
@@ -183,8 +214,14 @@
                     <label for="description" class="form-label">Description du produit (max 400 caractères) :</label><br>
                     <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
 
-                    <label for="images_produit">Image(s) du produit :</label><br>
-                    <input type="file" id="images" name="images[]" accept="image/*" multiple required><br><br>
+                    <label for="images_produit1">Image(s) du produit :</label><br>
+                    <input type="file" id="images_produit1" name="images_produit1" accept="image/*" required><br><br>
+
+                    <label for="images_produit2">Image(s) du produit :</label><br>
+                    <input type="file" id="images_produit2" name="images_produit2" accept="image/*" required><br><br>
+
+                    <label for="images_produit3">Image(s) du produit :</label><br>
+                    <input type="file" id="images_produit3" name="images_produit3" accept="image/*" required><br><br>
 
                     <input type="submit" value="Ajouter le produit" name="add_product">
                     <br><br>

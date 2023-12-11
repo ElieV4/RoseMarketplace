@@ -24,8 +24,6 @@ CREATE TABLE commande (id_commande INT(11) AUTO_INCREMENT, date_commande date, i
 		PRIMARY KEY (id_commande),
 		FOREIGN KEY (id_client) REFERENCES client (id_client), FOREIGN KEY (id_facture) REFERENCES facture (id_facture));
 
-
-
 CREATE TABLE message (id_message INT(11) AUTO_INCREMENT, date_message datetime, contenu_message text(1000), sens binary(1), idclient_message INT(11), idgestionnaire_message INT(11), 
 		PRIMARY KEY (id_message),
 		FOREIGN KEY (idclient_message) REFERENCES client(id_client),FOREIGN KEY (idgestionnaire_message) REFERENCES gestionnaire(id_gestionnaire));
