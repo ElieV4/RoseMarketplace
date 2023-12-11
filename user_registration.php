@@ -1,0 +1,260 @@
+<?php 
+    include("include/connect.php");
+ 
+    //reload clean var
+    $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
+    $email = $raisonsociale = $siren = $nom = $prenom = $date_de_naissance = $mot_de_passe = $confirmer_mot_de_passe = $adresse = $code_postal = $ville = $telephone = "";
+
+    if (isset($_POST["user_register"])) {
+        $email = $_POST["email"];
+        if ($_POST["type"]=="particulier"){
+            $type = 0;
+        } else {
+            $type = 1;
+        }
+        $raisonsociale = $_POST["raisonsociale"];
+        if (!isset($_POST["siren"])){
+            $siren = null ;
+        } else {
+            $siren = $_POST["siren"];
+        }
+        $nom = $_POST["nom"];
+        $prenom = $_POST["prenom"];
+        $adresse = $_POST["adresse"];
+        $code_postal = $_POST["code_postal"];
+        $ville = $_POST["ville"];
+        $telephone = $_POST["telephone"];
+        $date_de_naissance = $_POST["date_de_naissance"];
+        $mot_de_passe = $_POST["mot_de_passe"];
+        $HASHED_mot_de_passe = password_hash($mot_de_passe,PASSWORD_DEFAULT);
+        $confirmer_mot_de_passe = $_POST["confirmer_mot_de_passe"];
+    
+    //calcul age
+    // Créez un objet DateTime à partir des chaînes de dates
+    $date_naissance_objet = new DateTime($date_de_naissance);
+    // Calcul de la différence en années
+    $interval = $date_naissance_objet->diff(new DateTime(date("Y-m-d")));
+    $age = $interval->y;
+
+    //check unique email query
+    $select_query1 = "SELECT * FROM client WHERE email_client='$email'";
+    $result1 = mysqli_query($con,$select_query1);
+    $rows_count1= mysqli_num_rows($result1);
+
+    $select_query2 = "SELECT * FROM client WHERE siren_client='$siren'";
+    $result2 = mysqli_query($con,$select_query2);
+    $rows_count2= mysqli_num_rows($result2);
+
+    if ($rows_count1 > 0) {
+        $Err1 = "Cette adresse email est déjà enregistrée";
+    }
+    if ($type == 1 and (!is_numeric($siren) or $siren > 999999999 or $siren < 100000000 )) {
+        $Err2 = "Le N° de SIREN est invalide";
+    }
+    if ($rows_count1 > 0) {
+        $Err2 = "Le N° de SIREN est déjà attribué à un compte";
+    }
+    if (!is_numeric($telephone)) {
+        $Err3 = "Le numéro de téléphone est invalide";
+    }
+    if ($age < 18) {
+        $Err4 = "Vous devez avoir 18 ans";
+    }
+    if ($mot_de_passe != $confirmer_mot_de_passe) {
+        $Err5 = "Les mots de passe ne correspondent pas";
+    }
+
+    // If there are any errors, do not proceed with the insertion
+    if ($Err1 || $Err2 || $Err3 || $Err4 || $Err5) {
+        // Handle errors here if needed
+    } else {
+    //insert query
+        $insert_query = "INSERT INTO 
+            client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numetrue_adresse, codepostal_adresse, villeadresse_adresse, numtel_client, datedenaissance_client) 
+            VALUES ('$email','$type', '$raisonsociale','$siren','$nom', '$prenom','$HASHED_mot_de_passe','$adresse','$code_postal', '$ville','$telephone', '$date_de_naissance')";
+        $sql_execute=mysqli_query($con,$insert_query);
+    
+        if ($sql_execute) {
+            echo "<script>alert('Compte ROSE. ajouté avec succès')</script>";
+            echo "<script>window.open('user_connexion.php','_self')</script>"; 
+        } else {
+            echo "Erreur SQLquery 72-74 : ";
+            die(mysqli_error($con));
+        }
+    }
+    
+    }
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ROSE. | Rejoignez ROSE.</title>
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <style>
+        .main {
+            background-color: white;
+        }
+        .outer-container{
+            margin-left:20%;
+            margin-right:20%;
+            margin-top:10%;
+            margin-bottom:10%;
+            background-color: white;
+            align-items: center;
+            text-align: center;
+            border: 2px solid deeppink;
+            background-color : #FFCFDE;
+        }
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body> 
+    <nav class="navbar">
+        <div class="navdiv"> 
+            <div class="search">
+                <div class="icon"></div>
+                <div class="input">
+                    <input type="text" placeholder="Rechercher" id="mysearch">
+                    <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
+                </div>
+            </div>
+            <div ></div>
+            <div class="logo">
+                <a href="index.php"><img src="images/rose.png"></a>
+            </div>
+            <ul>
+                <?php
+                    if(isset($_SESSION['user_id'])){
+                        echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                    } else {
+                        echo '<li ><a href="user_registration.php">Inscription</a></li>';
+                        echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
+                    }
+                ?>
+                <li ><a href="cart.php"><img src="images/cart.png"></a></li>
+                <div ></div>
+                <button class="hamburger">
+                    <div class="bar"></div>
+                </button>
+            </ul>
+        </div>
+    </nav>
+
+    <nav class="mobile-nav">
+        <a href="#">Home</a>
+        <?php 
+        if(isset($_SESSION['user_id'])){
+            echo '<a href="espace_client_entreprise.php">Espace Client</a>';
+        } else {
+            echo '<a href="user_connexion.php">Espace Client</a>';
+        }
+        ?>
+        <a href="#">Produits</a>
+        <a href="#">Catégories</a>
+        <a href="aproposde.html">A propos de ROSE.</a>
+    </nav>
+
+    <main class="main">
+    <div class="outer-container">
+        <br><h2>Rejoignez notre communauté de bricoleurs</h2><br>   
+    
+        <form method="POST" action="" enctype="multipart/form-data">
+        	
+            <label for="email" class="form-label">Email :</label><br>
+            <input type="email" id="email" name="email" placeholder= "juliendupond@gmail.com" value="<?php echo htmlspecialchars($email); ?>" required><br>
+            <span style="color: red;" class="error" id="error-message1">*<?php echo $Err1;?></span><br>
+            
+            <label for="type">Etes-vous :</label>
+            <input type="radio" id="particulier" name="type" value="particulier" checked onclick="toggleFields()"> <label for="particulier">Un particulier</label>
+            <input type="radio" id="entreprise" name="type" value="entreprise" onclick="toggleFields()"> <label for="entreprise">Une entreprise</label>
+            <br><br>
+
+            <div id="raisonSocialeField" class="hidden">
+                <label for="raisonSociale">Raison Sociale :</label><br>
+                <input type="text" id="raisonsociale" name="raisonsociale"  placeholder= "Rose Tools" value="<?php echo htmlspecialchars($raisonsociale); ?>"><br>
+                <span style="color: red;">*</span><br>
+            </div>
+
+            <div id="sirenField" class="hidden">
+                <label for="siren">N° de SIREN :</label><br>
+                <input type="number" id="siren" name="siren" placeholder= "890283744" value="<?php echo htmlspecialchars($siren); ?>"><br>
+                <span style="color: red;" class="error" id="error-message2">*<?php echo $Err2;?></span><br>
+            </div>
+
+            <label for="nom" class="form-label">Nom :</label><br>
+            <input type="text" id="nom" name="nom" placeholder= "Julien" value="<?php echo htmlspecialchars($nom); ?>" required><br>
+            <span style="color: red;">*</span><br>
+            
+            <label for="prenom" class="form-label">Prénom :</label><br>
+            <input type="text" id="prenom" name="prenom" placeholder= "Dupond" value="<?php echo htmlspecialchars($prenom); ?>" required><br>
+            <span style="color: red;">*</span><br> 
+            
+            <label for="adresse" class="form-label">Adresse :</label><br>
+            <input type="text" id="adresse" name="adresse" placeholder= "31, Rue du marteau" value="<?php echo htmlspecialchars($adresse); ?>"><br><br>
+            
+            <label for="code_postal" class="form-label">Code postal :</label><br>
+            <input type="text" id="code_postal" name="code_postal" placeholder= "75002" value="<?php echo htmlspecialchars($code_postal); ?>"><br><br>
+            
+            <label for="ville" class="form-label">Ville :</label><br>
+            <input type="text" id="ville" name="ville" placeholder= "Paris" value="<?php echo htmlspecialchars($ville); ?>"><br><br>
+            
+            <label for="telephone" class="form-label">Numéro de téléphone :</label><br>
+            <input type="tel" id="telephone" name="telephone" placeholder= "0601020304" value="<?php echo htmlspecialchars($telephone); ?>"><br>
+            <span style="color: red;" class="error" id="error-message3"><?php echo $Err3;?></span><br>
+            <br>
+            
+            <label for="date_de_naissance" class="form-label">Date de naissance :</label><br>
+            <input type="date" id="date_de_naissance" name="date_de_naissance" value="<?php echo htmlspecialchars($date_de_naissance); ?>"><br>
+            <span style="color: red;" class="error" id="error-message4"><?php echo $Err4;?></span><br>
+            
+            <label for="mot_de_passe" class="form-label">Mot de passe :</label><br>
+            <input type="password" id="mot_de_passe" name="mot_de_passe" value="<?php echo htmlspecialchars($mot_de_passe); ?>" required><br>
+            <span style="color: red;">*</span><br>
+            <br>
+            
+            <label for="confirmer_mot_de_passe" class="form-label">Confirmer le mot de passe :</label><br>
+            <input type="password" id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" value="<?php echo htmlspecialchars($confirmer_mot_de_passe); ?>" required><br>
+            <span style="color: red;" class="error" id="error-message5">* <?php echo $Err5;?></span><br>
+            <br>
+       
+            <input type="submit" value="Inscription" name="user_register">
+            <br><br>
+            <p>Vous avez déjà un compte ? <a href="user_connexion.php">Connectez-vous</a></p>
+        </form>
+        <br>
+		<br>
+    </div>
+    </main>
+
+    <div class="chatbox">
+        <div class="chat-header">
+            Chat en direct
+            <span class="close-chat">&times;</span>
+        </div>
+        <div class="chat-content">
+            <!-- Contenu de la boîte de chat -->
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Tapez votre message...">
+            <button>Envoyer</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <br><br>
+        <div class="terms"><a target="_blank" href="confidentialite.html" id="privacy-policy" class="qa-privacypolicy-link" rel="noopener">Politique de confidentialité</a> | <a href="conditions-generales.html" id="terms-and-conditions" class="qa-tandc-link" target="_blank" rel="noopener">Termes et Conditions</a><p>Copyright © ROSE. 2023<br></p></div>
+        <br><br>
+    </footer>
+
+    <script src="javascript/chatbox.js"></script>
+    <script src="javascript/search.js"></script>
+    <script src="javascript/burgernavbar.js"></script>
+    <script src="javascript/form_input_pro.js"></script>
+</body>
+</html>
+
