@@ -26,7 +26,7 @@
         $images_produit1 = $_FILES["images_produit1"]['name'];
         $images_produit2 = $_FILES["images_produit2"]['name'];
         $images_produit3 = $_FILES["images_produit3"]['name'];
-        // image tmp name 
+        // image tmp name
         $temp_images_produit1 = $_FILES["images_produit1"]['tmp_name'];
         $temp_images_produit2 = $_FILES["images_produit2"]['tmp_name'];
         $temp_images_produit3 = $_FILES["images_produit3"]['tmp_name'];
@@ -89,6 +89,19 @@
     
     }
 
+    //test afficher l'image
+    $select_query3 = "SELECT * FROM photo 
+            WHERE id_produit=$id_produit" ;
+        $result3 = mysqli_query($con,$select_query3);
+        $rowdata3 = mysqli_fetch_assoc($result3);
+        $imagetodisplay = $rowdata3['file_photo_produit'];
+        //if(isset($imagetodisplay)){
+            $filepath = "../images/".$imagetodisplay;
+            //readfile($filepath);
+        //}
+        echo '<img src='.$filepath.'>';
+        echo $filepath;
+    //ça fonctionne lesgo
 ?>
 
 <!DOCTYPE html>
