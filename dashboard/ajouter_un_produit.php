@@ -11,7 +11,7 @@
 
     //reload clean var
     $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
-    $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = $images_produit = "";
+    $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = $images_produit = $imagesproduit1 = $imagesproduit2 = $imagesproduit3 = $temp_imagesproduit1 = $temp_imagesproduit2 = $temp_imagesproduit3 = "";
     $user = $_SESSION['user_id_id'];
 
     if (isset($_POST["add_product"])) {
@@ -23,19 +23,19 @@
         $description = $_POST["description"];
 
         //image name
-        $imagesproduit1 = $_POST["images_produit1"]['name]'];
-        $imagesproduit2 = $_POST["images_produit2"]['name]'];
-        $imagesproduit3 = $_POST["images_produit3"]['name]'];
+        $images_produit1 = $_FILES["images_produit1"]['name'];
+        $images_produit2 = $_FILES["images_produit2"]['name'];
+        $images_produit3 = $_FILES["images_produit3"]['name'];
         // image tmp name 
-        $temp_imagesproduit1 = $_POST["images_produit1"]['tmp_name]'];
-        $temp_imagesproduit2 = $_POST["images_produit2"]['tmp_name]'];
-        $temp_imagesproduit3 = $_POST["images_produit3"]['tmp_name]'];
+        $temp_images_produit1 = $_FILES["images_produit1"]['tmp_name'];
+        $temp_images_produit2 = $_FILES["images_produit2"]['tmp_name'];
+        $temp_images_produit3 = $_FILES["images_produit3"]['tmp_name'];
 
-    //check unique email query
-    $select_query1 = "SELECT * FROM produit 
-        WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
-    $result1 = mysqli_query($con,$select_query1);
-    $rows_count1= mysqli_num_rows($result1);
+        //check unique email query
+        $select_query1 = "SELECT * FROM produit 
+            WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
+        $result1 = mysqli_query($con,$select_query1);
+        $rows_count1= mysqli_num_rows($result1);
 
     if ($rows_count1 > 0) {
         $Err1 = "Vous proposez déjà ce produit sur notre boutique";
@@ -48,25 +48,27 @@
         // Handle errors here if needed
     } else {    
         //upload image in folder
-            //move_uploaded_file($temp_imagesproduit1,"../images/$imagesproduit1");
-            //move_uploaded_file($temp_imagesproduit2,"../images/$imagesproduit2");
-            //move_uploaded_file($temp_imagesproduit3,"../images/$imagesproduit3");
+            move_uploaded_file($temp_images_produit1,"../images/$images_produit1");
+            //move_uploaded_file($temp_images_produit2,"../images/$images_produit2");
+            //move_uploaded_file($temp_images_produit3,"../images/$images_produit3");
 
-        //insert query
+        //insert produit dans produit
         $insert_query = "INSERT INTO 
             produit (nom_produit, categorie_produit, marque_produit,prixht_produit, quantitestock_produit,description_produit,id_fournisseur) 
             VALUES ('$nom_produit','$categorie','$marque','$prixht','$quantite_stock','$description','$user')";
         $sql_execute=mysqli_query($con,$insert_query);
 
-        //check unique email query
+        //recup id_produit
         $select_query2 = "SELECT * FROM produit 
             WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
         $result2 = mysqli_query($con,$select_query2);
-        $rows_count2= mysqli_num_rows($result2);
+        $rowdata2 = mysqli_fetch_assoc($result2);
+        $id_produit = $rowdata2['id_produit'];
 
+        //insert images produit dans photo
         $insert_query2 = "INSERT INTO 
-            photo (file_produit_produit,id_produit) 
-            VALUES ('$imagesproduit1','$id_produit')";
+            photo (file_photo_produit,id_produit) 
+            VALUES ('$images_produit1','$id_produit')";
         $sql_execute2=mysqli_query($con,$insert_query2);
     
         if ($sql_execute) {
@@ -215,13 +217,13 @@
                     <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
 
                     <label for="images_produit1">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit1" name="images_produit1" accept="image/*" required><br><br>
+                    <input type="file" id="images_produit1" name="images_produit1" required><br><br>
 
                     <label for="images_produit2">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit2" name="images_produit2" accept="image/*" required><br><br>
+                    <input type="file" id="images_produit2" name="images_produit2" ><br><br>
 
                     <label for="images_produit3">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit3" name="images_produit3" accept="image/*" required><br><br>
+                    <input type="file" id="images_produit3" name="images_produit3" ><br><br>
 
                     <input type="submit" value="Ajouter le produit" name="add_product">
                     <br><br>
