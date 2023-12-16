@@ -8,12 +8,26 @@
     } else {
         //echo "déconnecté";
     }
-
-    //reload clean var
-    $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
-    $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = $images_produit = $imagesproduit1 = $imagesproduit2 = $imagesproduit3 = $temp_imagesproduit1 = $temp_imagesproduit2 = $temp_imagesproduit3 = "";
     $user = $_SESSION['user_id_id'];
 
+    if (isset($id_produit)) {
+        $select_query3 = "SELECT * FROM photo 
+        WHERE id_produit=$id_produit" ;
+        $result3 = mysqli_query($con,$select_query3);
+        while($rowdata3 = mysqli_fetch_assoc($result3)){
+            $imagetodisplay = $rowdata3['file_photo_produit'];
+            $filepath = "../images/".$imagetodisplay;
+            echo '<img src='.$filepath.'" style="max-width: 10%; max-height: 10%;">';
+            echo $filepath;
+        }
+    }
+
+    //reload clean var
+    $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = "";
+    $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
+    $image_produit = $images_produit_i = "";
+
+    //load new var, insert & upload files
     if (isset($_POST["add_product"])) {
         $nom_produit = $_POST["nom_produit"];
         $categorie = $_POST["categorie"];
@@ -22,86 +36,72 @@
         $quantite_stock = $_POST["quantite_stock"];
         $description = $_POST["description"];
 
-        //image name
-        $images_produit1 = $_FILES["images_produit1"]['name'];
-        $images_produit2 = $_FILES["images_produit2"]['name'];
-        $images_produit3 = $_FILES["images_produit3"]['name'];
-        // image tmp name
-        $temp_images_produit1 = $_FILES["images_produit1"]['tmp_name'];
-        $temp_images_produit2 = $_FILES["images_produit2"]['tmp_name'];
-        $temp_images_produit3 = $_FILES["images_produit3"]['tmp_name'];
+        $uploaded_images = [];
+        foreach($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name){
+            $image_produit = $_FILES["images_produit_i"]['name'][$key];
+            $uploaded_images[] = $image_produit;
+        }
 
         //check unique email query
         $select_query1 = "SELECT * FROM produit 
             WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
         $result1 = mysqli_query($con,$select_query1);
         $rows_count1= mysqli_num_rows($result1);
-
-    if ($rows_count1 > 0) {
-        $Err1 = "Vous proposez déjà ce produit sur notre boutique";
-    }
-    if ($quantite_stock < 1) {
-        $Err2 = "Le stock initial ne peut pas être nul";
-    }
-    // If there are any errors, do not proceed with the insertion
-    if ($Err1 || $Err2) {
-        // Handle errors here if needed
-    } else {    
-        //upload image in folder
-            move_uploaded_file($temp_images_produit1,"../images/$images_produit1");
-            //move_uploaded_file($temp_images_produit2,"../images/$images_produit2");
-            //move_uploaded_file($temp_images_produit3,"../images/$images_produit3");
-
-        //insert produit dans produit
-        $insert_query = "INSERT INTO 
-            produit (nom_produit, categorie_produit, marque_produit,prixht_produit, quantitestock_produit,description_produit,id_fournisseur) 
-            VALUES ('$nom_produit','$categorie','$marque','$prixht','$quantite_stock','$description','$user')";
-        $sql_execute=mysqli_query($con,$insert_query);
-
-        //recup id_produit
-        $select_query2 = "SELECT * FROM produit 
-            WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
-        $result2 = mysqli_query($con,$select_query2);
-        $rowdata2 = mysqli_fetch_assoc($result2);
-        $id_produit = $rowdata2['id_produit'];
-
-        //insert images produit dans photo
-        $insert_query2 = "INSERT INTO 
-            photo (file_photo_produit,id_produit) 
-            VALUES ('$images_produit1','$id_produit')";
-        $sql_execute2=mysqli_query($con,$insert_query2);
     
-        if ($sql_execute) {
-            echo "<script>alert('Produit ajouté avec succès')</script>";
-            //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
-        } else {
-            echo "Erreur SQLquery1_insprod1 : ";
-            die(mysqli_error($con));
+        //error check
+        if ($rows_count1 > 0) {
+            $Err1 = "Vous proposez déjà ce produit sur notre boutique";
         }
-        if ($sql_execute2) {
-            echo "<script>alert('Images ajoutées avec succès')</script>";
-            //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
-        } else {
-            echo "Erreur SQLquery_insimg2 : ";
-            die(mysqli_error($con));
+        if ($quantite_stock < 1) {
+            $Err2 = "Le stock initial ne peut pas être nul";
         }
-    }
-    
-    }
+        //check file extension ?
 
-    //test afficher l'image
-    $select_query3 = "SELECT * FROM photo 
-            WHERE id_produit=$id_produit" ;
-        $result3 = mysqli_query($con,$select_query3);
-        $rowdata3 = mysqli_fetch_assoc($result3);
-        $imagetodisplay = $rowdata3['file_photo_produit'];
-        //if(isset($imagetodisplay)){
-            $filepath = "../images/".$imagetodisplay;
-            //readfile($filepath);
-        //}
-        echo '<img src='.$filepath.'>';
-        echo $filepath;
-    //ça fonctionne lesgo
+        // If there are any errors, do not proceed with the insertion
+        if ($Err1 || $Err2) {
+            // Handle errors here if needed
+        } else {
+            //insert produit dans produit
+            $insert_query = "INSERT INTO 
+                produit (nom_produit, categorie_produit, marque_produit,prixht_produit, quantitestock_produit,description_produit,id_fournisseur) 
+                VALUES ('$nom_produit','$categorie','$marque','$prixht','$quantite_stock','$description','$user')";
+            $sql_execute=mysqli_query($con,$insert_query);
+
+            if ($sql_execute) {
+                echo "<script>alert('Produit ajouté avec succès')</script>";
+            } else {
+                echo "Erreur SQLquery1_insprod1 : ";
+                die(mysqli_error($con));
+            }
+
+            //recup id_produit
+            $select_query2 = "SELECT * FROM produit 
+                WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
+            $result2 = mysqli_query($con,$select_query2);
+            $rowdata2 = mysqli_fetch_assoc($result2);
+            $id_produit = $rowdata2['id_produit'];
+
+            //insert images produit dans photo
+            foreach($uploaded_images as $image_produit){
+                $insert_query2 = "INSERT INTO 
+                    photo (file_photo_produit,id_produit) 
+                    VALUES ('$image_produit','$id_produit')";
+                $sql_execute2=mysqli_query($con,$insert_query2);
+            }
+            if ($sql_execute2) {
+                echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>";
+                //add image files to folder if db updated
+                foreach($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name){
+                    $image_produit = $_FILES["images_produit_i"]['name'][$key];
+                    move_uploaded_file($tmp_name,"../images/$image_produit");
+                }
+                //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
+            } else {
+                echo "Erreur SQLquery_insimg2 : ";
+                die(mysqli_error($con));
+            }
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -229,14 +229,8 @@
                     <label for="description" class="form-label">Description du produit (max 400 caractères) :</label><br>
                     <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
 
-                    <label for="images_produit1">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit1" name="images_produit1" required><br><br>
-
-                    <label for="images_produit2">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit2" name="images_produit2" ><br><br>
-
-                    <label for="images_produit3">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit3" name="images_produit3" ><br><br>
+                    <label for="images_produit_i">Image(s) du produit :</label><br>
+                    <input type="file" id="images_produit_i" name="images_produit_i[]" multiple required><br><br>
 
                     <input type="submit" value="Ajouter le produit" name="add_product">
                     <br><br>
