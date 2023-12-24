@@ -100,16 +100,6 @@
             
             if ($sql_execute2) {
                 echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>"; 
-                if (isset($id_produit)) {
-                    $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
-                    $result3 = mysqli_query($con, $select_query3);
-                
-                    while ($rowdata3 = mysqli_fetch_assoc($result3)) {
-                        $filepath = $rowdata3['image'];
-                        $image_type = $rowdata3['image_type'];
-                        echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;">';
-                    }
-                }
                 //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>";
             } else {
                 echo "Erreur SQLquery_insimg2 : ";
@@ -246,6 +236,19 @@
 
                     <label for="images_produit_i">Image(s) du produit :</label><br>
                     <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple required><br><br>
+
+                    <?php
+                    if (isset($id_produit)) {
+                        $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
+                        $result3 = mysqli_query($con, $select_query3);
+                
+                        while ($rowdata3 = mysqli_fetch_assoc($result3)) {
+                            $filepath = $rowdata3['image'];
+                            $image_type = $rowdata3['image_type'];
+                            echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;">';
+                        }
+                    }
+                    ?><br>
 
                     <input type="submit" value="Ajouter le produit" name="add_product">
                     <br><br>

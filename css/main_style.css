@@ -113,8 +113,6 @@
             background-color: white;
         }      
 
-        
-
         .search{
             margin-left: 15px;
             position : relative;
@@ -228,12 +226,12 @@
         .images-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .product-image {
-            width: 30%;
-            height: 30%;
+            max-width: 30%;
+            max-height: 30%;
         }
 
         .footer{

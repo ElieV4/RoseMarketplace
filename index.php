@@ -61,7 +61,7 @@
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
         ?>
-        <a href="#">Produits</a>
+        <a href="produits.php">Produits</a>
         <a href="#">Catégories</a>
         <a href="aproposde.html">A propos de ROSE.</a>
         <?php 
@@ -79,25 +79,36 @@
                 <h1>Construisez la vie en ROSE.</h1>
             </div>
             <div class="images-container">
-                <img src="images/product1.png" alt="Produit à gauche" class="product-image">
-                <img src="images/product2.png" alt="Produits vendus" class="product-image">
-                <img src="images/product3.png" alt="Produit à droite" class="product-image">
+                <a href="produits.php"><img src="images/jardinerie_tools.png" class="product-image"></a>
+                <a href="produits.php"><img src="images/woodshopworking.png" class="product-image"></a>
+                <a href="produits.php"><img src="images/pinktools.png" class="product-image"></a>
             </div>
         </div>
+    </div>
+    <div class="outer-container">
+            <div class="images-container">
+                <a href="produits.php">Jardinerie</a>
+                <a href="produits.php">Menuiserie</a>
+                <a href="produits.php">Outillerie</a>
+            </div>
     </div>
 
     <div class="outer-container">
         <div class="content">
-            <div class="slogan">
-                <h1>Construisez la vie en ROSE.</h1>
-            </div>
             <div class="images-container">
-                <img src="images/product1.png" alt="Produit à gauche" class="product-image">
-                <img src="images/product2.png" alt="Produits vendus" class="product-image">
-                <img src="images/product3.png" alt="Produit à droite" class="product-image">
+                <a href="produits.php"><img src="images/bathroom.png" class="product-image"></a>
+                <a href="produits.php"><img src="images/painting.png" class="product-image"></a>
+                <a href="produits.php"><img src="images/quincaillerie.png" class="product-image"></a>
             </div>
         </div>
-    </div>    
+    </div>
+    <div class="outer-container">
+            <div class="images-container">
+                <a href="produits.php">Plomberie</a>
+                <a href="produits.php">Peinture</a>
+                <a href="produits.php">Quincaillerie</a>
+            </div>
+    </div>
 
     <button class="questionmark">
         <div class="bar"></div>

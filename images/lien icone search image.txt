@@ -1,1 +1,0 @@
-<a href="#"><img class="icon" src="images/search.png"></a>
