@@ -31,7 +31,7 @@
         .outer-container{
             margin-left:25%;
             margin-right:25%;
-            margin-top:10px;
+            margin-top:5px;
             margin-bottom:10px;
             background-color: white;
             align-items: center;
@@ -116,20 +116,18 @@
                     <li><button><a href="">Produits & Stocks</a></button></li>
                     <li><button><a href="">Commandes</a></button></li>
                     <li><button><a href="">Paiements</a></button></li>
-                    <!-- <li><button><a href="espace_client_entreprise.php?dashboard/ajouter_un_produit.php">Ajouter un produit</a></button></li> -->
-                    <li><button><a href="dashboard/ajouter_un_produit.php">Ajouter un produit</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit TEST</a></button></li>
                     <li><button><a href="include/logout.php">Déconnexion</a></button></li>
                 </ul>
             </div>
-            <div class="dashboard">
-                <?php
-                if(isset($_GET['ajouter_un_produit'])){
-                    include('ajouter_un_produit');
-                }
-                ?>
-            </div>
-
         </div>
+    </div>
+    <div class="dashboard">
+        <?php
+            if(isset($_GET['ajouter_un_produit'])){
+                include('dashboard/ajouter_un_produit.php');
+            }
+        ?>
     </div>
 
 

@@ -77,11 +77,13 @@
         <div class="content">
 
                 <?php
+                if(isset($_GET['id'])){
+                        $id_produit = $_GET['id'];
                         $select_query = "SELECT *
                             FROM produit 
                             LEFT JOIN photo USING (id_produit) 
                             LEFT JOIN client ON produit.id_fournisseur = client.id_client 
-                            WHERE id_produit = 19;";
+                            WHERE id_produit = '$id_produit';";
                         $result = mysqli_query($con, $select_query);
 
                         $rowdata = mysqli_fetch_assoc($result);
@@ -100,6 +102,9 @@
                     echo ''.$produit." ".$marque.'<br>';
                     echo ''.$vendeur." ".$prixTTC.'€<br>';
                     echo ''.$description.'<br>';
+                }else{
+                    echo "Erreur DB, veuillez revenir à la page précédente";
+                }
                 ?>
             <a href="#"><button>Acheter</button></a>
         </div>

@@ -1,6 +1,5 @@
 <?php 
     include("include/connect.php");
-    //include("include/fonctions.php");
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
@@ -79,19 +78,123 @@
             <div class="slogan">
                 <h1>Produits ROSE.</h1>
             </div>
+            <form action="" method="GET">
+                    <label for="categorie">Catégorie :</label>
+                    <select name="categorie" id="categorie">
+                        <option value="all">Toutes</option>
+                        <?php 
+                                $select_cat = "SELECT DISTINCT categorie_produit FROM produit";
+                                $result_cat = mysqli_query($con,$select_cat);
+                                while($rowcat=mysqli_fetch_array($result_cat)) {
+                                    $categoriefiltre = $rowcat["categorie_produit"];
+                                    echo '<option value="'.$categoriefiltre.'">'.$categoriefiltre.'</option>';
+                                }
+                        ?>
+                    </select>
+                    <label for="marque">Marque :</label>
+                    <select name="marque" id="marque">
+                        <option value="all">Toutes</option>
+                        <?php 
+                                $select_brands = "SELECT DISTINCT marque_produit FROM produit";
+                                $result_brands = mysqli_query($con,$select_brands);
+                                while($rowbrand=mysqli_fetch_array($result_brands)) {
+                                    $marquefiltre = $rowbrand["marque_produit"];
+                                    echo '<option value="'.$marquefiltre.'">'.$marquefiltre.'</option>';
+                                }
+                        ?>
+                    </select>
+                    <button type="submit">Voir les produits</button>
+            </form>
             <div class="images-container">
                 <?php
-                        $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                    include('include/fonctions.php');
+                                  
+                    //differentes requetes dans fonctions.php
+                    if(isset($_GET['marque'])){
+                        if($_GET['categorie']=='all' and $_GET['marque']=='all'){
+                            $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                             FROM produit 
                             LEFT JOIN photo USING (id_produit) 
                             LEFT JOIN client ON produit.id_fournisseur = client.id_client 
                             WHERE quantitestock_produit > 0 
                             GROUP BY produit.id_produit
                             ORDER BY date_ajout_produit DESC;";
+                        
+                            $result = mysqli_query($con, $select_query);
+                            $rows = mysqli_num_rows($result);
+                            if($rows ==0){
+                                echo "Pas de produits actuellement sur le site";
+                            }
+                        } else if($_GET['categorie']== 'all'and $_GET['marque']!=='all'){
+                            $marque = $_GET['marque'];
 
+                            $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                            FROM produit 
+                            LEFT JOIN photo USING (id_produit) 
+                            LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                            WHERE quantitestock_produit > 0 AND marque_produit = '$marque'
+                            GROUP BY produit.id_produit
+                            ORDER BY date_ajout_produit DESC;";
+                    
+                            $result = mysqli_query($con, $select_query);
+                            $rows = mysqli_num_rows($result);
+                    
+                            if($rows ==0){
+                                echo "Pas de produits de cette marque actuellement sur le site";
+                            }
+                        } else if($_GET['categorie']!== 'all'and $_GET['marque']=='all'){
+                            $categorie = $_GET['categorie'];
+
+                            $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                            FROM produit 
+                            LEFT JOIN photo USING (id_produit) 
+                            LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                            WHERE quantitestock_produit > 0 AND categorie_produit = '$categorie'
+                            GROUP BY produit.id_produit
+                            ORDER BY date_ajout_produit DESC;";
+                    
+                            $result = mysqli_query($con, $select_query);
+                            $rows = mysqli_num_rows($result);
+                            if($rows ==0){
+                                echo "Pas de produits de cette catégorie actuellement sur le site";
+                            }
+                        } else {
+                            $categorie = $_GET['categorie'];
+                            $marque = $_GET['marque'];
+                    
+                            $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                            FROM produit 
+                            LEFT JOIN photo USING (id_produit) 
+                            LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                            WHERE quantitestock_produit > 0 AND categorie_produit = '$categorie' AND marque_produit = '$marque'
+                            GROUP BY produit.id_produit
+                            ORDER BY date_ajout_produit DESC;";
+                    
+                            $result = mysqli_query($con, $select_query);
+                            $rows = mysqli_num_rows($result);
+                            if($rows ==0){
+                                echo "Pas de produits de ce type actuellement sur le site";
+                            }
+                        }
+                    } else {
+                        $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                        FROM produit 
+                        LEFT JOIN photo USING (id_produit) 
+                        LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                        WHERE quantitestock_produit > 0 
+                        GROUP BY produit.id_produit
+                        ORDER BY date_ajout_produit DESC;";
+                    
                         $result = mysqli_query($con, $select_query);
+                        $rows = mysqli_num_rows($result);
+                        if($rows ==0){
+                            echo "Pas de produits actuellement sur le site";
+                        }
+                    }
 
+                    if(isset($result)){
                         while ($rowdata = mysqli_fetch_assoc($result)) {
+                            $id_produit = $rowdata['id_produit'];
                             $filepath = $rowdata['image'];
                             $image_type = $rowdata['image_type'];
                             $produit = $rowdata['nom_produit'];
@@ -100,10 +203,12 @@
                             $categorie = $rowdata['categorie_produit'];
                             $prixTTC = $rowdata['prixht_produit'] * 1.2;
 
-                            echo '<a href="page_produit.php"><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 60%; max-height: 60%;"></a><br>';
+                            echo '<a href="page_produit.php?id='.$id_produit.'"><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 60%; max-height: 60%;"></a><br>';
                             echo ''.$produit." ".$marque.'<br>';
                             echo ''.$vendeur." ".$prixTTC.'€<br>';
                         }
+                    }
+            
                 ?>
             </div>
         </div>
