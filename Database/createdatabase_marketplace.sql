@@ -28,7 +28,7 @@ CREATE TABLE message (id_message INT(11) AUTO_INCREMENT, date_message datetime, 
 		PRIMARY KEY (id_message),
 		FOREIGN KEY (idclient_message) REFERENCES client(id_client),FOREIGN KEY (idgestionnaire_message) REFERENCES gestionnaire(id_gestionnaire));
 
-CREATE TABLE photo (id_photo_produit INT(11) AUTO_INCREMENT, file_photo_produit varchar(250), id_produit INT(11), 
+CREATE TABLE photo (id_photo_produit INT(11) AUTO_INCREMENT, file_photo_produit varchar(250), id_produit INT(11), image LONGBLOB, image_type varchar(250),
 		PRIMARY KEY (id_photo_produit),
 		FOREIGN KEY (id_produit) REFERENCES produit (id_produit));
 

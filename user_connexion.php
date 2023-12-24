@@ -29,9 +29,9 @@
         $result1 = mysqli_query($con,$select_query1);
         $rows_count1= mysqli_num_rows($result1);
         $rowdata = mysqli_fetch_assoc($result1);
-        $typeclient = $rowdata['type_client'];
 
         if ($rows_count1 > 0) {
+            $typeclient = $rowdata['type_client'];
             if(password_verify($mot_de_passe,$rowdata['password_client'])){
                     @session_start();
                     $_SESSION['user_id']=$email;
@@ -82,9 +82,6 @@
             background-color : #FFCFDE;
         }
         .hidden {
-            display: none;
-        }
-        .error{
             display: none;
         }
     </style>
@@ -148,11 +145,12 @@
     
         <form method="POST" action="" enctype="multipart/form-data">
             <br>
-            <span style="color: red;" class="error">*<?php echo $Err1;?></span><br>
             <label for="email" class="form-label">Email :</label><br>
             <input type="email" id="email" name="email" placeholder= "juliendupond@gmail.com" required><br>         
             <label for="mot_de_passe" class="form-label">Mot de passe :</label><br>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
+            <span style="color: red;" class="error"><?php if(!isset($Err1)){
+                echo $Err1;}else{}?></span><br>
             <p><a href="forgot_password_form.php">Mot de passe oublié ?</a></p>
             <br>
        

@@ -10,20 +10,11 @@
     }
     $user = $_SESSION['user_id_id'];
 
-    if (isset($id_produit)) {
-        $select_query3 = "SELECT * FROM photo 
-        WHERE id_produit=$id_produit" ;
-        $result3 = mysqli_query($con,$select_query3);
-        while($rowdata3 = mysqli_fetch_assoc($result3)){
-            $imagetodisplay = $rowdata3['file_photo_produit'];
-            $filepath = "../images/".$imagetodisplay;
-            echo '<img src='.$filepath.'" style="max-width: 10%; max-height: 10%;">';
-            echo $filepath;
-        }
-    }
+
 
     //reload clean var
     $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = "";
+
     $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
     $image_produit = $images_produit_i = "";
 
@@ -36,10 +27,23 @@
         $quantite_stock = $_POST["quantite_stock"];
         $description = $_POST["description"];
 
-        $uploaded_images = [];
-        foreach($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name){
-            $image_produit = $_FILES["images_produit_i"]['name'][$key];
-            $uploaded_images[] = $image_produit;
+        $uploaded_images_data = array();
+        foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
+            // recup file_data
+            $image_data = file_get_contents($_FILES['images_produit_i']['tmp_name'][$key]);
+            $image_data = mysqli_real_escape_string($con, $image_data);
+            $image_name = $_FILES["images_produit_i"]['name'][$key];
+            $image_type = $_FILES["images_produit_i"]['type'][$key];
+
+            // Create an associative array for each image
+            $image_info = array(
+                'name' => $image_name,
+                'type' => $image_type,
+                'file_data' => $image_data
+            );
+
+            // Add the array to the uploaded_images_data array
+            $uploaded_images_data[] = $image_info;
         }
 
         //check unique email query
@@ -82,20 +86,31 @@
             $id_produit = $rowdata2['id_produit'];
 
             //insert images produit dans photo
-            foreach($uploaded_images as $image_produit){
+            foreach($uploaded_images_data as $image_produit){
+
+                $image_name = $image_produit['name'];
+                $image_data = $image_produit['file_data'];
+                $image_type = $image_produit['type'];
+
                 $insert_query2 = "INSERT INTO 
-                    photo (file_photo_produit,id_produit) 
-                    VALUES ('$image_produit','$id_produit')";
+                    photo (id_produit, file_photo_produit, image, image_type)
+                    VALUES ('$id_produit', '$image_name','$image_data', '$image_type')";
                 $sql_execute2=mysqli_query($con,$insert_query2);
             }
+            
             if ($sql_execute2) {
-                echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>";
-                //add image files to folder if db updated
-                foreach($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name){
-                    $image_produit = $_FILES["images_produit_i"]['name'][$key];
-                    move_uploaded_file($tmp_name,"../images/$image_produit");
+                echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>"; 
+                if (isset($id_produit)) {
+                    $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
+                    $result3 = mysqli_query($con, $select_query3);
+                
+                    while ($rowdata3 = mysqli_fetch_assoc($result3)) {
+                        $filepath = $rowdata3['image'];
+                        $image_type = $rowdata3['image_type'];
+                        echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;">';
+                    }
                 }
-                //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>"; 
+                //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>";
             } else {
                 echo "Erreur SQLquery_insimg2 : ";
                 die(mysqli_error($con));
@@ -230,7 +245,7 @@
                     <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
 
                     <label for="images_produit_i">Image(s) du produit :</label><br>
-                    <input type="file" id="images_produit_i" name="images_produit_i[]" multiple required><br><br>
+                    <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple required><br><br>
 
                     <input type="submit" value="Ajouter le produit" name="add_product">
                     <br><br>
