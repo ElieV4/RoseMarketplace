@@ -90,11 +90,14 @@
     <nav class="navbar">
         <div class="navdiv"> 
             <div class="search">
-                <div class="icon"></div>
-                <div class="input">
-                    <input type="text" placeholder="Rechercher" id="mysearch">
-                    <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
-                </div>
+                    <form action="produits.php" method="GET">
+                        <div class="icon"></div>
+                        <div class="input">
+                                <input type="text" placeholder="Rechercher" id="mysearch" name="mysearch">
+                                <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
+                                <button type="submit">Go</button>
+                        </div>
+                    </form>
             </div>
             <div ></div>
             <div class="logo">

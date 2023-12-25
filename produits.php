@@ -17,18 +17,19 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
-
-
 </head>
 <body>
     <nav class="navbar">
         <div class="navdiv"> 
             <div class="search">
-                <div class="icon"></div>
-                <div class="input">
-                    <input type="text" placeholder="Rechercher" id="mysearch">
-                    <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
-                </div>
+                <form action="" method="GET">
+                    <div class="icon"></div>
+                    <div class="input">
+                            <input type="text" placeholder="Rechercher" id="mysearch" name="mysearch">
+                            <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
+                            <a href="produits.php?"></a><button type="submit">Go</button></a>
+                    </div>
+                </form>
             </div>
             <div ></div>
             <div class="logo">
@@ -109,8 +110,25 @@
                 <?php
                     include('include/fonctions.php');
                                   
-                    //differentes requetes dans fonctions.php
-                    if(isset($_GET['marque'])){
+                    //differentes requetes écrites dans fonctions.php, pour l'instant ici mais lourd
+                    if(isset($_GET['mysearch'])){
+                        $search = $_GET['mysearch'];
+                        
+                        $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client,
+                            CONCAT(nom_produit, categorie_produit, marque_produit, raisonsociale_client, description_produit) AS searchfield 
+                        FROM produit 
+                        LEFT JOIN photo USING (id_produit) 
+                        LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                        WHERE CONCAT(nom_produit, categorie_produit, marque_produit, raisonsociale_client, description_produit) like '%$search%'
+                        GROUP BY produit.id_produit
+                        ORDER BY date_ajout_produit DESC;";
+                
+                        $result = mysqli_query($con, $select_query);
+                        $rows = mysqli_num_rows($result);
+                        if($rows == 0){
+                            echo "Aucun résultat actuellement sur le site, veuillez reformulez votre requête.";
+                        }
+                    } else if(isset($_GET['marque'])){
                         if($_GET['categorie']=='all' and $_GET['marque']=='all'){
                             
                             $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 

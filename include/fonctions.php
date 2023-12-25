@@ -39,7 +39,7 @@
 		}
 	}
 	
-	//display specific category
+	//display specific products
 	function getspecificproducts() {
 		global $con; 
 
@@ -108,6 +108,31 @@
 			echo "Pas de produits de cette catégorie actuellement sur le site";
 		} else {
 			return $result;
+		}
+	}
+
+	//searchbar
+	function searchbar(){
+		global $con;
+		if(isset($_GET['mysearch'])){
+			$search = $_GET['mysearch'];
+			
+			$select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client,
+				CONCAT(nom_produit, categorie_produit, marque_produit, raisonsociale_client, description_produit) AS searchfield 
+			FROM produit 
+			LEFT JOIN photo USING (id_produit) 
+			LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+			WHERE CONCAT(nom_produit, categorie_produit, marque_produit, raisonsociale_client, description_produit) like '%$search%'
+			GROUP BY produit.id_produit
+			ORDER BY date_ajout_produit DESC;";
+	
+			$result = mysqli_query($con, $select_query);
+			$rows = mysqli_num_rows($result);
+			if($rows == 0){
+				echo "Aucun résultat actuellement sur le site, veuillez reformulez votre requête.";
+			} else {
+				return $searchresult;
+			}
 		}
 	}
 ?>
