@@ -115,16 +115,24 @@
                     <p><?php echo "{$_SESSION['user_id']}"; ?></p>
                 </div>
                 <ul>
-                    <li><button><a href="">Produits</a></button></li>
-                    <li><button><a href="">Commandes</a></button></li>
-                    <li><button><a href="">Paiements</a></button></li>
-                    <li><button><a href="">Ajouter un produit</a></button></li>
+                    <li><button><a href="espace_client_particulier.php?">Profil</a></button></li>
+                    <li><button><a href="espace_client_particulier.php?">Votre panier</a></button></li>
+                    <li><button><a href="espace_client_particulier.php?">Historique de commandes</a></button></li>
+                    <li><button><a href="espace_client_particulier.php?">Suivre votre commande</a></button></li>
+                    <li><button><a href="espace_client_particulier.php?">Vos moyens de paiements</a></button></li>
                     <li><button><a href="include/logout.php">Déconnexion</a></button></li>
                 </ul>
             </div>
-        </div>
+        </div> 
     </div>
-
+    
+    <div class="dashboard">
+        <?php
+            if(isset($_GET['#'])){
+                include('#');
+            }
+        ?>
+    </div>
 
     <div class="chatbox">
         <div class="chat-header">

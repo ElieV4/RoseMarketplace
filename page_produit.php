@@ -1,5 +1,6 @@
 <?php 
     include("include/connect.php");
+    include("include/fonctions.php");
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
@@ -101,16 +102,46 @@
                         $stock = $rowdata['quantitestock_produit'];
                         $date_ajout = $rowdata['date_ajout_produit'];
                         $description = $rowdata['description_produit'];
-
+ 
                     echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;"><br>';
                     echo ''.$produit." ".$marque.'<br>';
-                    echo ''.$vendeur." ".$prixTTC.'€<br>';
-                    echo ''.$description.'<br>';
+                    echo ''.$vendeur." ".$prixTTC.'€<br><br>';
+                    echo ''.$description.'<br><br>';
                 }else{
                     echo "Erreur DB, veuillez revenir à la page précédente";
                 }
+                echo "<a href='page_produit.php?id=$id_produit&cart=$id_produit'><button>Ajouter au panier</button></a>";
+
+                //ajouter au panier
+                if(isset($_GET['cart'])){
+                    $id_produit=$_GET['id'];
+
+                    //requete verif produit pas déjà ajouté au panier
+                    $select_query2 = "SELECT * FROM panier WHERE id_produit = '$id_produit'";
+                    $result2 = mysqli_query($con, $select_query2);
+                    $rowdata2 = mysqli_fetch_assoc($result2);
+                    if($rowdata2==0){
+
+                        if(isset($_GET['quantite_produit'])){
+                            $quantité_produit = $_GET['quantite_produit'];
+                        } else {
+                            $quantité_produit = 1;
+                        }
+                        $adresse_ip = get_user_ip();
+                        //ajout du produit au panier
+                        $insertcart_query = "INSERT INTO panier (id_produit, quantité_produit, adresse_ip)
+                        VALUES ('$id_produit', $quantité_produit, '$adresse_ip');";
+
+                        if (mysqli_query($con, $insertcart_query)) {
+                            echo "Produit ajouté au panier";
+                        } else {
+                            echo "Error: " . $insertcart_query . "<br>" . mysqli_error($con);
+                        }
+                    } else {
+                        echo "Produit déjà présent dans votre panier";
+                    }
+                }
                 ?>
-            <a href="#"><button>Acheter</button></a>
         </div>
     </div> 
 

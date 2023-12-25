@@ -1,3 +1,15 @@
+<?php 
+    include("include/connect.php");
+    include("include/fonctions.php");
+    // Vérifie si l'utilisateur est déjà connecté
+    session_start();
+
+    if (isset($_SESSION['user_id'])) {
+        //echo $_SESSION['user_id']." est connecté";
+    } else {
+        //echo "déconnecté";
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,8 +101,74 @@
     <div class="outer-container">
         <div class="content">
 
+                <?php
+                    $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                    FROM panier 
+                    LEFT JOIN produit USING (id_produit) 
+                    LEFT JOIN photo USING (id_produit) 
+                    LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                    GROUP BY id_produit";
+                    $result = mysqli_query($con, $select_query);
+                    
+                    if ($result) {
+                        // Afficher le tableau HTML
+                        echo "<table border='1'>
+                                <tr>
+                                    
+                                    <th>ID Produit</th>
+                                    <th></th>
+                                    <th>Nom du produit</th>
+                                    <th>Détails du produit</th>
+                                    <th>Fournisseur</th>
+                                    <th>Quantité</th>
+                                    <th>Prix unitaire TTC</th>
+                                    <th>Montant TTC</th>
+                                </tr>";
+                        $montant_commande = 0;
+                        // Parcourir les résultats et afficher chaque ligne dans le tableau
+                        while ($rowdata = mysqli_fetch_assoc($result)) {
+
+                            $id_produit = $rowdata['id_produit'];
+                            $filepath = $rowdata['image'];
+                            $image_type = $rowdata['image_type'];
+                            $produit = $rowdata['nom_produit'];
+                            $marque = $rowdata['marque_produit'];
+                            $vendeur = $rowdata['raisonsociale_client'];
+                            $categorie = $rowdata['categorie_produit'];
+                            $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                            $stock = $rowdata['quantitestock_produit'];
+                            $date_ajout = $rowdata['date_ajout_produit'];
+                            $description = $rowdata['description_produit'];
+                            $quantitepanier = $rowdata['quantité_produit'];
+                            $quantitestock = $rowdata['quantitestock_produit'];
+                            $montant_produit = $quantitepanier * $prixTTC ;
+                            $montant_commande = $montant_commande + $montant_produit;
+
+                            echo '<tr>
+                                    <td>'.$id_produit.'</td>
+                                    <td><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
+                                    <td>'.$produit.'</td>
+                                    <td>'.$categorie.', '.$marque. ', '.$description.'</td>
+                                    <td>'.$vendeur.'</td>
+                                    <td>'.$quantitepanier.'</td>
+                                    <td>'.$prixTTC.'€</td>
+                                    <td>'.$montant_produit.'€</td>
+                                  </tr>';
+                        }
+                    
+                        echo "</table>";
+                    } else {
+                        // En cas d'erreur lors de l'exécution de la requête
+                        echo "Erreur dans la requête : " . mysqli_error($con);
+                    }
+                    echo "Montant de la commande : ". $montant_commande. "€";
+                ?>
         </div>
-    </div>
+    </div> 
+
+    <button class="questionmark">
+        <div class="bar"></div>
+    </button>
 
 
     <div class="chatbox">

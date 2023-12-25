@@ -119,9 +119,9 @@
                     <p><?php echo "{$_SESSION['user_id']}"; ?></p>
                 </div>
                 <ul>
-                    <li><button><a href="">Produits & Stocks</a></button></li>
-                    <li><button><a href="">Commandes</a></button></li>
-                    <li><button><a href="">Paiements</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?">Produits & Stocks</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?">Commandes</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?">Paiements</a></button></li>
                     <li><button><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button></li>
                     <li><button><a href="include/logout.php">Déconnexion</a></button></li>
                 </ul>

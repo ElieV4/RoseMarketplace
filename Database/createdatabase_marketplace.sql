@@ -32,6 +32,9 @@ CREATE TABLE photo (id_photo_produit INT(11) AUTO_INCREMENT, file_photo_produit 
 		PRIMARY KEY (id_photo_produit),
 		FOREIGN KEY (id_produit) REFERENCES produit (id_produit));
 
+CREATE TABLE panier (id_produit INT(11) AUTO_INCREMENT , quantité_produit INT(11) , adresse_ip VARCHAR(255) NOT NULL,
+		PRIMARY KEY(id_produit));
+
 CREATE TABLE constitue (id_commande INT(11), id_produit INT(11) NOT NULL, nombrearticle_commande numeric(3), 
 		PRIMARY KEY (id_commande, id_produit),
 		FOREIGN KEY (id_commande) REFERENCES commande (id_commande), FOREIGN KEY (id_produit) REFERENCES produit (id_produit));

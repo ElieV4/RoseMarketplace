@@ -16,7 +16,6 @@
     <title>Rose. | Produits</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
-    <link rel="stylesheet" type="text/css" href="css/chatbox.css">
 </head>
 <body>
     <nav class="navbar">
@@ -106,8 +105,9 @@
                     </select>
                     <button type="submit">Voir les produits</button>
             </form>
-            <div class="images-container">
-                <?php
+            <br>
+            <div class="product-container">
+                <?php   
                     include('include/fonctions.php');
                                   
                     //differentes requetes écrites dans fonctions.php, pour l'instant ici mais lourd
@@ -126,7 +126,9 @@
                         $result = mysqli_query($con, $select_query);
                         $rows = mysqli_num_rows($result);
                         if($rows == 0){
-                            echo "Aucun résultat actuellement sur le site, veuillez reformulez votre requête.";
+                            echo "Aucun résultat actuellement sur le site, veuillez reformuler votre requête.";
+                        } else {
+                            echo $rows.' résultats pour votre recherche "'. $search.'"<br><br>';
                         }
                     } else if(isset($_GET['marque'])){
                         if($_GET['categorie']=='all' and $_GET['marque']=='all'){
@@ -142,7 +144,9 @@
                             $result = mysqli_query($con, $select_query);
                             $rows = mysqli_num_rows($result);
                             if($rows ==0){
-                                echo "Pas de produits actuellement sur le site";
+                                echo "Pas de produits actuellement sur le site ";
+                            } else {
+                                echo $rows.' résultats pour votre recherche<br><br>';
                             }
                         } else if($_GET['categorie']== 'all'and $_GET['marque']!=='all'){
                             $marque = $_GET['marque'];
@@ -159,7 +163,9 @@
                             $rows = mysqli_num_rows($result);
                     
                             if($rows ==0){
-                                echo "Pas de produits de cette marque actuellement sur le site";
+                                echo "Pas de produits de cette marque actuellement sur le site ";
+                            } else {
+                                echo $rows.' résultats pour votre recherche "'.$marque.'"<br><br>';
                             }
                         } else if($_GET['categorie']!== 'all'and $_GET['marque']=='all'){
                             $categorie = $_GET['categorie'];
@@ -175,7 +181,9 @@
                             $result = mysqli_query($con, $select_query);
                             $rows = mysqli_num_rows($result);
                             if($rows ==0){
-                                echo "Pas de produits de cette catégorie actuellement sur le site";
+                                echo "Pas de produits de cette catégorie actuellement sur le site ";
+                            } else {
+                                echo $rows.' résultats pour votre recherche "'.$categorie.'"<br><br>';
                             }
                         } else {
                             $categorie = $_GET['categorie'];
@@ -192,7 +200,9 @@
                             $result = mysqli_query($con, $select_query);
                             $rows = mysqli_num_rows($result);
                             if($rows ==0){
-                                echo "Pas de produits de ce type actuellement sur le site";
+                                echo "Pas de produits de ce type actuellement sur le site ";
+                            } else {
+                                echo $rows.' résultats pour votre recherche "'.$categorie.' '.$marque.'"<br><br>';
                             }
                         }
                     } else {
@@ -207,7 +217,9 @@
                         $result = mysqli_query($con, $select_query);
                         $rows = mysqli_num_rows($result);
                         if($rows ==0){
-                            echo "Pas de produits actuellement sur le site";
+                            echo "Pas de produits actuellement sur le site ";
+                        } else {
+                            echo $rows.' résultats pour votre recherche<br><br>';
                         }
                     }
 
@@ -222,9 +234,11 @@
                             $categorie = $rowdata['categorie_produit'];
                             $prixTTC = $rowdata['prixht_produit'] * 1.2;
 
-                            echo '<a href="page_produit.php?id='.$id_produit.'"><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 60%; max-height: 60%;"></a><br>';
-                            echo ''.$produit." ".$marque.'<br>';
-                            echo ''.$vendeur." ".$prixTTC.'€<br>';
+                            echo '<div class="product">';
+                            echo '<a href="page_produit.php?id=' . $id_produit . '"><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
+                            echo '' . $produit . " " . $marque . '<br>';
+                            echo '' . $vendeur . " " . $prixTTC . '€<br><br>';
+                            echo '</div>';
                         }
                     }
             

@@ -18,6 +18,19 @@
     return $data;
 	}
 
+	function get_user_ip() {
+    // Si l'adresse IP est disponible dans l'en-tête HTTP_X_FORWARDED_FOR
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    // Sinon, utilise l'adresse IP normale
+    else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    return $ip;
+	}
+
 	//display all products
 	function getproducts() {
 		global $con; 
