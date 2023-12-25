@@ -112,6 +112,7 @@
                     //differentes requetes dans fonctions.php
                     if(isset($_GET['marque'])){
                         if($_GET['categorie']=='all' and $_GET['marque']=='all'){
+                            
                             $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                             FROM produit 
                             LEFT JOIN photo USING (id_produit) 
@@ -127,7 +128,7 @@
                             }
                         } else if($_GET['categorie']== 'all'and $_GET['marque']!=='all'){
                             $marque = $_GET['marque'];
-
+                            
                             $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                             FROM produit 
                             LEFT JOIN photo USING (id_produit) 
@@ -161,7 +162,7 @@
                         } else {
                             $categorie = $_GET['categorie'];
                             $marque = $_GET['marque'];
-                    
+                            
                             $select_query = "SELECT produit.id_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                             FROM produit 
                             LEFT JOIN photo USING (id_produit) 
