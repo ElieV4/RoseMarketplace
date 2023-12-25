@@ -63,7 +63,7 @@
         ?>
         <a href="#">Produits</a>
         <a href="#">Catégories</a>
-        <a href="aproposde.html">A propos de ROSE.</a>
+        <a href="aproposde.php">A propos de ROSE.</a>
         <?php 
         if(isset($_SESSION['user_id'])){
             echo '<a href="include/logout.php">Déconnexion</a>';
@@ -234,7 +234,7 @@
 
     <footer class="footer">
         <br><br>
-        <div class="terms"><a target="_blank" href="confidentialite.html" id="privacy-policy" class="qa-privacypolicy-link" rel="noopener">Politique de confidentialité</a> | <a href="conditions-generales.html" id="terms-and-conditions" class="qa-tandc-link" target="_blank" rel="noopener">Termes et Conditions</a><p>Copyright © ROSE. 2023<br></p></div>
+        <div class="terms"><a target="_blank" href="confidentialite.php" id="privacy-policy" class="qa-privacypolicy-link" rel="noopener">Politique de confidentialité</a> | <a href="conditions-generales.php" id="terms-and-conditions" class="qa-tandc-link" target="_blank" rel="noopener">Termes et Conditions</a><p>Copyright © ROSE. 2023<br></p></div>
         <br><br>
     </footer>
 
