@@ -127,9 +127,9 @@
                     echo ''.$vendeur." ".$prixTTC.'€<br><br>';
                     echo ''.$description.'<br><br>';
                 }else{
-                    echo "Erreur DB, veuillez revenir à la page précédente";
+                    echo 'Erreur DB, veuillez revenir à la page précédente';
                 }
-                echo "<a href='page_produit.php?id=$id_produit&cart=$id_produit'><button>Ajouter au panier</button></a>";
+                echo '<a href="page_produit.php?id='.$id_produit.'&cart='.$id_produit.'"><button>Ajouter au panier</button></a><br>';
 
                 //ajouter au panier
                 if(isset($_GET['cart'])){
@@ -153,13 +153,14 @@
 
                         if (mysqli_query($con, $insertcart_query)) {
                             echo '<div class="popup">Produit ajouté au panier<br>';
-                            echo '<a href"cart.php"><button>Accéder au panier</button></a>';
+                            echo '<a href="cart.php"><button>Accéder au panier</button></a>';
                             echo ' <button>Annuler</button></div>';                            
                         } else {
                             echo "Error: " . $insertcart_query . "<br>" . mysqli_error($con);
                         }
                     } else {
-                        echo "Produit déjà présent dans votre panier";
+                        echo '<div class="popup">Produit déjà présent dans votre panier<br>';
+                        echo '<a href="cart.php"><button>Accéder au panier</button></a></div>';
                     }
                 }
                 ?>

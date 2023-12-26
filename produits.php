@@ -70,7 +70,7 @@
     </nav>
 
     <nav class="mobile-nav">
-        <a href="index.php">Home</a>
+        <a href="index.php">Accueil</a>
         <?php 
         if(isset($_SESSION['user_id'])){
             echo '<a href="espace_client_entreprise.php">Espace Client</a>';
@@ -78,8 +78,9 @@
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
         ?>
-        <a href="#">Produits</a>
-        <a href="#">Catégories</a>
+        <a href="produits.php">Tous les produits</a>
+        <a href="produits.php?categorie=outillerie&marque=all">Outillerie</a>
+        <a href="produits.php?categorie=peinture&droguerie&marque=all">Peinture</a>
         <a href="aproposde.php">A propos de ROSE.</a>
         <?php 
         if(isset($_SESSION['user_id'])){

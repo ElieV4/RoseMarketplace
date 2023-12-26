@@ -1,5 +1,5 @@
 <?php
-include("include/connect.php");
+include("connect.php");
 
 // Check if the action is set
 if (isset($_POST['action'])) {
@@ -9,12 +9,6 @@ if (isset($_POST['action'])) {
     switch ($action) {
         case 'updateQuantite':
             updateQuantite();
-            break;
-        case 'ajouterQuantite':
-            ajouterQuantite();
-            break;
-        case 'enleverQuantite':
-            enleverQuantite();
             break;
         case 'supprimerProduit':
             supprimerProduit();
@@ -31,44 +25,23 @@ if (isset($_POST['action'])) {
 
 // Function to update the quantity of the product
 function updateQuantite() {
+    global $con; // Make sure $con is accessible inside the function
+
     if (isset($_POST['id_produit']) && isset($_POST['nouvelleQuantite'])) {
-        $id_produit = $_POST['id_produit'];
-        $nouvelleQuantite = $_POST['nouvelleQuantite'];
+        $id_produit = mysqli_real_escape_string($con, $_POST['id_produit']);
+        $nouvelleQuantite = mysqli_real_escape_string($con, $_POST['nouvelleQuantite']);
 
-        // Perform the update in the database
-        // Add your database update logic here
+        // Perform the update in the database without prepared statements
+        $update_query = "UPDATE panier SET quantité_produit = $nouvelleQuantite WHERE id_produit = $id_produit";
+        $result = mysqli_query($con, $update_query);
 
-        echo "Quantity updated successfully";
+        if ($result) {
+            echo "Quantity updated successfully";
+        } else {
+            echo "Error updating quantity: " . mysqli_error($con);
+        }
     } else {
         echo "Invalid parameters for updating quantity";
-    }
-}
-
-// Function to add quantity to the product
-function ajouterQuantite() {
-    if (isset($_POST['id_produit'])) {
-        $id_produit = $_POST['id_produit'];
-
-        // Perform the update in the database
-        // Add your database update logic here
-
-        echo "Quantity added successfully";
-    } else {
-        echo "Invalid parameters for adding quantity";
-    }
-}
-
-// Function to remove quantity from the product
-function enleverQuantite() {
-    if (isset($_POST['id_produit'])) {
-        $id_produit = $_POST['id_produit'];
-
-        // Perform the update in the database
-        // Add your database update logic here
-
-        echo "Quantity removed successfully";
-    } else {
-        echo "Invalid parameters for removing quantity";
     }
 }
 
@@ -76,11 +49,15 @@ function enleverQuantite() {
 function supprimerProduit() {
     if (isset($_POST['id_produit'])) {
         $id_produit = $_POST['id_produit'];
+        include("connect.php");
 
-        // Perform the delete in the database
-        // Add your database delete logic here
-
-        echo "Product deleted successfully";
+        $delete_query = "DELETE FROM panier WHERE id_produit = $id_produit";
+        $result = mysqli_query($con, $delete_query);
+        if ($result) {
+            echo "Product deleted successfully";
+        } else {
+            echo "Error deleting product: " . mysqli_error($con);
+        }
     } else {
         echo "Invalid parameters for deleting product";
     }

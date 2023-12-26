@@ -1,6 +1,13 @@
-function updateQuantite(id_produit, nouvelleQuantite) {
-    // Appel AJAX pour mettre à jour la quantité du produit
-    fetch("ajax_cart.php", {
+function updateQuantite(id_produit) {
+    // Get the new quantity from the input field
+    var nouvelleQuantite = document.getElementById('quantiteInput_' + id_produit).value;
+
+    // Log the data to be sent in the console for debugging
+    console.log("Updating quantity for product ID: " + id_produit);
+    console.log("New quantity: " + nouvelleQuantite);
+
+    // Perform AJAX request to update quantity
+    fetch("./include/ajax_cart.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -13,66 +20,22 @@ function updateQuantite(id_produit, nouvelleQuantite) {
         }
         return response.text();
     })
-    .then(response => {
-        // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
-        console.log(response);
+    .then(responseText => {
+        // Log the response from the server for debugging
+        console.log("Server Response: " + responseText);
+
+        // Reload the page after successful update
+        location.reload();
     })
     .catch(error => {
+        // Log any errors that occurred during the AJAX request
         console.error("Erreur AJAX: ", error);
     });
 }
 
-function ajouterQuantite(id_produit) {
-    // Appel AJAX pour ajouter la quantité du produit
-    fetch("ajax_cart.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "action=ajouterQuantite&id_produit=" + id_produit,
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.text();
-    })
-    .then(response => {
-        // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
-        console.log(response);
-    })
-    .catch(error => {
-        console.error("Erreur AJAX: ", error);
-    });
-}
-
-function enleverQuantite(id_produit) {
-    // Appel AJAX pour enlever la quantité du produit
-    fetch("ajax_cart.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "action=enleverQuantite&id_produit=" + id_produit,
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.text();
-    })
-    .then(response => {
-        // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
-        console.log(response);
-    })
-    .catch(error => {
-        console.error("Erreur AJAX: ", error);
-    });
-}
-
-function supprimerProduit(id_produit) {
+function supprimerProduit(id_produit, callback) {
     // Appel AJAX pour supprimer le produit du panier
-    fetch("ajax_cart.php", {
+    fetch("./include/ajax_cart.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -88,6 +51,11 @@ function supprimerProduit(id_produit) {
     .then(response => {
         // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
         console.log(response);
+
+        // Appel de la fonction de rappel pour recharger la page
+        if (typeof callback === 'function') {
+            callback();
+        }
     })
     .catch(error => {
         console.error("Erreur AJAX: ", error);

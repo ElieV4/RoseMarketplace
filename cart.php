@@ -34,7 +34,7 @@
                 display : flex;
                 align-items: center;
                 width:80px;
-                heigth:auto;
+                height:auto;
         }
         .two-columns {
         display: flex;
@@ -43,13 +43,20 @@
 
         .table-column {
             width: 70%;
-            border: solid grey 1px;
         }
 
         .other-column {
             width: 30%;
             margin-left : 15px;
-            padding-top:20%;
+            text-align: left;
+        }
+        .inputquantite {
+            max-width: 30px;
+        }
+        .quantity-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
@@ -150,20 +157,18 @@
 
                             
                                 echo '<tr>
-                                        <td><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
-                                        <td>'.$produit.' '.$marque.'<br>'.$vendeur.'</td>
+                                        <td><a href="page_produit.php?id='.$id_produit.'"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a></td>
+                                        <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i></td>
                                         <td>     </td>
-                                        <td>'.$prixTTC.'€</td>
                                         <td>
-                                            <select onchange="updateQuantite(' . $id_produit . ', this.value)">
-                                                <option value="0" ' . ($quantitepanier == 0 ? 'selected' : '') . '>0</option>
-                                                <option value="1" ' . ($quantitepanier == 1 ? 'selected' : '') . '>1</option>
-                                                <option value="2" ' . ($quantitepanier == 2 ? 'selected' : '') . '>2</option>
-                                                <option value="3" ' . ($quantitepanier == 3 ? 'selected' : '') . '>3</option>
-                                            </select></td>
-                                        <td>'.$quantitepanier.'</td>
-                                        <td><button onclick="supprimerProduit(' . $id_produit . ')"></button></td>
-                                        </tr>';
+                                            <div class="quantity-container">
+                                                <input class="inputquantite" type="number" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
+                                                <button onclick="updateQuantite('.$id_produit.')">OK</button>
+                                            </div>
+                                        </td>
+                                        <td>'.$montant_produit.'€</td>
+                                        <td><button onclick="supprimerProduit(' . $id_produit . ', function() { location.reload(); })">X</button></td>
+                                    </tr>';
                             }
                         
                             echo '</table><br>';
@@ -186,6 +191,8 @@
                             echo '<a href="commande.php"><button>Valider mon panier</button></a>';
                         }
                     ?>
+                    <br><br>
+                    <a href="produits.php"><button>Continuer vos achats</button></a>
             </div>
         </div>
     </div>
