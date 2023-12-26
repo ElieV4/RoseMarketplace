@@ -7,14 +7,14 @@
 
     if (isset($_POST["user_register"])) {
         $email = $_POST["email"];
-        if ($_POST["type"]=="particulier"){
+        if ($_POST["type"] == "particulier") {
             $type = 0;
         } else {
             $type = 1;
         }
         $raisonsociale = $_POST["raisonsociale"];
-        if (!isset($_POST["siren"])){
-            $siren = null ;
+        if (!isset($_POST["siren"])) {
+            $siren = null;
         } else {
             $siren = $_POST["siren"];
         }
@@ -26,63 +26,73 @@
         $telephone = $_POST["telephone"];
         $date_de_naissance = $_POST["date_de_naissance"];
         $mot_de_passe = $_POST["mot_de_passe"];
-        $HASHED_mot_de_passe = password_hash($mot_de_passe,PASSWORD_DEFAULT);
+        $HASHED_mot_de_passe = password_hash($mot_de_passe, PASSWORD_DEFAULT);
         $confirmer_mot_de_passe = $_POST["confirmer_mot_de_passe"];
-    
-    //calcul age
-    // Créez un objet DateTime à partir des chaînes de dates
-    $date_naissance_objet = new DateTime($date_de_naissance);
-    // Calcul de la différence en années
-    $interval = $date_naissance_objet->diff(new DateTime(date("Y-m-d")));
-    $age = $interval->y;
 
-    //check unique email query
-    $select_query1 = "SELECT * FROM client WHERE email_client='$email'";
-    $result1 = mysqli_query($con,$select_query1);
-    $rows_count1= mysqli_num_rows($result1);
+        //calcul age
+        // Créez un objet DateTime à partir des chaînes de dates
+        $date_naissance_objet = new DateTime($date_de_naissance);
+        // Calcul de la différence en années
+        $interval = $date_naissance_objet->diff(new DateTime(date("Y-m-d")));
+        $age = $interval->y;
 
-    $select_query2 = "SELECT * FROM client WHERE siren_client='$siren'";
-    $result2 = mysqli_query($con,$select_query2);
-    $rows_count2= mysqli_num_rows($result2);
+        //check unique email query
+        $select_query1 = "SELECT * FROM client WHERE email_client='$email'";
+        $result1 = mysqli_query($con, $select_query1);
+        $rows_count1 = mysqli_num_rows($result1);
 
-    if ($rows_count1 > 0) {
-        $Err1 = "Cette adresse email est déjà enregistrée";
-    }
-    if ($type == 1 and (!is_numeric($siren) or $siren > 999999999 or $siren < 100000000 )) {
-        $Err2 = "Le N° de SIREN est invalide";
-    }
-    if ($rows_count1 > 0) {
-        $Err2 = "Le N° de SIREN est déjà attribué à un compte";
-    }
-    if (!is_numeric($telephone)) {
-        $Err3 = "Le numéro de téléphone est invalide";
-    }
-    if ($age < 18) {
-        $Err4 = "Vous devez avoir 18 ans";
-    }
-    if ($mot_de_passe != $confirmer_mot_de_passe) {
-        $Err5 = "Les mots de passe ne correspondent pas";
-    }
+        $select_query2 = "SELECT * FROM client WHERE siren_client='$siren'";
+        $result2 = mysqli_query($con, $select_query2);
+        $rows_count2 = mysqli_num_rows($result2);
 
-    // If there are any errors, do not proceed with the insertion
-    if ($Err1 || $Err2 || $Err3 || $Err4 || $Err5) {
-        // Handle errors here if needed
-    } else {
-    //insert query
-        $insert_query = "INSERT INTO 
-            client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numetrue_adresse, codepostal_adresse, villeadresse_adresse, numtel_client, datedenaissance_client) 
-            VALUES ('$email','$type', '$raisonsociale','$siren','$nom', '$prenom','$HASHED_mot_de_passe','$adresse','$code_postal', '$ville','$telephone', '$date_de_naissance')";
-        $sql_execute=mysqli_query($con,$insert_query);
-    
-        if ($sql_execute) {
-            echo "<script>alert('Compte ROSE. ajouté avec succès')</script>";
-            echo "<script>window.open('user_connexion.php','_self')</script>"; 
-        } else {
-            echo "Erreur SQLquery 72-74 : ";
-            die(mysqli_error($con));
+        if ($rows_count1 > 0) {
+            $Err1 = "Cette adresse email est déjà enregistrée";
         }
-    }
-    
+        if ($type == 1 and (!is_numeric($siren) or $siren > 999999999 or $siren < 100000000)) {
+            $Err2 = "Le N° de SIREN est invalide";
+        }
+        if ($rows_count1 > 0) {
+            $Err2 = "Le N° de SIREN est déjà attribué à un compte";
+        }
+        if (!is_numeric($telephone)) {
+            $Err3 = "Le numéro de téléphone est invalide";
+        }
+        if ($age < 18) {
+            $Err4 = "Vous devez avoir 18 ans";
+        }
+        if ($mot_de_passe != $confirmer_mot_de_passe) {
+            $Err5 = "Les mots de passe ne correspondent pas";
+        }
+
+        // If there are any errors, do not proceed with the insertion
+        if ($Err1 || $Err2 || $Err3 || $Err4 || $Err5) {
+            // Handle errors here if needed
+        } else {
+            //insert query
+            $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse)
+                                     VALUES ('$adresse', '$code_postal', '$ville', 'facturation')";
+            $sql_execute_adresse = mysqli_query($con, $insert_query_adresse);
+
+            if (!$sql_execute_adresse) {
+                echo "Erreur SQLquery adresse: ";
+                die(mysqli_error($con));
+            }
+
+            $id_adresse = mysqli_insert_id($con);
+            echo "voici". $id_adresse; // Récupère l'ID de la dernière insertion
+
+            $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, fournisseur, date_creation, id_gestionnaire, id_adresse)
+                                   VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', NULL, CURRENT_TIMESTAMP, NULL, '$id_adresse')";
+            $sql_execute_client = mysqli_query($con, $insert_query_client);
+
+            if ($sql_execute_client) {
+                echo "<script>alert('Compte ROSE ajouté avec succès')</script>";
+                echo "<script>window.open('user_connexion.php','_self')</script>";
+            } else {
+                echo "Erreur SQLquery client: ";
+                die(mysqli_error($con));
+            }
+        }
     }
 ?>
 

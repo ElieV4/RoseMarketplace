@@ -38,17 +38,24 @@
             text-align: left;
             padding:20px;
         }
-        .content{
-            text-align: justify;
+        .img-toolbox {
+            width : 300px;
         }
-        .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:30%;
-                height:auto;
-            }
+        .two-columns {
+        display: flex;
+        justify-content: space-between;
+        }
+        .col1 {
+            width: 20%;
+        }
+        .col2 {
+            width: 60%;
+            margin-left : 50px;
+            text-align: left;
+        }
+        .dash-button {
+            width : 500px;
+        }
     </style>
 </head>
 
@@ -111,20 +118,19 @@
     </nav>
    
     <div class="outer-container">
-        <div class="content">
-            <br><div>Entreprise</div><br>
-            <div class="row">
-                <div>
-                    <a href=""><img src="images/product1.png" alt="images/product1.png"></a>
-                    <p><?php echo "{$_SESSION['user_id']}"; ?></p>
-                </div>
-                <ul>
-                    <li><button><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button></li>
-                    <li><button><a href="espace_client_entreprise.php?commandes">Commandes</a></button></li>
-                    <li><button><a href="espace_client_entreprise.php?paiements">Paiements</a></button></li>
-                    <li><button><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button></li>
-                    <li><button><a href="include/logout.php">Déconnexion</a></button></li>
-                </ul>
+        <h1>Espace Entreprise</h1><br>
+        <div class="two-columns">
+            <div class="col1">
+                <a href=""><img class="img-toolbox" src="images/product1.png" alt="images/product1.png"></a>
+            </div>
+            <div class="col2">
+                    <?php echo "{$_SESSION['user_id']}"; ?><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?">Profil</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
+                    <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
             </div>
         </div>
     </div>

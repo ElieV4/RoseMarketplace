@@ -41,14 +41,15 @@
         justify-content: space-between;
         }
 
-        .table-column {
+        .col1 {
             width: 70%;
         }
 
-        .other-column {
+        .col2 {
             width: 30%;
-            margin-left : 15px;
+            margin-left : 100px;
             text-align: left;
+            min-width : 300px;
         }
         .inputquantite {
             max-width: 30px;
@@ -121,7 +122,7 @@
         <div class="content">
             <h1>Votre panier</h1><br>
             <div class="two-columns">
-                <div class="table-column">
+                <div class="col1">
                     <?php
                         $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                         FROM panier 
@@ -162,7 +163,7 @@
                                         <td>     </td>
                                         <td>
                                             <div class="quantity-container">
-                                                <input class="inputquantite" type="number" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
+                                                <input class="inputquantite" type="number" min="1" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
                                                 <button onclick="updateQuantite('.$id_produit.')">OK</button>
                                             </div>
                                         </td>
@@ -178,9 +179,9 @@
                         }
                     ?>    
                 </div>
-                <div class="other-column">
+                <div class="col2">
                     <?php
-                        echo '<h3>Panier(' .$numrows.')</h3>
+                        echo '<br><h3>Panier(' .$numrows.')</h3>
                         <p>Retrait en magasin : Gratuit</p>
                         <p>Frais de livraison estimés : Gratuit</p><br>
                         <p>Total (TVA incluse) : '.$montant_commande. '€</p><br><br>';
@@ -188,7 +189,7 @@
                         if(!isset($_SESSION['user_id'])){
                             echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
                         } else {
-                            echo '<a href="commande.php"><button>Valider mon panier</button></a>';
+                            echo '<a href="commande.php"><button>Valider votre panier</button></a>';
                         }
                     ?>
                     <br><br>
