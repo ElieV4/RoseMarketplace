@@ -124,7 +124,7 @@
  
                     echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;"><br>';
                     echo ''.$produit." ".$marque.'<br>';
-                    echo ''.$vendeur." ".$prixTTC.'€<br><br>';
+                    echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€<br><br>';
                     echo ''.$description.'<br><br>';
                 }else{
                     echo 'Erreur DB, veuillez revenir à la page précédente';
