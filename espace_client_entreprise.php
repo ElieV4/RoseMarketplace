@@ -119,9 +119,9 @@
                     <p><?php echo "{$_SESSION['user_id']}"; ?></p>
                 </div>
                 <ul>
-                    <li><button><a href="espace_client_entreprise.php?">Produits & Stocks</a></button></li>
-                    <li><button><a href="espace_client_entreprise.php?">Commandes</a></button></li>
-                    <li><button><a href="espace_client_entreprise.php?">Paiements</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?commandes">Commandes</a></button></li>
+                    <li><button><a href="espace_client_entreprise.php?paiements">Paiements</a></button></li>
                     <li><button><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button></li>
                     <li><button><a href="include/logout.php">Déconnexion</a></button></li>
                 </ul>
@@ -132,6 +132,15 @@
         <?php
             if(isset($_GET['ajouter_un_produit'])){
                 include('dashboard/ajouter_un_produit.php');
+            }
+            if(isset($_GET['produits_stocks'])){
+                include('dashboard/produits_stocks.php');
+            }
+            if(isset($_GET['commandes'])){
+                include('dashboard/commandes.php');
+            }
+            if(isset($_GET['paiements'])){
+                include('dashboard/paiements.php');
             }
         ?>
     </div>

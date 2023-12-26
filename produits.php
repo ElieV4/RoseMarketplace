@@ -16,6 +16,23 @@
     <title>Rose. | Produits</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <style>
+        .outer-container{
+            margin-left:15%;
+            margin-right:15%;
+            margin-top:10px;
+            margin-bottom:10px;
+            background-color: white;
+            align-items: center;
+            text-align: left;
+            padding:20px;
+        }
+        .imgcontainer {
+                align-items: center;
+                width:250px;
+                heigth:auto;
+        }
+    </style>    
 </head>
 <body>
     <nav class="navbar">
@@ -235,7 +252,7 @@
                             $prixTTC = $rowdata['prixht_produit'] * 1.2;
 
                             echo '<div class="product">';
-                            echo '<a href="page_produit.php?id=' . $id_produit . '"><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
+                            echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                             echo '' . $produit . " " . $marque . '<br>';
                             echo '' . $vendeur . " " . $prixTTC . '€<br><br>';
                             echo '</div>';

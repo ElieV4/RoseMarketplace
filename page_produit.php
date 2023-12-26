@@ -18,8 +18,23 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
-
-
+    <style>
+        .outer-container{
+            margin-left:15%;
+            margin-right:15%;
+            margin-top:10px;
+            margin-bottom:10px;
+            background-color: white;
+            align-items: center;
+            text-align: left;
+            padding:20px;
+        }
+        .imgcontainer {
+                align-items: center;
+                width:500px;
+                heigth:auto;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -103,7 +118,7 @@
                         $date_ajout = $rowdata['date_ajout_produit'];
                         $description = $rowdata['description_produit'];
  
-                    echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;"><br>';
+                    echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;"><br>';
                     echo ''.$produit." ".$marque.'<br>';
                     echo ''.$vendeur." ".$prixTTC.'€<br><br>';
                     echo ''.$description.'<br><br>';

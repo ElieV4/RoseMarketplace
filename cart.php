@@ -19,8 +19,8 @@
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <style>
         .outer-container{
-            margin-left:25%;
-            margin-right:25%;
+            margin-left:15%;
+            margin-right:15%;
             margin-top:10px;
             margin-bottom:10px;
             background-color: white;
@@ -31,14 +31,12 @@
         .content{
             text-align: justify;
         }
-        .imgcontainer sideimg {
-                display:flex;
+        .imgcontainer {
+                display : flex;
                 align-items: center;
-                margin:5%;
-                padding:10px;
-                width:30%;
+                width:120px;
                 heigth:auto;
-            }
+        }
     </style>
 </head>
 <body>
@@ -100,7 +98,7 @@
    
     <div class="outer-container">
         <div class="content">
-
+                <h1>Mon panier</h1><br>
                 <?php
                     $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                     FROM panier 
@@ -114,9 +112,8 @@
                         // Afficher le tableau HTML
                         echo "<table border='1'>
                                 <tr>
-                                    
-                                    <th>ID Produit</th>
                                     <th></th>
+                                    <th>ID Produit</th>
                                     <th>Nom du produit</th>
                                     <th>Détails du produit</th>
                                     <th>Fournisseur</th>
@@ -145,8 +142,8 @@
                             $montant_commande = $montant_commande + $montant_produit;
 
                             echo '<tr>
+                                    <td><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
                                     <td>'.$id_produit.'</td>
-                                    <td><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
                                     <td>'.$produit.'</td>
                                     <td>'.$categorie.', '.$marque. ', '.$description.'</td>
                                     <td>'.$vendeur.'</td>
@@ -156,13 +153,19 @@
                                   </tr>';
                         }
                     
-                        echo "</table>";
+                        echo "</table><br>";
                     } else {
                         // En cas d'erreur lors de l'exécution de la requête
                         echo "Erreur dans la requête : " . mysqli_error($con);
                     }
                     echo "Montant de la commande : ". $montant_commande. "€";
-                ?>
+
+            if(!isset($_SESSION['user_id'])){
+                echo '<a href="user_connexion.php"><button>Passez commande</button></a>';
+            } else {
+                echo '<a href="commande.php"><button>Passez commande</button></a>';
+            }
+            ?> 
         </div>
     </div> 
 

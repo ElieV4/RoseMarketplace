@@ -17,8 +17,22 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
-
-
+    <style>
+        .outer-container{
+            padding:0px;
+        }
+        .category-img {
+                display : flex;
+                align-items: center;
+                width:350px;
+                height:350px;
+                margin : 10px;
+                padding:3%;
+        }
+        .bigbutton {
+            text : 
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -81,37 +95,28 @@
         <div class="content">
             <div class="slogan">
                 <h1>Construisez la vie en ROSE.</h1>
+                <?php
+                if(!isset($_SESSION['user_id'])){
+                    echo '<h1><a href="user_registration.php"><button class="bigbutton">Rejoignez-nous !</button></a></h1><br>';
+                }
+                ?>
             </div>
             <div class="images-container">
-                <a href="produits.php?categorie=jardin&marque=all"><img src="images/jardinerie_tools.png" class="product-image"></a>
-                <a href="produits.php?categorie=menuiserie_bois&marque=all"><img src="images/woodshopworking.png" class="product-image"></a>
-                <a href="produits.php?categorie=outillerie&marque=all"><img src="images/pinktools.png" class="product-image"></a>
+                <a href="produits.php?categorie=jardin&marque=all"><img src="images/jardinerie_tools.png" class="category-img">Jardinerie</a>
+                <a href="produits.php?categorie=menuiserie_bois&marque=all"><img src="images/woodshopworking.png" class="category-img">Menuiserie</a>
+                <a href="produits.php?categorie=outillerie&marque=all"><img src="images/pinktools.png" class="category-img">Outillerie</a>
             </div>
         </div>
-    </div>
-    <div class="outer-container">
-            <div class="images-container">
-                <a href="produits.php?categorie=jardin&marque=all">Jardinerie</a>
-                <a href="produits.php?categorie=menuiserie_bois&marque=all">Menuiserie</a>
-                <a href="produits.php?categorie=outillerie&marque=all">Outillerie</a>
-            </div>
     </div>
 
     <div class="outer-container">
         <div class="content">
             <div class="images-container">
-                <a href="produits.php?categorie=chauffage_plomberie&marque=all"><img src="images/bathroom.png" class="product-image"></a>
-                <a href="produits.php?categorie=peinture_droguerie&marque=all"><img src="images/painting.png" class="product-image"></a>
-                <a href="produits.php?categorie=quincaillerie&marque=all"><img src="images/quincaillerie.png" class="product-image"></a>
+                <a href="produits.php?categorie=chauffage_plomberie&marque=all"><img src="images/bathroom.png" class="category-img">Plomberie</a>
+                <a href="produits.php?categorie=peinture_droguerie&marque=all"><img src="images/painting.png" class="category-img">Peinture</a>
+                <a href="produits.php?categorie=quincaillerie&marque=all"><img src="images/quincaillerie.png" class="category-img">Quincaillerie</a>
             </div>
         </div>
-    </div>
-    <div class="outer-container">
-            <div class="images-container">
-                <a href="produits.php?categorie=chauffage_plomberie&marque=all">Plomberie</a>
-                <a href="produits.php?categorie=peinture_droguerie&marque=all">Peinture</a>
-                <a href="produits.php?categorie=quincaillerie&marque=all">Quincaillerie</a>
-            </div>
     </div>
 
     <button class="questionmark">
