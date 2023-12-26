@@ -34,6 +34,10 @@
                 width:500px;
                 heigth:auto;
         }
+        .popup{
+            border:solid grey 1px;
+            padding:4px;
+        }
     </style>
 </head>
 <body>
@@ -148,7 +152,9 @@
                         VALUES ('$id_produit', $quantité_produit, '$adresse_ip');";
 
                         if (mysqli_query($con, $insertcart_query)) {
-                            echo "Produit ajouté au panier";
+                            echo '<div class="popup">Produit ajouté au panier<br>';
+                            echo '<a href"cart.php"><button>Accéder au panier</button></a>';
+                            echo ' <button>Annuler</button></div>';                            
                         } else {
                             echo "Error: " . $insertcart_query . "<br>" . mysqli_error($con);
                         }

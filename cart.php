@@ -34,7 +34,7 @@
         .imgcontainer {
                 display : flex;
                 align-items: center;
-                width:120px;
+                width:80px;
                 heigth:auto;
         }
     </style>
@@ -109,19 +109,10 @@
                     $result = mysqli_query($con, $select_query);
                     
                     if ($result) {
-                        // Afficher le tableau HTML
-                        echo "<table border='1'>
-                                <tr>
-                                    <th></th>
-                                    <th>ID Produit</th>
-                                    <th>Nom du produit</th>
-                                    <th>Détails du produit</th>
-                                    <th>Fournisseur</th>
-                                    <th>Quantité</th>
-                                    <th>Prix unitaire TTC</th>
-                                    <th>Montant TTC</th>
-                                </tr>";
+                       
                         $montant_commande = 0;
+                        echo "<table border='0,5'>
+                                ";
                         // Parcourir les résultats et afficher chaque ligne dans le tableau
                         while ($rowdata = mysqli_fetch_assoc($result)) {
 
@@ -135,35 +126,40 @@
                             $prixTTC = $rowdata['prixht_produit'] * 1.2;
                             $stock = $rowdata['quantitestock_produit'];
                             $date_ajout = $rowdata['date_ajout_produit'];
-                            $description = $rowdata['description_produit'];
                             $quantitepanier = $rowdata['quantité_produit'];
                             $quantitestock = $rowdata['quantitestock_produit'];
                             $montant_produit = $quantitepanier * $prixTTC ;
                             $montant_commande = $montant_commande + $montant_produit;
 
+                            
                             echo '<tr>
                                     <td><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
-                                    <td>'.$id_produit.'</td>
-                                    <td>'.$produit.'</td>
-                                    <td>'.$categorie.', '.$marque. ', '.$description.'</td>
-                                    <td>'.$vendeur.'</td>
-                                    <td>'.$quantitepanier.'</td>
+                                    <td>'.$produit.' '.$marque.'<br>'.$vendeur.'</td>
+                                    <td>     </td>
                                     <td>'.$prixTTC.'€</td>
-                                    <td>'.$montant_produit.'€</td>
+                                    <td>
+                                        <select onchange="updateQuantite(' . $id_produit . ', this.value)">
+                                            <option value="0" ' . ($quantitepanier == 0 ? 'selected' : '') . '>0</option>
+                                            <option value="1" ' . ($quantitepanier == 1 ? 'selected' : '') . '>1</option>
+                                            <option value="2" ' . ($quantitepanier == 2 ? 'selected' : '') . '>2</option>
+                                            <option value="3" ' . ($quantitepanier == 3 ? 'selected' : '') . '>3</option>
+                                        </select></td>
+                                    <td>'.$quantitepanier.'</td>
+                                    <td><button onclick="supprimerproduit(' . $id_produit . ')">x</button></td>
                                   </tr>';
                         }
                     
-                        echo "</table><br>";
+                        echo '</table><br>';
                     } else {
                         // En cas d'erreur lors de l'exécution de la requête
-                        echo "Erreur dans la requête : " . mysqli_error($con);
+                        echo 'Erreur dans la requête : ' . mysqli_error($con);
                     }
-                    echo "Montant de la commande : ". $montant_commande. "€";
+                    echo 'TOTAL (TVA incluse) : '. $montant_commande. '€<br><br>';
 
             if(!isset($_SESSION['user_id'])){
-                echo '<a href="user_connexion.php"><button>Passez commande</button></a>';
+                echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
             } else {
-                echo '<a href="commande.php"><button>Passez commande</button></a>';
+                echo '<a href="commande.php"><button>Valider mon panier</button></a>';
             }
             ?> 
         </div>
@@ -197,5 +193,23 @@
     <script src="javascript/chatbox.js"></script>
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
+    <script src="javascript/cart.js"></script>
+    <script>
+        function updateQuantite(id_produit, nouvelleQuantite) {
+            // Appel AJAX pour mettre à jour la quantité du produit
+            $.ajax({
+                type: "POST",
+                url: "ajax_cart.php",
+                data: { action: "updateQuantite", id_produit: id_produit, nouvelleQuantite: nouvelleQuantite },
+                success: function(response) {
+                    // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log("Erreur AJAX: " + error);
+                }
+            });
+        }
+</script>
 </body>
 </html>
