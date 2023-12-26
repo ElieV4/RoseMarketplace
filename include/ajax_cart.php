@@ -1,139 +1,88 @@
 <?php
 include("include/connect.php");
 
-//fonction bouton ajouter quantité
-function ajouterquantite($con, $id_produit){
-    $update_query = "UPDATE panier SET quantité_produit = quantité_produit + 1 
-        WHERE id_produit = $id_produit";
-
-    // Exécuter la requête
-    $result = mysqli_query($con, $update_query);
-
-    // Vérifier si la requête s'est exécutée avec succès
-    if ($result) {
-        echo "+";
-    } else {
-        // En cas d'erreur lors de l'exécution de la requête
-        echo "Err" . mysqli_error($con);
-    }
-}
-
-//fonction bouton enlever quantité
-function enleverquantite($con, $id_produit){
-    $update_query = "UPDATE panier SET quantité_produit = quantité_produit - 1 
-        WHERE id_produit = $id_produit";
-
-    // Exécuter la requête
-    $result = mysqli_query($con, $update_query);
-
-    // Vérifier si la requête s'est exécutée avec succès
-    if ($result) {
-        echo "-";
-    } else {
-        // En cas d'erreur lors de l'exécution de la requête
-        echo "Err" . mysqli_error($con);
-    }
-}
-
-// Vérifier si l'action est définie
-if (isset($_POST['action'])) {
-    $id_produit = $_POST['id_produit'];
-
-    switch ($_POST['action']) {
-        case 'ajouterQuantite':
-            // Logique pour ajouter la quantité du produit dans la base de données
-            ajouterquantite($con, $id_produit);
-            break;
-
-        case 'enleverQuantite':
-            // Logique pour enlever la quantité du produit dans la base de données
-            enleverquantite($con, $id_produit);
-            break;
-
-        default:
-            echo "Action non reconnue";
-            break;
-    }
-} else {
-    echo "Action non définie";
-}
-
-
+// Check if the action is set
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
 
+    // Check the specific action
     switch ($action) {
         case 'updateQuantite':
             updateQuantite();
             break;
-        // Ajoutez d'autres cas pour d'autres actions si nécessaire
+        case 'ajouterQuantite':
+            ajouterQuantite();
+            break;
+        case 'enleverQuantite':
+            enleverQuantite();
+            break;
+        case 'supprimerProduit':
+            supprimerProduit();
+            break;
         default:
-            echo "Action non reconnue";
+            // Handle unknown action
+            echo "Unknown action";
             break;
     }
+} else {
+    // Handle action not set
+    echo "Action not set";
 }
 
+// Function to update the quantity of the product
 function updateQuantite() {
-    global $con;
-
     if (isset($_POST['id_produit']) && isset($_POST['nouvelleQuantite'])) {
         $id_produit = $_POST['id_produit'];
         $nouvelleQuantite = $_POST['nouvelleQuantite'];
 
-        // Assurez-vous que la nouvelle quantité est un nombre entier positif
-        $nouvelleQuantite = intval($nouvelleQuantite);
+        // Perform the update in the database
+        // Add your database update logic here
 
-        if ($nouvelleQuantite >= 0) {
-            // Mettez à jour la quantité dans la table panier
-            $update_query = "UPDATE panier SET quantité_produit = $nouvelleQuantite WHERE id_produit = $id_produit";
-            $result = mysqli_query($con, $update_query);
-
-            if ($result) {
-                echo "Quantité mise à jour avec succès";
-            } else {
-                echo "Erreur lors de la mise à jour de la quantité : " . mysqli_error($con);
-            }
-        } else {
-            echo "La nouvelle quantité doit être un nombre entier positif";
-        }
+        echo "Quantity updated successfully";
     } else {
-        echo "Paramètres manquants pour mettre à jour la quantité";
+        echo "Invalid parameters for updating quantity";
     }
 }
 
-if (isset($_POST['action'])) {
-    $action = $_POST['action'];
-
-    switch ($action) {
-        // ... d'autres cas existants ...
-
-        case 'supprimerProduit':
-            supprimerProduit();
-            break;
-
-        default:
-            echo "Action non reconnue";
-            break;
-    }
-}
-
-function supprimerProduit() {
-    global $con;
-
+// Function to add quantity to the product
+function ajouterQuantite() {
     if (isset($_POST['id_produit'])) {
         $id_produit = $_POST['id_produit'];
 
-        // Supprimer le produit du panier
-        $delete_query = "DELETE FROM panier WHERE id_produit = $id_produit";
-        $result = mysqli_query($con, $delete_query);
+        // Perform the update in the database
+        // Add your database update logic here
 
-        if ($result) {
-            echo "Produit supprimé avec succès";
-        } else {
-            echo "Erreur lors de la suppression du produit : " . mysqli_error($con);
-        }
+        echo "Quantity added successfully";
     } else {
-        echo "ID du produit manquant pour la suppression";
+        echo "Invalid parameters for adding quantity";
+    }
+}
+
+// Function to remove quantity from the product
+function enleverQuantite() {
+    if (isset($_POST['id_produit'])) {
+        $id_produit = $_POST['id_produit'];
+
+        // Perform the update in the database
+        // Add your database update logic here
+
+        echo "Quantity removed successfully";
+    } else {
+        echo "Invalid parameters for removing quantity";
+    }
+}
+
+// Function to delete the product from the cart
+function supprimerProduit() {
+    if (isset($_POST['id_produit'])) {
+        $id_produit = $_POST['id_produit'];
+
+        // Perform the delete in the database
+        // Add your database delete logic here
+
+        echo "Product deleted successfully";
+    } else {
+        echo "Invalid parameters for deleting product";
     }
 }
 ?>

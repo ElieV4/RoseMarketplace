@@ -19,14 +19,13 @@
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <style>
         .outer-container{
-            margin-left:15%;
-            margin-right:15%;
+            margin-left:10%;
+            margin-right:10%;
             margin-top:10px;
             margin-bottom:10px;
             background-color: white;
             align-items: center;
             text-align: left;
-            padding:20px;
         }
         .content{
             text-align: justify;
@@ -36,6 +35,21 @@
                 align-items: center;
                 width:80px;
                 heigth:auto;
+        }
+        .two-columns {
+        display: flex;
+        justify-content: space-between;
+        }
+
+        .table-column {
+            width: 70%;
+            border: solid grey 1px;
+        }
+
+        .other-column {
+            width: 30%;
+            margin-left : 15px;
+            padding-top:20%;
         }
     </style>
 </head>
@@ -98,72 +112,86 @@
    
     <div class="outer-container">
         <div class="content">
-                <h1>Mon panier</h1><br>
-                <?php
-                    $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
-                    FROM panier 
-                    LEFT JOIN produit USING (id_produit) 
-                    LEFT JOIN photo USING (id_produit) 
-                    LEFT JOIN client ON produit.id_fournisseur = client.id_client 
-                    GROUP BY id_produit";
-                    $result = mysqli_query($con, $select_query);
-                    
-                    if ($result) {
-                       
-                        $montant_commande = 0;
-                        echo "<table border='0,5'>
-                                ";
-                        // Parcourir les résultats et afficher chaque ligne dans le tableau
-                        while ($rowdata = mysqli_fetch_assoc($result)) {
+            <h1>Votre panier</h1><br>
+            <div class="two-columns">
+                <div class="table-column">
+                    <?php
+                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                        FROM panier 
+                        LEFT JOIN produit USING (id_produit) 
+                        LEFT JOIN photo USING (id_produit) 
+                        LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                        GROUP BY id_produit";
+                        $result = mysqli_query($con, $select_query);
+                        $numrows = mysqli_num_rows($result);
+                        
+                        if ($result) {
+                            
+                            $montant_commande = 0;
+                            echo "<table border='0,5'>
+                                    ";
+                            // Parcourir les résultats et afficher chaque ligne dans le tableau
+                            while ($rowdata = mysqli_fetch_assoc($result)) {
 
-                            $id_produit = $rowdata['id_produit'];
-                            $filepath = $rowdata['image'];
-                            $image_type = $rowdata['image_type'];
-                            $produit = $rowdata['nom_produit'];
-                            $marque = $rowdata['marque_produit'];
-                            $vendeur = $rowdata['raisonsociale_client'];
-                            $categorie = $rowdata['categorie_produit'];
-                            $prixTTC = $rowdata['prixht_produit'] * 1.2;
-                            $stock = $rowdata['quantitestock_produit'];
-                            $date_ajout = $rowdata['date_ajout_produit'];
-                            $quantitepanier = $rowdata['quantité_produit'];
-                            $quantitestock = $rowdata['quantitestock_produit'];
-                            $montant_produit = $quantitepanier * $prixTTC ;
-                            $montant_commande = $montant_commande + $montant_produit;
+                                $id_produit = $rowdata['id_produit'];
+                                $filepath = $rowdata['image'];
+                                $image_type = $rowdata['image_type'];
+                                $produit = $rowdata['nom_produit'];
+                                $marque = $rowdata['marque_produit'];
+                                $vendeur = $rowdata['raisonsociale_client'];
+                                $categorie = $rowdata['categorie_produit'];
+                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                $stock = $rowdata['quantitestock_produit'];
+                                $date_ajout = $rowdata['date_ajout_produit'];
+                                $quantitepanier = $rowdata['quantité_produit'];
+                                $quantitestock = $rowdata['quantitestock_produit'];
+                                $montant_produit = $quantitepanier * $prixTTC ;
+                                $montant_commande = $montant_commande + $montant_produit;
 
                             
-                            echo '<tr>
-                                    <td><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
-                                    <td>'.$produit.' '.$marque.'<br>'.$vendeur.'</td>
-                                    <td>     </td>
-                                    <td>'.$prixTTC.'€</td>
-                                    <td>
-                                        <select onchange="updateQuantite(' . $id_produit . ', this.value)">
-                                            <option value="0" ' . ($quantitepanier == 0 ? 'selected' : '') . '>0</option>
-                                            <option value="1" ' . ($quantitepanier == 1 ? 'selected' : '') . '>1</option>
-                                            <option value="2" ' . ($quantitepanier == 2 ? 'selected' : '') . '>2</option>
-                                            <option value="3" ' . ($quantitepanier == 3 ? 'selected' : '') . '>3</option>
-                                        </select></td>
-                                    <td>'.$quantitepanier.'</td>
-                                    <td><button onclick="supprimerproduit(' . $id_produit . ')">x</button></td>
-                                  </tr>';
+                                echo '<tr>
+                                        <td><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
+                                        <td>'.$produit.' '.$marque.'<br>'.$vendeur.'</td>
+                                        <td>     </td>
+                                        <td>'.$prixTTC.'€</td>
+                                        <td>
+                                            <select onchange="updateQuantite(' . $id_produit . ', this.value)">
+                                                <option value="0" ' . ($quantitepanier == 0 ? 'selected' : '') . '>0</option>
+                                                <option value="1" ' . ($quantitepanier == 1 ? 'selected' : '') . '>1</option>
+                                                <option value="2" ' . ($quantitepanier == 2 ? 'selected' : '') . '>2</option>
+                                                <option value="3" ' . ($quantitepanier == 3 ? 'selected' : '') . '>3</option>
+                                            </select></td>
+                                        <td>'.$quantitepanier.'</td>
+                                        <td><button onclick="supprimerProduit(' . $id_produit . ')"></button></td>
+                                        </tr>';
+                            }
+                        
+                            echo '</table><br>';
+                        } else {
+                            // En cas d'erreur lors de l'exécution de la requête
+                            echo 'Erreur dans la requête : ' . mysqli_error($con);
                         }
-                    
-                        echo '</table><br>';
-                    } else {
-                        // En cas d'erreur lors de l'exécution de la requête
-                        echo 'Erreur dans la requête : ' . mysqli_error($con);
-                    }
-                    echo 'TOTAL (TVA incluse) : '. $montant_commande. '€<br><br>';
+                    ?>    
+                </div>
+                <div class="other-column">
+                    <?php
+                        echo '<h3>Panier(' .$numrows.')</h3>
+                        <p>Retrait en magasin : Gratuit</p>
+                        <p>Frais de livraison estimés : Gratuit</p><br>
+                        <p>Total (TVA incluse) : '.$montant_commande. '€</p><br><br>';
 
-            if(!isset($_SESSION['user_id'])){
-                echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
-            } else {
-                echo '<a href="commande.php"><button>Valider mon panier</button></a>';
-            }
-            ?> 
+                        if(!isset($_SESSION['user_id'])){
+                            echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
+                        } else {
+                            echo '<a href="commande.php"><button>Valider mon panier</button></a>';
+                        }
+                    ?>
+            </div>
         </div>
-    </div> 
+    </div>
+    </div>
+
+
 
     <button class="questionmark">
         <div class="bar"></div>
@@ -194,22 +222,5 @@
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
     <script src="javascript/cart.js"></script>
-    <script>
-        function updateQuantite(id_produit, nouvelleQuantite) {
-            // Appel AJAX pour mettre à jour la quantité du produit
-            $.ajax({
-                type: "POST",
-                url: "ajax_cart.php",
-                data: { action: "updateQuantite", id_produit: id_produit, nouvelleQuantite: nouvelleQuantite },
-                success: function(response) {
-                    // Mettez à jour l'affichage ou effectuez d'autres actions nécessaires
-                    console.log(response);
-                },
-                error: function(error) {
-                    console.log("Erreur AJAX: " + error);
-                }
-            });
-        }
-</script>
 </body>
 </html>
