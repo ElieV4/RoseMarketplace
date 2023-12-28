@@ -45,10 +45,13 @@
         .col1 {
             width: 70%;
         }
-
+        .info {
+            width : 400px;
+            background : lightgray;
+        }
         .col2 {
             width: 30%;
-            margin-left : 100px;
+            margin-left : 200px;
             text-align: left;
             min-width : 300px;
             border : solid grey 1px;
@@ -144,7 +147,7 @@
                                 $typeadresse = $rowdata1['type_adresse'];
                             
                                 echo '<tr>
-                                        <td>';
+                                        <td class="info">';
                                 if(isset($_GET['modifadresse'])&& $_GET['id']==$id_adresse){
                                     include('include/modifier_une_adresse.php');
                                 } else {
@@ -188,8 +191,7 @@
                                     $typeadresse = $rowdata2['type_adresse'];
                                 
                                     echo '<tr>
-                                            <td></td>';
-                                    echo '<td>';
+                                            <td class="info">';
                                     if(isset($_GET['modifadresse'])&& $_GET['id']==$id_adresse){
                                         include('include/modifier_une_adresse.php');
                                     } else {
@@ -234,8 +236,7 @@
                                         $bic = $rowdata3['bic'];
 
                                         echo '<tr>
-                                            <td>Compte bancaire</td>
-                                            <td>'.$titulaire.'<br>'.$iban.'</td>';
+                                            <td class="info">Compte bancaire '.$titulaire.'<br>'.$iban.'</td>';
                                         echo '<td><button onclick="supprimerPaiement(' . $id_paiement . ', function() { location.reload(); })">Supprimer</button></td>
                                         </tr>';
 
@@ -295,6 +296,8 @@
                             <a href="commande.php"><button>Passer commande</button></a>';
                         }
                     ?>
+                    <br><br><br><br><br>
+                    <a href="cart.php"><button>Revenir au panier</button></a>
                     <br><br>
                     <a href="produits.php"><button>Continuer vos achats</button></a>
             </div>

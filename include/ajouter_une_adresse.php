@@ -45,13 +45,13 @@
     <form method="POST" action="" enctype="multipart/form-data">
 
     <label for="adresse" class="form-label">Adresse :</label><br>
-    <input type="text" id="adresse" name="adresse" placeholder= "31, Rue du marteau" value="<?php echo htmlspecialchars($form_adresse); ?>"><br><br>
+    <input type="text" id="adresse" name="adresse" placeholder= "31, Rue du marteau" required value="<?php echo htmlspecialchars($form_adresse); ?>"><br><br>
     
     <label for="code_postal" class="form-label">Code postal :</label><br>
-    <input type="number" id="code_postal" name="code_postal" placeholder= "75002" value="<?php echo htmlspecialchars($form_code_postal); ?>"><br><br>
+    <input type="number" id="code_postal" name="code_postal" placeholder= "75002" required value="<?php echo htmlspecialchars($form_code_postal); ?>"><br><br>
     
     <label for="ville" class="form-label">Ville :</label><br>
-    <input type="text" id="ville" name="ville" placeholder= "Paris" value="<?php echo htmlspecialchars($form_ville); ?>"><br><br>
+    <input type="text" id="ville" name="ville" placeholder= "Paris" required value="<?php echo htmlspecialchars($form_ville); ?>"><br><br>
     
     <input type="submit" value="Ajouter" name="ajouter_adresse">
     <button><a href="commande.php">Annuler</a></button>
