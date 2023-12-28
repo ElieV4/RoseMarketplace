@@ -1,7 +1,6 @@
 
 <?php 
     include("include/connect.php");
-    include("include/fonctions.php");
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
@@ -122,10 +121,10 @@
                         //adresse de facturation
                         $facturation_query = "SELECT *, count(DISTINCT id_adresse) AS nbadresses
                          FROM client c 
-                         LEFT JOIN adresse a USING (id_adresse) 
+                         LEFT JOIN adresse a USING (id_client) 
                          WHERE c.id_client ='$user' AND type_adresse='facturation'";
                         $facturation_result = mysqli_query($con, $facturation_query);
-                        
+                        echo "<h3>Votre adresse de facturation</h3>";
                         echo "<table border='0,5'>";
                         if ($facturation_result) {
                             while ($rowdata1 = mysqli_fetch_assoc($facturation_result)) {
@@ -145,102 +144,128 @@
                                 $typeadresse = $rowdata1['type_adresse'];
                             
                                 echo '<tr>
-                                        <td>Adresse de '.$typeadresse.'</td>
-                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
-                                        <td>     </td>
-                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
-                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
-                                    </tr>';
+                                        <td>';
+                                if(isset($_GET['modifadresse'])&& $_GET['id']==$id_adresse){
+                                    include('include/modifier_une_adresse.php');
+                                } else {
+                                    echo $client.'<br>'.$rue.'<br>'.$ville.", ".$codepostal.'</td>';
+                                    echo '<td><button><a href="commande.php?modifadresse&id='.$id_adresse.'">Modifier</a></button></td></tr>';                                        
+                                }
+                                    
                             }
-                        
                             echo '</table><br>';
                         } else {
                             echo 'Erreur dans la requête : ' . mysqli_error($con);
                         }
 
                         //adresses de livraison 
-                        $livraison_query = "SELECT *, count(DISTINCT id_adresse) AS nbadresses
+                        $livraison_query = "SELECT *, (SELECT COUNT(DISTINCT id_adresse) FROM adresse a WHERE a.id_client = c.id_client) AS nbadresses
                          FROM client c 
-                         LEFT JOIN adresse a USING (id_adresse) 
+                         LEFT JOIN adresse a USING (id_client) 
                          WHERE c.id_client ='$user' AND type_adresse='livraison'";
                         $livraison_result = mysqli_query($con, $livraison_query);
-                        $rowdata2 = mysqli_fetch_assoc($livraison_result);
-                        $nbadresses = $rowdata2['nbadresses'];
+
+                        echo "<h3>Votre adresse de livraison</h3>";
                         echo "<table border='0,5'>";
+                        //contenu livraison (formulaire ou info)
                         if ($livraison_result) {
-                            if($nbadresses==0){
-                                echo '<button onclick="ajouterAdresse(' . $id_adresse . ', function() { location.reload(); })">Ajouter une adresse de livraison</button><br>';
-                                echo '<button onclick="copierFacturation(' . $id_adresse . ', function() { location.reload(); })">Utiliser votre adresse de facturation comme adresse de livraison</button><br>';
-                            } else {
-                            while ($rowdata2) {
+                            $rowdata2 = mysqli_fetch_assoc($livraison_result);
+                            if(!$rowdata2==null){
+                                mysqli_data_seek($livraison_result, 0);
+                                while ($rowdata2=mysqli_fetch_assoc($livraison_result)) {
+                                    $id_client = $user;
+                                    $typeclient = $rowdata2['type_client'];                               
+                                    if($typeclient ==1){
+                                        $client = $rowdata2['raisonsociale_client'];
+                                    } else {
+                                        $client = $rowdata2['prenom_client']. ' ' .$rowdata2['nom_client'];
+                                    }
 
-                                $id_client = $user;
-                                $typeclient = $rowdata2['type_client'];                               
-                                if($typeclient ==1){
-                                    $client = $rowdata2['raisonsociale_client'];
-                                } else {
-                                    $client = $rowdata2['prenom_client']. ' ' .$rowdata2['nom_client'];
+                                    $id_adresse = $rowdata2['id_adresse'];
+                                    $rue = $rowdata2['numetrue_adresse'];
+                                    $codepostal = $rowdata2['codepostal_adresse'];
+                                    $ville = $rowdata2['villeadresse_adresse'];
+                                    $typeadresse = $rowdata2['type_adresse'];
+                                
+                                    echo '<tr>
+                                            <td></td>';
+                                    echo '<td>';
+                                    if(isset($_GET['modifadresse'])&& $_GET['id']==$id_adresse){
+                                        include('include/modifier_une_adresse.php');
+                                    } else {
+                                        echo $client.'<br>'.$rue.'<br>'.$ville.", ".$codepostal.'</td>';
+                                        echo '<td><button><a href="commande.php?modifadresse&id='.$id_adresse.'">Modifier</a></button></td>';                                        
+                                    }
+                                    echo '<td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
+                                        </tr>';
                                 }
-
-                                $id_adresse = $rowdata2['id_adresse'];
-                                $rue = $rowdata2['numetrue_adresse'];
-                                $codepostal = $rowdata2['codepostal_adresse'];
-                                $ville = $rowdata2['villeadresse_adresse'];
-                                $typeadresse = $rowdata2['type_adresse'];
-                            
-                                echo '<tr>
-                                        <td>Adresse de '.$typeadresse.'</td>
-                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
-                                        <td>     </td>
-                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
-                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
-                                    </tr>';
                             }
-                            }
-                            echo '</table><br>';
+                        echo '</table><br>';
+                        if(isset($_GET['ajoutadresse'])){
+                            include('include/ajouter_une_adresse.php');
+                        } else {
+                            echo '<button><a href="commande.php?ajoutadresse">Ajouter une adresse de livraison</a></button><br><br>';
+                        }
                         } else {
                             echo 'Erreur dans la requête : ' . mysqli_error($con);
                         }
 
                         //moyens de paiements
-                        $paiement_query = "SELECT *, count( DISTINCT id_paiement) AS nbpaiements
-                         FROM client c 
-                         LEFT JOIN paiement p USING (id_client)
-                         WHERE c.id_client ='$user'";
-                        $paiement_result = mysqli_query($con, $paiement_query);
-                        $numrows3 = mysqli_num_rows($paiement_result);
-                        
+                        $paiement_query = "SELECT *,(SELECT COUNT(DISTINCT id_paiement) FROM paiement p WHERE p.id_client = c.id_client) AS nbpaiements
+                            FROM paiement p
+                            LEFT JOIN client c USING (id_client)
+                            WHERE p.id_client = '$user';";
+                        $paiement_result = mysqli_query($con, $paiement_query); 
+
+                        echo "<h3>Sélectionner votre moyen de paiement</h3>";
                         echo "<table border='0,5'>";
+                        //contenu paiement (formulaire ou info)
                         if ($paiement_result) {
-                            while ($rowdata3 = mysqli_fetch_assoc($paiement_result)) {
+                            $rowdata3 = mysqli_fetch_assoc($paiement_result);
+                            if(!$rowdata3==null){
+                                mysqli_data_seek($paiement_result, 0);
+                                while ($rowdata3=mysqli_fetch_assoc($paiement_result)) {
+                                    $id_client = $user;
+                                    $id_paiement = $rowdata3['id_paiement'];
+                                    $type_paiement = $rowdata3['type_paiement'];
+                                    $titulaire =  $rowdata3['titulaire'];                              
+                                    if($type_paiement == 'iban'){
+                                        $iban = $rowdata3['iban'];
+                                        $bic = $rowdata3['bic'];
 
-                                $id_client = $user;
-                                $typeclient = $rowdata3['type_client'];                               
-                                if($typeclient ==1){
-                                    $client = $rowdata3['raisonsociale_client'];
-                                } else {
-                                    $client = $rowdata3['prenom_client']. ' ' .$rowdata3['nom_client'];
+                                        echo '<tr>
+                                            <td>Compte bancaire</td>
+                                            <td>'.$titulaire.'<br>'.$iban.'</td>';
+                                        echo '<td><button onclick="supprimerPaiement(' . $id_paiement . ', function() { location.reload(); })">Supprimer</button></td>
+                                        </tr>';
+
+                                    } else {
+                                        $banquecb = $rowdata3['banquecb'];
+                                        $numcb = $rowdata3['numcb'];
+                                        $titulaire = $rowdata3['titulaire'];
+                                        $expirationcb = $rowdata3['expirationcb'];
+                                        $cryptogrammecb = $rowdata3['cryptogrammecb'];
+
+                                        echo '<tr>
+                                            <td>Carte bancaire</td>
+                                            <td>'.$banquecb.'<br>'.$titulaire.' '.$expirationcb.'</td>';                                        
+                                        echo '<td><button onclick="supprimerPaiement(' . $id_paiement . ', function() { location.reload(); })">Supprimer</button></td>
+                                        </tr>';
+                                    }
+                                
                                 }
-
-                                $id_paiement = $rowdata3['id_paiement'];
-                                $type_paiement = $rowdata3['type_paiement'];
-                                $titulaire = $rowdata3['nomcb'];
-                                $iban = $rowdata3['iban'];
-                                $bic = $rowdata3['bic'];
-                                $banque = $rowdata3['banquecb'];
-                                $expiration = $rowdata3['expirationcb'];
-                                $cryptocb = $rowdata3['cryptogrammecb'];
-                            
-                                echo '<tr>
-                                        <td>Moyen de paiement</td>
-                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
-                                        <td>     </td>
-                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
-                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
-                                    </tr>';
                             }
-                        
-                            echo '</table><br>';
+                        echo '</table><br>';
+                        if(isset($_GET['ajoutpaiement'])){
+                            include('include/ajouter_paiement.php');
+                        } else {
+                            echo '<button><a href="commande.php?ajoutpaiement">Ajouter une carte de débit ou de crédit</a></button><br>';
+                        }
+                        if(isset($_GET['ajoutiban'])){
+                            include('include/ajouter_iban.php');
+                        } else {
+                            echo '<button><a href="commande.php?ajoutiban">Ajouter un compte bancaire</a></button><br>';
+                        }
                         } else {
                             echo 'Erreur dans la requête : ' . mysqli_error($con);
                         }
@@ -307,6 +332,6 @@
     <script src="javascript/chatbox.js"></script>
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
-    <script src="javascript/adresse.js"></script>
+    <script src="javascript/commande.js"></script>
 </body>
 </html>

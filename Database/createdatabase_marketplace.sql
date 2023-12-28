@@ -22,10 +22,8 @@ CREATE TABLE client (
     fournisseur binary(2),
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_gestionnaire INT(11),
-    id_adresse INT(11),
 		PRIMARY KEY (id_client),
-		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire),
-		FOREIGN KEY (id_adresse) REFERENCES adresse (id_adresse));
+		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire));
 
 CREATE TABLE adresse (
     id_adresse INT(11) AUTO_INCREMENT,
@@ -33,14 +31,16 @@ CREATE TABLE adresse (
     codepostal_adresse numeric(5),
     villeadresse_adresse varchar(50),
 	type_adresse ENUM('facturation','livraison'),
-    	PRIMARY KEY (id_adresse));
+	id_client INT(11),
+    	PRIMARY KEY (id_adresse),
+		FOREIGN KEY (id_client) REFERENCES client(id_client));
 
 CREATE TABLE paiement (
 	id_paiement INT(11) AUTO_INCREMENT, 
 	iban varchar(34), bic varchar(11), 
-	numcb numeric(16), datedexpcb date, cryptogrammecb numeric(3), banquecb varchar(50),
+	numcb numeric(16), datedexpcb varchar(7), cryptogrammecb numeric(3), banquecb varchar(50),
 	typepaiement ENUM('iban','cb'), 
-	nomcb varchar(150), 
+	titulaire varchar(150), 
 	id_client INT(11), 
 		PRIMARY KEY (id_paiement),
 		FOREIGN KEY (id_client) REFERENCES client (id_client));

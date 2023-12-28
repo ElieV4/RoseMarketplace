@@ -1,56 +1,86 @@
 <?php
-include("include/connect.php");
+include("connect.php");
 
-// Récupérer les données de la requête Ajax
-$data = json_decode(file_get_contents("php://input"));
+// Check if the action is set
+if (isset($_POST['action'])) {
+    $action = $_POST['action'];
 
-// Action pour ajouter une adresse
-if (isset($data->action) && $data->action == 'ajouterAdresse') {
-    ajouterAdresse($data->idClient, $data->nouvelleAdresse);
-}
-
-// Action pour copier l'adresse de facturation comme adresse de livraison
-if (isset($data->action) && $data->action == 'copierLivraison') {
-    copierLivraison($data->idClient);
-}
-
-// Fonction pour ajouter une adresse
-function ajouterAdresse($idClient, $nouvelleAdresse) {
-    global $con;
-
-    // Insérer la nouvelle adresse dans la base de données (à adapter selon votre structure)
-    $insert_query = "INSERT INTO adresse (id_client, type_adresse, numetrue_adresse, codepostal_adresse, villeadresse_adresse) 
-                     VALUES ('$idClient', '$nouvelleAdresse->type', '$nouvelleAdresse->numetrue', '$nouvelleAdresse->codepostal', '$nouvelleAdresse->ville')";
-
-    $result = mysqli_query($con, $insert_query);
-
-    if ($result) {
-        echo "Adresse ajoutée avec succès";
-    } else {
-        echo "Erreur lors de l'ajout de l'adresse : " . mysqli_error($con);
+    // Check the specific action
+    switch ($action) {
+        case 'updateAdresse':
+            updateQuantite();
+            break;
+        case 'supprimerAdresse':
+            supprimerAdresse();
+            break;
+        case 'supprimerPaiement':
+            supprimerPaiement();
+            break;
+        default:
+            // Handle unknown action
+            echo "Unknown action";
+            break;
     }
-
-    mysqli_close($con);
+} else {
+    // Handle action not set
+    echo "Action not set";
 }
 
-// Fonction pour copier l'adresse de facturation comme adresse de livraison
-function copierLivraison($idClient) {
-    global $con;
+// Function to update the quantity of the product
+function updateQuantite() {
+    global $con; // Make sure $con is accessible inside the function
 
-    // Copier l'adresse de facturation comme adresse de livraison
-    $copy_query = "INSERT INTO adresse (id_client, type_adresse, numetrue_adresse, codepostal_adresse, villeadresse_adresse) 
-                   SELECT id_client, 'livraison', numetrue_adresse, codepostal_adresse, villeadresse_adresse
-                   FROM adresse 
-                   WHERE id_client = '$idClient' AND type_adresse = 'facturation'";
+    if (isset($_POST['id_produit']) && isset($_POST['nouvelleQuantite'])) {
+        $id_produit = mysqli_real_escape_string($con, $_POST['id_produit']);
+        $nouvelleQuantite = mysqli_real_escape_string($con, $_POST['nouvelleQuantite']);
 
-    $result = mysqli_query($con, $copy_query);
+        // Perform the update in the database without prepared statements
+        $update_query = "UPDATE panier SET quantité_produit = $nouvelleQuantite WHERE id_produit = $id_produit";
+        $result = mysqli_query($con, $update_query);
 
-    if ($result) {
-        echo "Adresse de livraison copiée avec succès";
+        if ($result) {
+            echo "Quantity updated successfully";
+        } else {
+            echo "Error updating quantity: " . mysqli_error($con);
+        }
     } else {
-        echo "Erreur lors de la copie de l'adresse de livraison : " . mysqli_error($con);
+        echo "Invalid parameters for updating quantity";
     }
+}
 
-    mysqli_close($con);
+// Function to delete the product from the cart
+function supprimerAdresse() {
+    if (isset($_POST['id_adresse'])) {
+        $id_adresse = $_POST['id_adresse'];
+        include("connect.php");
+
+        $delete_query = "DELETE FROM adresse WHERE id_adresse = $id_adresse";
+        $result = mysqli_query($con, $delete_query);
+        if ($result) {
+            echo "Adresse deleted successfully";
+        } else {
+            echo "Error deleting product: " . mysqli_error($con);
+        }
+    } else {
+        echo "Invalid parameters for deleting product";
+    }
+}
+
+// Function to delete the product from the cart
+function supprimerPaiement() {
+    if (isset($_POST['id_paiement'])) {
+        $id_paiement = $_POST['id_paiement'];
+        include("connect.php");
+
+        $delete_query = "DELETE FROM paiement WHERE id_paiement = $id_paiement";
+        $result = mysqli_query($con, $delete_query);
+        if ($result) {
+            echo "Paiement deleted successfully";
+        } else {
+            echo "Error deleting product: " . mysqli_error($con);
+        }
+    } else {
+        echo "Invalid parameters for deleting product";
+    }
 }
 ?>

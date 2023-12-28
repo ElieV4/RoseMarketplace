@@ -132,8 +132,7 @@
                         LEFT JOIN produit USING (id_produit) 
                         LEFT JOIN photo USING (id_produit) 
                         LEFT JOIN client ON produit.id_fournisseur = client.id_client 
-                        GROUP BY id_produit
-                        ORDER BY date_ajout_produit DESC";
+                        GROUP BY id_produit";
                         $result = mysqli_query($con, $select_query);
                         $numrows = mysqli_num_rows($result);
                         if($numrows==0){
@@ -155,7 +154,6 @@
                                     $marque = $rowdata['marque_produit'];
                                     $vendeur = $rowdata['raisonsociale_client'];
                                     $prixTTC = $rowdata['prixht_produit'] * 1.2;
-                                    $date_ajout = $rowdata['date_ajout_produit'];
                                     $quantitepanier = $rowdata['quantité_produit'];
                                     $montant_produit = $quantitepanier * $prixTTC ;
                                     $montant_commande = $montant_commande + $montant_produit;

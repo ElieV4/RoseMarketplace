@@ -78,11 +78,8 @@
                 die(mysqli_error($con));
             }
 
-            $id_adresse = mysqli_insert_id($con);
-            echo "voici". $id_adresse; // Récupère l'ID de la dernière insertion
-
-            $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, fournisseur, date_creation, id_gestionnaire, id_adresse)
-                                   VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', NULL, CURRENT_TIMESTAMP, NULL, '$id_adresse')";
+            $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, fournisseur, date_creation, id_gestionnaire)
+                                   VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', NULL, CURRENT_TIMESTAMP, NULL)";
             $sql_execute_client = mysqli_query($con, $insert_query_client);
 
             if ($sql_execute_client) {

@@ -98,7 +98,7 @@
             
             if ($sql_execute2) {
                 echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>"; 
-                //echo "<script>window.open('../espace_client_entreprise.php','_self')</script>";
+                echo "<script>window.open('../espace_client_entreprise.php','_self')</script>";
             } else {
                 echo "Erreur SQLquery_insimg2 : ";
                 die(mysqli_error($con));
