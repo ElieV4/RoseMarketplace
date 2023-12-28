@@ -35,13 +35,11 @@ CREATE TABLE adresse (
 	type_adresse ENUM('facturation','livraison'),
     	PRIMARY KEY (id_adresse));
 
-CREATE TABLE moyen_de_paiement (
+CREATE TABLE paiement (
 	id_paiement INT(11) AUTO_INCREMENT, 
-	id_possesseurpaiement INT(11), 
 	iban varchar(34), bic varchar(11), 
-	numcb numeric(16), datedexpcb date, 
-	cryptogrammecb numeric(3), 
-	typepaiement binary(2), 
+	numcb numeric(16), datedexpcb date, cryptogrammecb numeric(3), banquecb varchar(50),
+	typepaiement ENUM('iban','cb'), 
 	nomcb varchar(150), 
 	id_client INT(11), 
 		PRIMARY KEY (id_paiement),

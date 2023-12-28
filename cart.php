@@ -59,6 +59,9 @@
             flex-direction: column;
             align-items: center;
         }
+        .emptycart {
+            align-items = center;
+        }
     </style>
 </head>
 <body>
@@ -124,79 +127,80 @@
             <div class="two-columns">
                 <div class="col1">
                     <?php
-                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                         FROM panier 
                         LEFT JOIN produit USING (id_produit) 
                         LEFT JOIN photo USING (id_produit) 
                         LEFT JOIN client ON produit.id_fournisseur = client.id_client 
-                        GROUP BY id_produit";
+                        GROUP BY id_produit
+                        ORDER BY date_ajout_produit DESC";
                         $result = mysqli_query($con, $select_query);
                         $numrows = mysqli_num_rows($result);
-                        
-                        if ($result) {
-                            
-                            $montant_commande = 0;
-                            echo "<table border='0,5'>
-                                    ";
-                            // Parcourir les résultats et afficher chaque ligne dans le tableau
-                            while ($rowdata = mysqli_fetch_assoc($result)) {
-
-                                $id_produit = $rowdata['id_produit'];
-                                $filepath = $rowdata['image'];
-                                $image_type = $rowdata['image_type'];
-                                $produit = $rowdata['nom_produit'];
-                                $marque = $rowdata['marque_produit'];
-                                $vendeur = $rowdata['raisonsociale_client'];
-                                $categorie = $rowdata['categorie_produit'];
-                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
-                                $stock = $rowdata['quantitestock_produit'];
-                                $date_ajout = $rowdata['date_ajout_produit'];
-                                $quantitepanier = $rowdata['quantité_produit'];
-                                $quantitestock = $rowdata['quantitestock_produit'];
-                                $montant_produit = $quantitepanier * $prixTTC ;
-                                $montant_commande = $montant_commande + $montant_produit;
-
-                            
-                                echo '<tr>
-                                        <td><a href="page_produit.php?id='.$id_produit.'"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a></td>
-                                        <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i></td>
-                                        <td>     </td>
-                                        <td>
-                                            <div class="quantity-container">
-                                                <input class="inputquantite" type="number" min="1" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
-                                                <button onclick="updateQuantite('.$id_produit.')">OK</button>
-                                            </div>
-                                        </td>
-                                        <td>'.$montant_produit.'€</td>
-                                        <td><button onclick="supprimerProduit(' . $id_produit . ', function() { location.reload(); })">X</button></td>
-                                    </tr>';
-                            }
-                        
-                            echo '</table><br>';
+                        if($numrows==0){
+                            echo "<div class=emptycart>
+                                <p>Vous n'avez pas de produits dans votre panier.<p><br>
+                                <a href='produits.php'><button>Continuer vos achats</button></a>
+                            </div>";
                         } else {
-                            // En cas d'erreur lors de l'exécution de la requête
-                            echo 'Erreur dans la requête : ' . mysqli_error($con);
+                            if ($result) {
+                                $montant_commande = 0;
+                                echo "<table border='0,5'>";
+                                // Parcourir les résultats et afficher chaque ligne dans le tableau
+                                while ($rowdata = mysqli_fetch_assoc($result)) {
+
+                                    $id_produit = $rowdata['id_produit'];
+                                    $filepath = $rowdata['image'];
+                                    $image_type = $rowdata['image_type'];
+                                    $produit = $rowdata['nom_produit'];
+                                    $marque = $rowdata['marque_produit'];
+                                    $vendeur = $rowdata['raisonsociale_client'];
+                                    $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                    $date_ajout = $rowdata['date_ajout_produit'];
+                                    $quantitepanier = $rowdata['quantité_produit'];
+                                    $montant_produit = $quantitepanier * $prixTTC ;
+                                    $montant_commande = $montant_commande + $montant_produit;
+
+                                    echo '<tr>
+                                            <td><a href="page_produit.php?id='.$id_produit.'"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a></td>
+                                            <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i></td>
+                                            <td>     </td>
+                                            <td>
+                                                <div class="quantity-container">
+                                                    <input class="inputquantite" type="number" min="1" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
+                                                    <button onclick="updateQuantite('.$id_produit.')">OK</button>
+                                                </div>
+                                            </td>
+                                            <td>'.$montant_produit.'€</td>
+                                            <td><button onclick="supprimerProduit(' . $id_produit . ', function() { location.reload(); })">X</button></td>
+                                        </tr>';
+                                    
+                                }
+                                echo '</table><br>';
+                            } else {
+                                // En cas d'erreur lors de l'exécution de la requête
+                                echo 'Erreur dans la requête : ' . mysqli_error($con);
+                            }
                         }
                     ?>    
                 </div>
                 <div class="col2">
                     <?php
-                        echo '<br><h3>Panier(' .$numrows.')</h3>
-                        <p>Retrait en magasin : Gratuit</p>
-                        <p>Frais de livraison estimés : Gratuit</p><br>
-                        <p>Total (TVA incluse) : '.$montant_commande. '€</p><br><br>';
+                        if($numrows>0){
+                            echo '<br><h3>Panier(' .$numrows.')</h3>
+                            <p>Frais de livraison estimés : Gratuit</p><br>
+                            <p>Total (TVA incluse) : '.$montant_commande. '€</p><br><br>';
 
-                        if(!isset($_SESSION['user_id'])){
-                            echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
-                        } else {
-                            echo '<a href="commande.php"><button>Valider votre panier</button></a>';
+                            if(!isset($_SESSION['user_id'])){
+                                echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
+                            } else {
+                                echo '<a href="commande.php"><button>Valider votre panier</button></a>';
+                            }
+                            echo '<br><br><a href="produits.php"><button>Continuer vos achats</button></a>';
                         }
                     ?>
-                    <br><br>
-                    <a href="produits.php"><button>Continuer vos achats</button></a>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
 

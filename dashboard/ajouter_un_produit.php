@@ -179,10 +179,10 @@
                 <input type="text" id="marque" name="marque" value="<?php echo htmlspecialchars($marque); ?>" required><br><br>
 
                 <label for="prixht" class="form-label">Prix HT (en €) :</label><br>
-                <input type="number" id="prixht" name="prixht" step="0.01" value="<?php echo htmlspecialchars($prixht); ?>" required><br><br>
+                <input type="number" id="prixht" name="prixht" min=0.01 step="0.01" value="<?php echo htmlspecialchars($prixht); ?>" required><br><br>
 
                 <label for="quantite_stock" class="form-label">Quantité initiale en stock :</label><br>
-                <input type="number" id="quantite_stock" name="quantite_stock" value="<?php echo htmlspecialchars($quantite_stock); ?>" required><br>
+                <input type="number" id="quantite_stock" min=1 name="quantite_stock" value="<?php echo htmlspecialchars($quantite_stock); ?>" required><br>
                 <span style="color: red;" class="error" id="error-message1">*<?php echo $Err2;?></span><br>
 
                 <label for="description" class="form-label">Description du produit (max 400 caractères) :</label><br>

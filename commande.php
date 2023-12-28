@@ -10,6 +10,7 @@
     } else {
         //echo "déconnecté";
     }
+    $user = $_SESSION['user_id_id'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,6 +52,7 @@
             margin-left : 100px;
             text-align: left;
             min-width : 300px;
+            border : solid grey 1px;
         }
     </style>
 </head>
@@ -113,76 +115,159 @@
    
     <div class="outer-container">
         <div class="content">
-            <h1>Votre panier</h1><br>
+            <h1>Votre commande</h1><br>
             <div class="two-columns">
                 <div class="col1">
                     <?php
-                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
-                        FROM panier 
-                        LEFT JOIN produit USING (id_produit) 
-                        LEFT JOIN photo USING (id_produit) 
-                        LEFT JOIN client ON produit.id_fournisseur = client.id_client 
-                        GROUP BY id_produit";
-                        $result = mysqli_query($con, $select_query);
-                        $numrows = mysqli_num_rows($result);
+                        //adresse de facturation
+                        $facturation_query = "SELECT *, count(DISTINCT id_adresse) AS nbadresses
+                         FROM client c 
+                         LEFT JOIN adresse a USING (id_adresse) 
+                         WHERE c.id_client ='$user' AND type_adresse='facturation'";
+                        $facturation_result = mysqli_query($con, $facturation_query);
                         
-                        if ($result) {
-                            
-                            $montant_commande = 0;
-                            echo "<table border='0,5'>
-                                    ";
-                            // Parcourir les résultats et afficher chaque ligne dans le tableau
-                            while ($rowdata = mysqli_fetch_assoc($result)) {
+                        echo "<table border='0,5'>";
+                        if ($facturation_result) {
+                            while ($rowdata1 = mysqli_fetch_assoc($facturation_result)) {
 
-                                $id_produit = $rowdata['id_produit'];
-                                $filepath = $rowdata['image'];
-                                $image_type = $rowdata['image_type'];
-                                $produit = $rowdata['nom_produit'];
-                                $marque = $rowdata['marque_produit'];
-                                $vendeur = $rowdata['raisonsociale_client'];
-                                $categorie = $rowdata['categorie_produit'];
-                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
-                                $stock = $rowdata['quantitestock_produit'];
-                                $date_ajout = $rowdata['date_ajout_produit'];
-                                $quantitepanier = $rowdata['quantité_produit'];
-                                $quantitestock = $rowdata['quantitestock_produit'];
-                                $montant_produit = $quantitepanier * $prixTTC ;
-                                $montant_commande = $montant_commande + $montant_produit;
+                                $id_client = $user;
+                                $typeclient = $rowdata1['type_client'];                               
+                                if($typeclient ==1){
+                                    $client = $rowdata1['raisonsociale_client'];
+                                } else {
+                                    $client = $rowdata1['prenom_client']. ' ' .$rowdata1['nom_client'];
+                                }
 
+                                $id_adresse = $rowdata1['id_adresse'];
+                                $rue = $rowdata1['numetrue_adresse'];
+                                $codepostal = $rowdata1['codepostal_adresse'];
+                                $ville = $rowdata1['villeadresse_adresse'];
+                                $typeadresse = $rowdata1['type_adresse'];
                             
                                 echo '<tr>
-                                        <td><a href="page_produit.php?id='.$id_produit.'"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a></td>
-                                        <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i></td>
+                                        <td>Adresse de '.$typeadresse.'</td>
+                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
                                         <td>     </td>
-                                        <td>
-                                            <div class="quantity-container">
-                                                <input class="inputquantite" type="number" min="1" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
-                                                <button onclick="updateQuantite('.$id_produit.')">OK</button>
-                                            </div>
-                                        </td>
-                                        <td>'.$montant_produit.'€</td>
-                                        <td><button onclick="supprimerProduit(' . $id_produit . ', function() { location.reload(); })">X</button></td>
+                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
+                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
                                     </tr>';
                             }
                         
                             echo '</table><br>';
                         } else {
-                            // En cas d'erreur lors de l'exécution de la requête
+                            echo 'Erreur dans la requête : ' . mysqli_error($con);
+                        }
+
+                        //adresses de livraison 
+                        $livraison_query = "SELECT *, count(DISTINCT id_adresse) AS nbadresses
+                         FROM client c 
+                         LEFT JOIN adresse a USING (id_adresse) 
+                         WHERE c.id_client ='$user' AND type_adresse='livraison'";
+                        $livraison_result = mysqli_query($con, $livraison_query);
+                        $rowdata2 = mysqli_fetch_assoc($livraison_result);
+                        $nbadresses = $rowdata2['nbadresses'];
+                        echo "<table border='0,5'>";
+                        if ($livraison_result) {
+                            if($nbadresses==0){
+                                echo '<button onclick="ajouterAdresse(' . $id_adresse . ', function() { location.reload(); })">Ajouter une adresse de livraison</button><br>';
+                                echo '<button onclick="copierFacturation(' . $id_adresse . ', function() { location.reload(); })">Utiliser votre adresse de facturation comme adresse de livraison</button><br>';
+                            } else {
+                            while ($rowdata2) {
+
+                                $id_client = $user;
+                                $typeclient = $rowdata2['type_client'];                               
+                                if($typeclient ==1){
+                                    $client = $rowdata2['raisonsociale_client'];
+                                } else {
+                                    $client = $rowdata2['prenom_client']. ' ' .$rowdata2['nom_client'];
+                                }
+
+                                $id_adresse = $rowdata2['id_adresse'];
+                                $rue = $rowdata2['numetrue_adresse'];
+                                $codepostal = $rowdata2['codepostal_adresse'];
+                                $ville = $rowdata2['villeadresse_adresse'];
+                                $typeadresse = $rowdata2['type_adresse'];
+                            
+                                echo '<tr>
+                                        <td>Adresse de '.$typeadresse.'</td>
+                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
+                                        <td>     </td>
+                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
+                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
+                                    </tr>';
+                            }
+                            }
+                            echo '</table><br>';
+                        } else {
+                            echo 'Erreur dans la requête : ' . mysqli_error($con);
+                        }
+
+                        //moyens de paiements
+                        $paiement_query = "SELECT *, count( DISTINCT id_paiement) AS nbpaiements
+                         FROM client c 
+                         LEFT JOIN paiement p USING (id_client)
+                         WHERE c.id_client ='$user'";
+                        $paiement_result = mysqli_query($con, $paiement_query);
+                        $numrows3 = mysqli_num_rows($paiement_result);
+                        
+                        echo "<table border='0,5'>";
+                        if ($paiement_result) {
+                            while ($rowdata3 = mysqli_fetch_assoc($paiement_result)) {
+
+                                $id_client = $user;
+                                $typeclient = $rowdata3['type_client'];                               
+                                if($typeclient ==1){
+                                    $client = $rowdata3['raisonsociale_client'];
+                                } else {
+                                    $client = $rowdata3['prenom_client']. ' ' .$rowdata3['nom_client'];
+                                }
+
+                                $id_paiement = $rowdata3['id_paiement'];
+                                $type_paiement = $rowdata3['type_paiement'];
+                                $titulaire = $rowdata3['nomcb'];
+                                $iban = $rowdata3['iban'];
+                                $bic = $rowdata3['bic'];
+                                $banque = $rowdata3['banquecb'];
+                                $expiration = $rowdata3['expirationcb'];
+                                $cryptocb = $rowdata3['cryptogrammecb'];
+                            
+                                echo '<tr>
+                                        <td>Moyen de paiement</td>
+                                        <td>'.$client.'<br>'.$rue.'<br>'.$ville.', '.$codepostal.'</td>
+                                        <td>     </td>
+                                        <td><button onclick="modifierAdresse(' . $id_adresse . ', function() { location.reload(); })">Modifier</button></td>
+                                        <td><button onclick="supprimerAdresse(' . $id_adresse . ', function() { location.reload(); })">Supprimer</button></td>
+                                    </tr>';
+                            }
+                        
+                            echo '</table><br>';
+                        } else {
                             echo 'Erreur dans la requête : ' . mysqli_error($con);
                         }
                     ?>    
                 </div>
                 <div class="col2">
                     <?php
-                        echo '<br><h3>Panier(' .$numrows.')</h3>
-                        <p>Retrait en magasin : Gratuit</p>
-                        <p>Frais de livraison estimés : Gratuit</p><br>
-                        <p>Total (TVA incluse) : '.$montant_commande. '€</p><br><br>';
-
-                        if(!isset($_SESSION['user_id'])){
-                            echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
-                        } else {
-                            echo '<a href="commande.php"><button>Valider votre panier</button></a>';
+                        $select_query = "SELECT SUM(quantité_produit * prixht_produit * 1.2) OVER() AS montant, 
+                            id_produit,quantité_produit,quantitestock_produit, prixht_produit, date_ajout_produit, MIN(id_photo_produit) AS min_photo_id, image_type, image 
+                        FROM panier 
+                        LEFT JOIN produit USING (id_produit) 
+                        LEFT JOIN photo USING (id_produit) 
+                        GROUP BY id_produit";
+                        $result = mysqli_query($con, $select_query);
+                        if ($result) {
+                            // Parcourir les résultats et afficher chaque ligne dans le tableau
+                            while ($rowdata = mysqli_fetch_assoc($result)) {
+                                $id_produit = $rowdata['id_produit'];
+                                $filepath = $rowdata['image'];
+                                $image_type = $rowdata['image_type'];
+                                $montant = $rowdata['montant'];
+                            }
+                            echo '<br><h3>Récapitulatif de la commande</h3><br>
+                            <p>Total (TVA incluse) : '.$montant. '€</p>
+                            <p>Frais de livraison estimés : Gratuit</p><br>
+                            <p>Montant total : '.$montant. '€</p><br><br>
+                            <a href="commande.php"><button>Passer commande</button></a>';
                         }
                     ?>
                     <br><br>
@@ -222,5 +307,6 @@
     <script src="javascript/chatbox.js"></script>
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
+    <script src="javascript/adresse.js"></script>
 </body>
 </html>
