@@ -168,7 +168,7 @@
                          WHERE c.id_client ='$user' AND type_adresse='livraison'";
                         $livraison_result = mysqli_query($con, $livraison_query);
 
-                        echo "<h3>Votre adresse de livraison</h3>";
+                        echo "<h3>Sélectionner votre adresse de livraison</h3>";
                         echo "<table border='0,5'>";
                         //contenu livraison (formulaire ou info)
                         if ($livraison_result) {
@@ -190,8 +190,9 @@
                                     $ville = $rowdata2['villeadresse_adresse'];
                                     $typeadresse = $rowdata2['type_adresse'];
                                 
-                                    echo '<tr>
-                                            <td class="info">';
+                                    echo '<tr>                                        
+                                        <td><input type="radio" name="livraison_radio" value="' . $id_adresse . '"></td> 
+                                        <td class="info">';
                                     if(isset($_GET['modifadresse'])&& $_GET['id']==$id_adresse){
                                         include('include/modifier_une_adresse.php');
                                     } else {
@@ -236,6 +237,7 @@
                                         $bic = $rowdata3['bic'];
 
                                         echo '<tr>
+                                            <td><input type="radio" name="paiement_radio" value="' . $id_paiement . '"></td> 
                                             <td class="info">Compte bancaire '.$titulaire.'<br>'.$iban.'</td>';
                                         echo '<td><button onclick="supprimerPaiement(' . $id_paiement . ', function() { location.reload(); })">Supprimer</button></td>
                                         </tr>';
@@ -248,8 +250,8 @@
                                         $cryptogrammecb = $rowdata3['cryptogrammecb'];
 
                                         echo '<tr>
-                                            <td>Carte bancaire</td>
-                                            <td>'.$banquecb.'<br>'.$titulaire.' '.$expirationcb.'</td>';                                        
+                                            <td><input type="radio" name="paiement_radio" value="' . $id_paiement . '"></td> 
+                                            <td class="info">Carte bancaire '.$banquecb.'<br>'.$titulaire.' '.$expirationcb.'</td>';                                        
                                         echo '<td><button onclick="supprimerPaiement(' . $id_paiement . ', function() { location.reload(); })">Supprimer</button></td>
                                         </tr>';
                                     }
@@ -283,17 +285,22 @@
                         $result = mysqli_query($con, $select_query);
                         if ($result) {
                             // Parcourir les résultats et afficher chaque ligne dans le tableau
+
                             while ($rowdata = mysqli_fetch_assoc($result)) {
                                 $id_produit = $rowdata['id_produit'];
                                 $filepath = $rowdata['image'];
                                 $image_type = $rowdata['image_type'];
                                 $montant = $rowdata['montant'];
                             }
+                            if(isset($montant)){
                             echo '<br><h3>Récapitulatif de la commande</h3><br>
                             <p>Total (TVA incluse) : '.$montant. '€</p>
                             <p>Frais de livraison estimés : Gratuit</p><br>
                             <p>Montant total : '.$montant. '€</p><br><br>
-                            <a href="commande.php"><button>Passer commande</button></a>';
+                            <button id="executer_commande" onclick="executerCommande()" disabled>Passer commande</button>';
+                            } else {
+                                echo "Aucun achat en cours";
+                            }
                         }
                     ?>
                     <br><br><br><br><br>
@@ -332,7 +339,7 @@
         <br><br>
     </footer>
 
-    <script src="javascript/chatbox.js"></script>
+    <!-- <script src="javascript/chatbox.js"></script>-->
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
     <script src="javascript/commande.js"></script>

@@ -66,15 +66,26 @@ CREATE TABLE facture (
 		PRIMARY KEY (id_facture));
 
 CREATE TABLE commande (
-	id_commande INT(11) AUTO_INCREMENT, 
-	date_commande date,
-	idclient_commande INT(11),
-	etat_commande varchar(20),
-	id_client INT(11),
-	id_facture INT(11) 
-		PRIMARY KEY (id_commande),
-		FOREIGN KEY (id_client) REFERENCES client (id_client),
- 		FOREIGN KEY (id_facture) REFERENCES facture (id_facture));
+    id_commande INT(11),
+    date_commande TIMESTAMP,
+    idclient_commande INT(11),
+    etat_commande VARCHAR(20),
+    id_produit INT(11),
+    quantité_produit INT(11),
+    montant_total DECIMAL(9),
+    id_fournisseur INT(11),
+    id_facture INT(11),
+    id_commande_produit VARCHAR(50),
+	id_adresse INT(11),
+	id_paiement INT(11),
+    PRIMARY KEY (id_commande_produit),
+    CONSTRAINT uc_id_commande_produit UNIQUE (id_commande, id_produit),
+    FOREIGN KEY (id_client) REFERENCES client (id_client),
+    FOREIGN KEY (id_produit) REFERENCES produit (id_produit),
+    FOREIGN KEY (id_facture) REFERENCES facture (id_facture)
+);
+
+UPDATE commande SET id_commande_produit = CONCAT(id_commande, '-', id_produit);
 
 CREATE TABLE message (
 	id_message INT(11) AUTO_INCREMENT,

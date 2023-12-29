@@ -16,6 +16,9 @@ if (isset($_POST['action'])) {
         case 'supprimerPaiement':
             supprimerPaiement();
             break;
+        case 'executerCommande':
+            executerCommande();
+            break;
         default:
             // Handle unknown action
             echo "Unknown action";
@@ -83,4 +86,58 @@ function supprimerPaiement() {
         echo "Invalid parameters for deleting product";
     }
 }
+
+// executer la commande 
+function executerCommande() {
+
+    include("connect.php");
+
+// Vérifie si l'utilisateur est déjà connecté
+session_start();
+if (isset($_SESSION['user_id'])) {
+    //echo $_SESSION['user_id']." est connecté";
+} else {
+    echo "déconnecté";
+}
+$user = $_SESSION['user_id_id'];
+
+// Récupérer les valeurs des radios sélectionnés pour livraison et paiement
+$idLivraison = mysqli_real_escape_string($con, $_POST['idLivraison']);
+$idPaiement = mysqli_real_escape_string($con, $_POST['idPaiement']);
+$id_commande = rand();
+// Insérer une ligne dans la table commande pour chaque produit du panier
+$insert_commande_query = "INSERT INTO commande (id_commande, id_commande_produit, date_commande, idclient_commande, etat_commande, id_produit, quantité_produit, montant_total, id_fournisseur, id_adresse, id_paiement)
+    SELECT '$id_commande', CONCAT('$id_commande', '-',p.id_produit), NOW(), '$user', 'à valider', p.id_produit, p.quantité_produit, p.quantité_produit * prixht_produit * 1.2, pr.id_fournisseur, '$idLivraison', '$idPaiement'
+    FROM panier p
+    INNER JOIN produit pr ON p.id_produit = pr.id_produit";
+
+$result = $con->query($insert_commande_query);
+
+if ($result) {
+    $id_commande = $con->insert_id;
+
+    // Mettre à jour le stock dans la table produit
+    $update_produit_query = "UPDATE produit pr
+        INNER JOIN panier p ON pr.id_produit = p.id_produit
+        SET pr.quantitestock_produit = pr.quantitestock_produit - p.quantité_produit";
+
+    if ($con->query($update_produit_query) !== TRUE) {
+        echo "Erreur lors de la mise à jour du stock dans la table produit : " . $con->error;
+        return;
+    } else {
+        // Supprimer le contenu du panier
+        $delete_panier_query = "DELETE FROM panier";
+        if ($con->query($delete_panier_query) !== TRUE) {
+            echo "Erreur lors de la suppression du panier : " . $con->error;
+            return;
+        } else {
+            echo '<script>alert("Commande prise en compte, merci pour votre achat !");</script>';
+        }
+    }
+} else {
+    echo "Erreur lors de l'insertion dans la table commande : " . $con->error;
+    return;
+}
+}
+
 ?>

@@ -255,7 +255,7 @@
                             echo '<div class="product">';
                             echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                             echo '' . $produit . " " . $marque . '<br>';
-                            echo '' . $vendeur . " " . $prixTTC . '€<br><br>';
+                            echo '' . $vendeur . " " . $prixTTC . '€ TTC<br><br>';
                             echo '</div>';
                         }
                     }
