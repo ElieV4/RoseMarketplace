@@ -28,40 +28,37 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <style>
-        .outer-container{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:5px;
-            margin-bottom:10px;
-            background-color: white;
-            align-items: center;
-            text-align: left;
-            padding:20px;
+        body {
+            margin: 0;
+            padding: 0;
         }
-        .img-toolbox {
-            width : 300px;
-        }
-        .two-columns {
-        display: flex;
-        justify-content: space-between;
-        }
-        .col1 {
+
+        .leftbar {
             width: 20%;
+            background-color: #f8f9fa; /* Change the background color as needed */
+            padding: 20px;
+            box-sizing: border-box;
         }
-        .col2 {
-            width: 60%;
-            margin-left : 50px;
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dashboard {
+            width: 80%;
             text-align: left;
         }
+
         .dash-button {
-            width : 500px;
+            width: 200px;
         }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar">
+    <nav class="navbar">
         <div class="navdiv"> 
             <div class="search">
                     <form action="produits.php" method="GET">
@@ -116,39 +113,37 @@
         }
         ?>        
     </nav>
-   
-    <div class="outer-container">
-        <h1>Espace Entreprise</h1><br>
-        <div class="two-columns">
-            <div class="col1">
-                <a href=""><img class="img-toolbox" src="images/product1.png" alt="images/product1.png"></a>
-            </div>
-            <div class="col2">
-                    <?php echo "{$_SESSION['user_id']}"; ?><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?">Profil</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
-                    <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
-            </div>
+
+    <div class="two-columns">
+        <div class="leftbar">
+            <h1>Espace Entreprise</h1><br>
+                <div class="col2">
+                        <?php echo "{$_SESSION['user_id']}"; ?><br><br>
+                        <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
+                        <button class="dash-button"><a href="espace_client_entreprise.php?profil">Profil</a></button><br><br>
+                        <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
+                        <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
+                        <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
+                        <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
+                        <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
+                </div>
         </div>
-    </div>
-    <div class="dashboard">
-        <?php
-            if(isset($_GET['ajouter_un_produit'])){
-                include('dashboard/ajouter_un_produit.php');
-            }
-            if(isset($_GET['produits_stocks'])){
-                include('dashboard/produits_stocks.php');
-            }
-            if(isset($_GET['commandes'])){
-                include('dashboard/commandes.php');
-            }
-            if(isset($_GET['paiements'])){
-                include('dashboard/paiements.php');
-            }
-        ?>
+        <div class="dashboard">
+            <?php
+                if(isset($_GET['ajouter_un_produit'])){
+                    include('dashboard/ajouter_un_produit.php');
+                }
+                if(isset($_GET['produits_stocks'])){
+                    include('dashboard/produits_stocks.php');
+                }
+                if(isset($_GET['commandes'])){
+                    include('dashboard/commandes.php');
+                }
+                if(isset($_GET['paiements'])){
+                    include('dashboard/paiements.php');
+                }
+            ?>
+        </div>
     </div>
 
 

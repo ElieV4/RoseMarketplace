@@ -6,12 +6,6 @@
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id'];
         //echo $_SESSION['user_type'];
-        // Si l'utilisateur est connecté et type 1, redirige vers espace_client_entreprise.php
-        if($_SESSION['user_type']==1){
-            //echo "header vers entreprise";
-            header("Location: espace_client_entreprise.php");
-            exit();
-        }
     } else {
         //echo "header vers reconnexion";
         header("Location: user_connexion.php");
@@ -26,27 +20,31 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <style>
-        .outer-container{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:10px;
-            margin-bottom:10px;
-            background-color: white;
-            align-items: center;
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .leftbar {
+            width: 20%;
+            background-color: #f8f9fa; /* Change the background color as needed */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dashboard {
+            width: 80%;
             text-align: left;
-            padding:20px;
         }
-        .content{
-            text-align: justify;
+
+        .dash-button {
+            width: 200px;
         }
-        .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:30%;
-                height:auto;
-            }
     </style>
 </head>
 <body>
@@ -105,34 +103,32 @@
         }
         ?>        
     </nav>
-   
-    <div class="outer-container">
-        <div class="content">
-            <br><div>Particulier</div><br>
-            <div class="row">
-                <div>
-                    <a href=""><img src="images/product1.png" alt="images/product1.png"></a>
-                    <p><?php echo "{$_SESSION['user_id']}"; ?></p>
-                </div>
-                <ul>
-                    <li><button><a href="espace_client_particulier.php?">Profil</a></button></li>
-                    <li><button><a href="espace_client_particulier.php?">Votre panier</a></button></li>
-                    <li><button><a href="espace_client_particulier.php?">Historique de commandes</a></button></li>
-                    <li><button><a href="espace_client_particulier.php?">Suivre votre commande</a></button></li>
-                    <li><button><a href="espace_client_particulier.php?">Vos moyens de paiements</a></button></li>
-                    <li><button><a href="include/logout.php">Déconnexion</a></button></li>
-                </ul>
-            </div>
-        </div> 
+
+    <div class="two-columns">
+        <div class="col2">
+            <h1>Espace Client</h1><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?">Profil</a></button><br><br>
+            <?php
+                if($_SESSION['user_type']==1){
+                    echo '<button class="dash-button"><a href="espace_client_entreprise.php">Espace entreprise</a></button><br><br>';
+                }
+            ?>
+            <button class="dash-button"><a href="cart.php">Votre panier</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?">Historique de commandes</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?">Suivre votre commande</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?">Vos moyens de paiements</a></button><br><br>
+            <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
+        </div>
+        <div class="dashboard">
+            <?php
+                if(isset($_GET['#'])){
+                    include('#');
+                }
+            ?>
+        </div>
     </div>
     
-    <div class="dashboard">
-        <?php
-            if(isset($_GET['#'])){
-                include('#');
-            }
-        ?>
-    </div>
+
 
     <div class="chatbox">
         <div class="chat-header">

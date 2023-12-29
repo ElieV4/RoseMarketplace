@@ -21,7 +21,6 @@
         .outer-container{
             margin-left:20%;
             margin-right:20%;
-            margin-top:10%;
             margin-bottom:10%;
             background-color: white;
             align-items: center;
@@ -37,14 +36,13 @@
                 align-items: center;
                 margin:5%;
                 padding:10px;
-                width:30%;
+                width:20%;
                 height:auto;
         }
         <style>
         .main {
             background-color: white;
         }
-    </style>
     </style>
 </head>
 <body>  

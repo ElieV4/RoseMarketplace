@@ -115,100 +115,84 @@
     <link rel="stylesheet" type="text/css" href="../css/main_style.css">
     <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
     <style>
-        .outer-container{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:5px;
-            margin-bottom:10px;
+       .outer-container{
+            margin-left:20%;
+            margin-right:20%;
+            margin-bottom:10%;
             background-color: white;
             align-items: center;
-            text-align: left;
-            padding:20px;
+            text-align: center;
+            border: 2px solid deeppink;
+            background-color : #FFCFDE;
         }
-        .content{
-            text-align: justify;
+        .imgcontainer sideimg {
+                display:flex;
+                align-items: center;
+                margin:5%;
+                padding:10px;
+                width:20%;
+                height:auto;
         }
-        .img-toolbox {
-            width : 300px;
-        }
-        .two-columns {
-        display: flex;
-        justify-content: space-between;
-        }
-        .col1 {
-            width: 20%;
-        }
-        .col2 {
-            width: 60%;
-            margin-left : 50px;
-            text-align: left;
-        }
-        .dash-button {
-            width : 500px;
-        }
-        .dashboard {
-            align-items : center;
-            text-align:center;
+        .main {
+            background-color: white;
         }
     </style>
     </style>
 </head>
 <body>  
     <div class="outer-container">
-        <div class="dashboard">
-            <br><h2>Ajouter un produit</h2><br>   
+        <br><h2>Ajouter un produit</h2><br>   
 
-                <form method="POST" action="" enctype="multipart/form-data">
-                
-                <label for="nom_produit" class="form-label">Nom du produit :</label><br>
-                <input type="nom_produit" id="nom_produit" name="nom_produit" value="<?php echo htmlspecialchars($nom_produit); ?>" required><br>
-                <span style="color: red;" class="error" id="error-message1">*<?php echo $Err1;?></span><br>
-                
-                <label for="categorie" class="form-label">Catégorie:</label>
-                <select id="categorie" name="categorie" value="<?php echo htmlspecialchars($categorie); ?>" required>
-                    <option value="chauffage_plomberie">Chauffage & plomberie</option>
-                    <option value="menuiserie_bois">Menuiserie & bois</option>
-                    <option value="peinture_droguerie">Peinture & droguerie</option>
-                    <option value="outillerie">Outillerie</option>
-                    <option value="quincaillerie">Quincaillerie</option>
-                    <option value="jardin">Jardin</option>
-                    <!-- Ajoutez d'autres catégories au besoin -->
-                </select><br><br>
+            <form method="POST" action="" enctype="multipart/form-data">
+            
+            <label for="nom_produit" class="form-label">Nom du produit :</label><br>
+            <input type="nom_produit" id="nom_produit" name="nom_produit" value="<?php echo htmlspecialchars($nom_produit); ?>" required><br>
+            <span style="color: red;" class="error" id="error-message1">*<?php echo $Err1;?></span><br>
+            
+            <label for="categorie" class="form-label">Catégorie:</label>
+            <select id="categorie" name="categorie" value="<?php echo htmlspecialchars($categorie); ?>" required>
+                <option value="chauffage_plomberie">Chauffage & plomberie</option>
+                <option value="menuiserie_bois">Menuiserie & bois</option>
+                <option value="peinture_droguerie">Peinture & droguerie</option>
+                <option value="outillerie">Outillerie</option>
+                <option value="quincaillerie">Quincaillerie</option>
+                <option value="jardin">Jardin</option>
+                <!-- Ajoutez d'autres catégories au besoin -->
+            </select><br><br>
 
-                <label for="marque" class="form-label">Marque :</label><br>
-                <input type="text" id="marque" name="marque" value="<?php echo htmlspecialchars($marque); ?>" required><br><br>
+            <label for="marque" class="form-label">Marque :</label><br>
+            <input type="text" id="marque" name="marque" value="<?php echo htmlspecialchars($marque); ?>" required><br><br>
 
-                <label for="prixht" class="form-label">Prix HT (en €) :</label><br>
-                <input type="number" id="prixht" name="prixht" min=0.01 step="0.01" value="<?php echo htmlspecialchars($prixht); ?>" required><br><br>
+            <label for="prixht" class="form-label">Prix HT (en €) :</label><br>
+            <input type="number" id="prixht" name="prixht" min=0.01 step="0.01" value="<?php echo htmlspecialchars($prixht); ?>" required><br><br>
 
-                <label for="quantite_stock" class="form-label">Quantité initiale en stock :</label><br>
-                <input type="number" id="quantite_stock" min=1 name="quantite_stock" value="<?php echo htmlspecialchars($quantite_stock); ?>" required><br>
-                <span style="color: red;" class="error" id="error-message1">*<?php echo $Err2;?></span><br>
+            <label for="quantite_stock" class="form-label">Quantité initiale en stock :</label><br>
+            <input type="number" id="quantite_stock" min=1 name="quantite_stock" value="<?php echo htmlspecialchars($quantite_stock); ?>" required><br>
+            <span style="color: red;" class="error" id="error-message1">*<?php echo $Err2;?></span><br>
 
-                <label for="description" class="form-label">Description du produit (max 400 caractères) :</label><br>
-                <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
+            <label for="description" class="form-label">Description du produit (max 400 caractères) :</label><br>
+            <textarea id="description" name="description" maxlength="400" rows="4" value="<?php echo htmlspecialchars($description); ?>"></textarea><br><br>
 
-                <label for="images_produit_i">Image(s) du produit :</label><br>
-                <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple required><br><br>
+            <label for="images_produit_i">Image(s) du produit :</label><br>
+            <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple required><br><br>
 
-                <?php
-                    if (isset($id_produit)) {
-                        $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
-                        $result3 = mysqli_query($con, $select_query3);
-                
-                        while ($rowdata3 = mysqli_fetch_assoc($result3)) {
-                            $filepath = $rowdata3['image'];
-                            $image_type = $rowdata3['image_type'];
-                            echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;">';
-                        }
+            <?php
+                if (isset($id_produit)) {
+                    $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
+                    $result3 = mysqli_query($con, $select_query3);
+            
+                    while ($rowdata3 = mysqli_fetch_assoc($result3)) {
+                        $filepath = $rowdata3['image'];
+                        $image_type = $rowdata3['image_type'];
+                        echo '<img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;">';
                     }
-                ?><br>
+                }
+            ?><br>
 
-                <input type="submit" value="Ajouter le produit" name="add_product">
-                <br><br>
-            </form>
-            <br>
-        </div>
+            <input type="submit" value="Ajouter le produit" name="add_product">
+            <br><br>
+        </form>
+        <br>
     </div>
 </body>
 </html>
