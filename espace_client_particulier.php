@@ -105,9 +105,9 @@
     </nav>
 
     <div class="two-columns">
-        <div class="col2">
+        <div class="leftbar">
             <h1>Espace Client</h1><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?">Profil</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?profil">Profil</a></button><br><br>
             <?php
                 if($_SESSION['user_type']==1){
                     echo '<button class="dash-button"><a href="espace_client_entreprise.php">Espace entreprise</a></button><br><br>';

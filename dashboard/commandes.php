@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Rose. | Ajouter un produit</title>
+    <title>Rose. | Profil</title>
     <link rel="stylesheet" type="text/css" href="../css/main_style.css">
     <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
     <style>
@@ -49,45 +49,54 @@
     <div class="outer-container">
         <div class="content">
             <?php
-                $select_query = "SELECT c.id_commande, c.quantité_produit, c.date_commande, c.id_fournisseur,
-                                p.nom_produit, p.marque_produit, p.prixht_produit, cl.raisonsociale_client, cl.nom_client, cl.prenom_client, a.numetrue_adresse, a.villeadresse_adresse, a.codepostal_adresse                          
+                $select_query = "SELECT *
                                 FROM commande c
                                 LEFT JOIN produit p ON c.id_produit = p.id_produit
                                 LEFT JOIN client cl ON c.idclient_commande = cl.id_client
-                                LEFT JOIN adresse a ON c.idclient_commande = a.id_client
-                                WHERE c.id_fournisseur = '$user'";
+                                LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
+                                WHERE c.id_fournisseur = '$user'
+                                ORDER BY date_commande DESC";
                 $result = mysqli_query($con, $select_query);
                 
                 if ($result) {
                     // Afficher le tableau HTML
                     echo "<table border='1'>
                         <tr>
-                            <th>ID fournisseur</th>
-
                             <th>ID Commande</th>
+                            <th>Informations client</th>
                             <th>Nom du produit</th>
                             <th>Marque</th>
                             <th>Quantité commandée</th>
                             <th>Date commande</th>
+                            <th>Statut commande</th>
                         </tr>";
                     $montant_commande = 0;
                     // Parcourir les résultats et afficher chaque ligne dans le tableau
                     while ($rowdata = mysqli_fetch_assoc($result)) {
                         $id_commande = $rowdata['id_commande'];
-                        $id_fournisseur = $rowdata['id_fournisseur'];
                         $nom_produit = $rowdata['nom_produit'];
                         $marque_produit = $rowdata['marque_produit'];
                         $quantité_produit = $rowdata['quantité_produit'];
                         $date_commande = $rowdata['date_commande'];
+                        $type_client = $rowdata['type_client'];
+                        if($type_client==0){
+                            $client = $rowdata['prenom_client'] & ' ' & $rowdata['nom_client'];;
+                        } else {
+                            $client = $rowdata['raisonsociale_client'];
+                        }
+                        $adresse = $rowdata['numetrue_adresse'];
+                        $codepostal = $rowdata['codepostal_adresse'];
+                        $ville = $rowdata['villeadresse_adresse'];
+                        $statut = $rowdata['etat_commande'];
 
                         echo '<tr>
-                                <td>'.$id_fournisseur.'</td>
-
                                 <td>'.$id_commande.'</td>
+                                <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
                                 <td>'.$nom_produit.'</td>
                                 <td>'.$marque_produit.'</td>
                                 <td>'.$quantité_produit.'</td>
                                 <td>'.$date_commande.'</td>
+                                <td><button>'.$statut.'</button></td>
                             </tr>';
                     }
                     echo "</table>";

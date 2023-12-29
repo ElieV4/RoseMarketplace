@@ -142,6 +142,9 @@
                 if(isset($_GET['paiements'])){
                     include('dashboard/paiements.php');
                 }
+                if(isset($_GET['profil'])){
+                    include('dashboard/profil.php');
+                }
             ?>
         </div>
     </div>
