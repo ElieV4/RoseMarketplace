@@ -127,7 +127,7 @@
             <div class="two-columns">
                 <div class="col1">
                     <?php
-                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                        $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, quantitestock_produit - quantité_produit AS stock_disponible, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                         FROM panier 
                         LEFT JOIN produit USING (id_produit) 
                         LEFT JOIN photo USING (id_produit) 
@@ -143,6 +143,7 @@
                         } else {
                             if ($result) {
                                 $montant_commande = 0;
+                                $validerok = 0;
                                 echo "<table border='0,5'>";
                                 // Parcourir les résultats et afficher chaque ligne dans le tableau
                                 while ($rowdata = mysqli_fetch_assoc($result)) {
@@ -155,16 +156,26 @@
                                     $vendeur = $rowdata['raisonsociale_client'];
                                     $prixTTC = $rowdata['prixht_produit'] * 1.2;
                                     $quantitepanier = $rowdata['quantité_produit'];
+                                    $quantitestock = $rowdata['quantitestock_produit'];
+                                    $stock_disponible = $rowdata['stock_disponible'];
+                                    if($stock_disponible>=0){
+                                        $stockok = "En stock (".$quantitestock.")"; 
+                                    } else {
+                                        $stockok = 'Stock insuffisant ('.$quantitestock.' exemplaires)';
+                                        $validerok = $validerok +1;
+
+
+                                    }
                                     $montant_produit = $quantitepanier * $prixTTC ;
                                     $montant_commande = $montant_commande + $montant_produit;
 
                                     echo '<tr>
                                             <td><a href="page_produit.php?id='.$id_produit.'"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a></td>
-                                            <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i></td>
+                                            <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.' '.$marque.'</a><br><i>'.$vendeur.'</i><br><br>'.$stockok.'</td>
                                             <td>     </td>
                                             <td>
                                                 <div class="quantity-container">
-                                                    <input class="inputquantite" type="number" min="1" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
+                                                    <input class="inputquantite" type="number" min=1  max="'.$quantitestock.'" id="quantiteInput_'.$id_produit.'" value="'.$quantitepanier.'">
                                                     <button onclick="updateQuantite('.$id_produit.')">OK</button>
                                                 </div>
                                             </td>
@@ -191,7 +202,11 @@
                             if(!isset($_SESSION['user_id'])){
                                 echo '<a href="user_connexion.php"><button>Valider mon panier</button></a>';
                             } else {
-                                echo '<a href="commande.php"><button>Valider votre panier</button></a>';
+                                if ($validerok == 0) {
+                                    echo '<a href="commande.php"><button>Valider votre panier</button></a>';
+                                } else {
+                                    echo '<button disabled>Stock insuffisant</button>';
+                                }                            
                             }
                             echo '<br><br><a href="produits.php"><button>Continuer vos achats</button></a>';
                         }

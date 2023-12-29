@@ -30,8 +30,6 @@ function executerCommande() {
             // Log the response from the server for debugging
             console.log("Server Response: " + responseText);
             window.location.href = "./user_connexion.php";
-            alert("Test boucleresponsetext.");
-
         })
         .catch(error => {
             // Log any errors that occurred during the AJAX request
