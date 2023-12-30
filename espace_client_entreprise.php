@@ -97,8 +97,8 @@
     <nav class="mobile-nav">
         <a href="index.php">Accueil</a>
         <?php 
-        if(isset($_SESSION['user_id'])){
-            echo '<a href="espace_client_entreprise.php">Espace Client</a>';
+        if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
+            echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -132,14 +132,16 @@
                 if(isset($_GET['ajouter_un_produit'])){
                     include('dashboard/ajouter_un_produit.php');
                 }
-                if(isset($_GET['produits_stocks'])){
+                else if(isset($_GET['produits_stocks'])){
                     include('dashboard/produits_stocks.php');
                 }
-                if(isset($_GET['commandes'])){
+                else if(isset($_GET['commandes'])){
                     include('dashboard/commandes.php');
                 }
-                if(isset($_GET['paiements'])){
+                else if(isset($_GET['paiements'])){
                     include('dashboard/paiements.php');
+                } else {
+                    include('dashboard/produits_stocks.php');
                 }
             ?>
         </div>

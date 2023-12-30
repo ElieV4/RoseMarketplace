@@ -84,8 +84,8 @@
     <nav class="mobile-nav">
         <a href="index.php">Accueil</a>
         <?php 
-        if(isset($_SESSION['user_id'])){
-            echo '<a href="espace_client_entreprise.php">Espace Client</a>';
+        if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
+            echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -106,6 +106,7 @@
     <div class="two-columns">
         <div class="leftbar">
             <h1>Espace Client</h1><br>
+            <?php echo "{$_SESSION['user_id']}"; ?><br><br>
             <button class="dash-button"><a href="espace_client_particulier.php?profil">Profil</a></button><br><br>
             <?php
                 if($_SESSION['user_type']==1){

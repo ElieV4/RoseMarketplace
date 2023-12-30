@@ -103,8 +103,8 @@
     <nav class="mobile-nav">
         <a href="index.php">Accueil</a>
         <?php 
-        if(isset($_SESSION['user_id'])){
-            echo '<a href="espace_client_entreprise.php">Espace Client</a>';
+        if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
+            echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -127,8 +127,9 @@
             <h1>Votre panier</h1><br>
             <div class="two-columns">
                 <div class="col1">
-                    <a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>
                     <?php
+                        echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';
+
                         $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, quantitestock_produit - quantité_produit AS stock_disponible, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                         FROM panier 
                         LEFT JOIN produit USING (id_produit) 

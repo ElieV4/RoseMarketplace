@@ -12,6 +12,6 @@
         echo "Erreur dans la requête : " . mysqli_error($con);
     }
 
-    echo "<script>alert('Vous avez été déconnectée')</script>";
+    echo "<script>alert('Vous avez été déconnecté.e')</script>";
     echo "<script>window.open('../index.php','_self')</script>"; 
 ?>

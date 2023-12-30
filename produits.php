@@ -73,8 +73,8 @@
     <nav class="mobile-nav">
         <a href="index.php">Accueil</a>
         <?php 
-        if(isset($_SESSION['user_id'])){
-            echo '<a href="espace_client_entreprise.php">Espace Client</a>';
+        if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
+            echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -98,7 +98,9 @@
                 <h1>Produits ROSE.</h1>
             </div>
             <form action="" method="GET">
-                    <a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>
+                    <?php
+                        echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';
+                    ?>
                     <label for="categorie">Catégorie :</label>
                     <select name="categorie" id="categorie">
                         <option value="all">Toutes</option>
