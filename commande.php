@@ -122,6 +122,7 @@
             <h1>Votre commande</h1><br>
             <div class="two-columns">
                 <div class="col1">
+                <a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>
                     <?php
                         //adresse de facturation
                         $facturation_query = "SELECT *, count(DISTINCT id_adresse) AS nbadresses

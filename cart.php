@@ -127,6 +127,7 @@
             <h1>Votre panier</h1><br>
             <div class="two-columns">
                 <div class="col1">
+                    <a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>
                     <?php
                         $select_query = "SELECT id_produit,quantité_produit,quantitestock_produit, quantitestock_produit - quantité_produit AS stock_disponible, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
                         FROM panier 

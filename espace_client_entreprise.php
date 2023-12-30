@@ -38,6 +38,7 @@
             background-color: #f8f9fa; /* Change the background color as needed */
             padding: 20px;
             box-sizing: border-box;
+            text-align: center;
         }
 
         .two-columns {

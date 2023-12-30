@@ -102,6 +102,8 @@
         <div class="content">
 
                 <?php
+                echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';
+
                 if(isset($_GET['id'])){
                         $id_produit = $_GET['id'];
                         $select_query = "SELECT *

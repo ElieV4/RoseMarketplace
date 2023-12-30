@@ -98,6 +98,7 @@
                 <h1>Produits ROSE.</h1>
             </div>
             <form action="" method="GET">
+                    <a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>
                     <label for="categorie">Catégorie :</label>
                     <select name="categorie" id="categorie">
                         <option value="all">Toutes</option>
@@ -256,7 +257,7 @@
                             echo '<div class="product">';
                             echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                             echo '' . $produit . " " . $marque . '<br>';
-                            echo '' . $vendeur . " " . $prixTTC . '€ TTC<br><br>';
+                            echo '<a href="produits.php?mysearch='.$vendeur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
                             echo '</div>';
                         }
                     }
