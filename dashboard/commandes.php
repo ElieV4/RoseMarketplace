@@ -19,17 +19,12 @@
     <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
     <style>
         .outer-container{
-            margin-left:20%;
-            margin-right:20%;
-            margin-bottom:10%;
+            margin-top:50px;
+            margin-left:10%;
+            margin-right:10%;
             background-color: white;
             align-items: center;
             text-align: center;
-            border: 2px solid deeppink;
-            background-color : #FFCFDE;
-        }
-        .content{
-            text-align: justify;
         }
         .imgcontainer sideimg {
                 display:flex;

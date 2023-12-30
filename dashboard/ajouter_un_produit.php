@@ -98,7 +98,7 @@
             
             if ($sql_execute2) {
                 echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>"; 
-                echo "<script>window.open('../espace_client_entreprise.php','_self')</script>";
+                echo "<script>window.open('../espace_client_entreprise.php?produits_stocks','_self')</script>";
             } else {
                 echo "Erreur SQLquery_insimg2 : ";
                 die(mysqli_error($con));
@@ -122,8 +122,6 @@
             background-color: white;
             align-items: center;
             text-align: center;
-            border: 2px solid deeppink;
-            background-color : #FFCFDE;
         }
         .imgcontainer sideimg {
                 display:flex;
@@ -189,8 +187,7 @@
                 }
             ?><br>
 
-            <input type="submit" value="Ajouter le produit" name="add_product">
-            <br><br>
+            <input type="submit" value="Ajouter le produit" name="add_product">    <button class="dash-button"><a href="espace_client_entreprise.php?profil">Annuler</a></button>
         </form>
         <br>
     </div>

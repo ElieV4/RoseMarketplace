@@ -124,19 +124,19 @@
                     <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
                     <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
             <?php
-                if(isset($_GET['ajouter_un_produit'])){
-                    include('dashboard/ajouter_un_produit.php');
-                }
-                else if(isset($_GET['produits_stocks'])){
+
+                if(isset($_GET['produits_stocks'])){
                     include('dashboard/produits_stocks.php');
-                }
+                } 
                 else if(isset($_GET['commandes'])){
                     include('dashboard/commandes.php');
+                }
+                else if(isset($_GET['ajouter_un_produit'])){
+                    include('dashboard/ajouter_un_produit.php');
                 }
                 else if(isset($_GET['paiements'])){
                     include('dashboard/paiements.php');

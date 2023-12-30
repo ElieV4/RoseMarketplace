@@ -19,17 +19,12 @@
     <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
     <style>
         .outer-container{
-            margin-left:20%;
-            margin-right:20%;
-            margin-bottom:10%;
+            margin-top:50px;
+            margin-left:10%;
+            margin-right:10%;
             background-color: white;
             align-items: center;
             text-align: center;
-            border: 2px solid deeppink;
-            background-color : #FFCFDE;
-        }
-        .content{
-            text-align: justify;
         }
         .imgcontainer sideimg {
                 display:flex;
@@ -39,7 +34,6 @@
                 width:20%;
                 height:auto;
         }
-        <style>
         .main {
             background-color: white;
         }
@@ -61,7 +55,6 @@
                         // Afficher le tableau HTML
                         echo "<table border='1'>
                             <tr>
-                                
                                 <th>ID Produit</th>
                                 <th></th>
                                 <th>Nom du produit</th>
@@ -69,6 +62,9 @@
                                 <th>Marque</th>
                                 <th>Description</th>
                                 <th>Quantité en stock</th>
+                                <th>Prix HT</th>
+                                <th>Prix TTC</th>
+                                <th>Prix TTC après commission</th>
                             </tr>";
                             $montant_commande = 0;
                             // Parcourir les résultats et afficher chaque ligne dans le tableau
@@ -81,27 +77,35 @@
                                 $marque = $rowdata['marque_produit'];
                                 $vendeur = $rowdata['raisonsociale_client'];
                                 $categorie = $rowdata['categorie_produit'];
-                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                $prixHT = $rowdata['prixht_produit'];
+                                $prixTTC = $prixHT * 1.2;
+                                $prixpostcom = $prixTTC * 0.95;
                                 $stock = $rowdata['quantitestock_produit'];
                                 $date_ajout = $rowdata['date_ajout_produit'];
                                 $description = $rowdata['description_produit'];
                                 $quantitestock = $rowdata['quantitestock_produit'];
 
+
                             echo '<tr>
                                     <td>'.$id_produit.'</td>
-                                    <td><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></td>
+                                    <td><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100px;"></td>
                                     <td>'.$produit.'</td>
                                     <td>'.$categorie.'</td>
                                     <td>'.$marque.'</td>
                                     <td>'.$description.'</td>
                                     <td>'.$quantitestock.'</td>
+                                    <td>'.$prixHT.'€ </td>
+                                    <td>'.$prixTTC.'€ </td>
+                                    <td>'.$prixpostcom.'€ </td>
                             </tr>';
                             }
-                        echo "</table>";
+                        echo "</table><br>";
                     } else {
                         // En cas d'erreur lors de l'exécution de la requête
                         echo "Erreur dans la requête : " . mysqli_error($con);
                     }
+                
+                    echo '<button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>';
                 ?>
         </div>
     </div> 
