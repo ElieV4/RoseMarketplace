@@ -3,16 +3,8 @@
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
     if (isset($_SESSION['user_id']) and !empty($_SESSION['user_id'])) {
-        // Si l'utilisateur est connecté, redirige vers espace_client_entreprise.php
-        if($_SESSION['user_type']!=1){
-            //echo "part";
-            header("Location: espace_client_particulier.php");
-            exit();
-        } else {
-            //echo "entr";
-            header("Location: espace_client_entreprise.php");
-            exit();
-        }
+        header("Location: espace_client_particulier.php");
+        exit();
     }
 
     //reload clean var
@@ -45,7 +37,7 @@
                 } else {
                     $_SESSION['user_type'] = 1;
                     echo "<script>alert('Connexion réussie')</script>";
-                    echo "<script>window.open('espace_client_entreprise.php','_self')</script>"; 
+                    echo "<script>window.open('espace_client_particulier.php','_self')</script>"; 
                     //header("Location: espace_client_entreprise.php");
                     //exit();
                 }
@@ -107,6 +99,7 @@
                 <?php
                     if(isset($_SESSION['user_id'])){
                         echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
                     } else {
                         echo '<li ><a href="user_registration.php">Inscription</a></li>';
                         echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';

@@ -78,6 +78,7 @@
                 <?php
                     if(isset($_SESSION['user_id'])){
                         echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
                     } else {
                         echo '<li ><a href="user_registration.php">Inscription</a></li>';
                         echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
@@ -117,16 +118,13 @@
     <div class="two-columns">
         <div class="leftbar">
             <h1>Espace Entreprise</h1><br>
-                <div class="col2">
-                        <?php echo "{$_SESSION['user_id']}"; ?><br><br>
-                        <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
-                        <button class="dash-button"><a href="espace_client_entreprise.php?profil">Profil</a></button><br><br>
-                        <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
-                        <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
-                        <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
-                        <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
-                        <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
-                </div>
+                    <?php echo "{$_SESSION['user_id']}"; ?><br><br>
+                    <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
+                    <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
             <?php
@@ -141,9 +139,6 @@
                 }
                 if(isset($_GET['paiements'])){
                     include('dashboard/paiements.php');
-                }
-                if(isset($_GET['profil'])){
-                    include('dashboard/profil.php');
                 }
             ?>
         </div>

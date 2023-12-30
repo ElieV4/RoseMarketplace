@@ -3,10 +3,7 @@
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
-    if (isset($_SESSION['user_id'])) {
-        //echo $_SESSION['user_id'];
-        //echo $_SESSION['user_type'];
-    } else {
+    if (!isset($_SESSION['user_id'])) {
         //echo "header vers reconnexion";
         header("Location: user_connexion.php");
         exit();
@@ -68,6 +65,7 @@
                 <?php
                     if(isset($_SESSION['user_id'])){
                         echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
                     } else {
                         echo '<li ><a href="user_registration.php">Inscription</a></li>';
                         echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
@@ -114,15 +112,22 @@
                 }
             ?>
             <button class="dash-button"><a href="cart.php">Votre panier</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?">Historique de commandes</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?">Suivre votre commande</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?">Vos moyens de paiements</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?historique_commande">Historique de commandes</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?suivi_commande">Suivre votre commande</a></button><br><br>
             <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
             <?php
-                if(isset($_GET['#'])){
-                    include('#');
+                if(isset($_GET['profil'])){
+                    include('dashboard/profil.php');
+                }                
+                else if(isset($_GET['historique_commande'])){
+                    include('dashboard/historique_commande.php');
+                }                
+                else if(isset($_GET['suivi_commande'])){
+                    include('dashboard/suivi_commande.php');
+                } else {
+                    include('dashboard/profil.php');
                 }
             ?>
         </div>

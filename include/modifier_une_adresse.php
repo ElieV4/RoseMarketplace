@@ -38,7 +38,9 @@
             echo "Erreur SQLquery adresse: ";
             die(mysqli_error($con));
         } else {
-            echo "<script>window.open('commande.php','_self')</script>";
+            $currentPath = $_SERVER['PHP_SELF'];
+            $profilPageURL = $currentPath . "?profil";
+            echo "<script>window.open('$profilPageURL','_self')</script>";
         }
 
         $id_adresse_new = mysqli_insert_id($con);

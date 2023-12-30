@@ -85,6 +85,7 @@
                 <?php
                     if(isset($_SESSION['user_id'])){
                         echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
                     } else {
                         echo '<li ><a href="user_registration.php">Inscription</a></li>';
                         echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';

@@ -3,7 +3,7 @@ function executerCommande() {
     // Récupérer les radios sélectionnés pour la livraison et le paiement
     var livraisonRadio = document.querySelector('input[name="livraison_radio"]:checked');
     var paiementRadio = document.querySelector('input[name="paiement_radio"]:checked');
-    
+
     // Vérifier si une ligne est sélectionnée dans chaque tableau
     if (livraisonRadio && paiementRadio) {
         // Récupérer les valeurs des radios sélectionnés
@@ -23,58 +23,23 @@ function executerCommande() {
                 throw new Error("Network response was not ok");
             }
             return response.text();
-            alert("response.");
-
         })
         .then(responseText => {
             // Log the response from the server for debugging
             console.log("Server Response: " + responseText);
-            window.location.href = "./user_connexion.php";
+
+            // Construire l'URL de redirection en utilisant le chemin de la page actuelle
+            var currentPath = window.location.pathname;
+            var profilPageURL = currentPath + "?profil";
+
+            window.location.href = profilPageURL; // Rediriger vers la page actuelle avec le paramètre ?profil
         })
         .catch(error => {
             // Log any errors that occurred during the AJAX request
             console.error("Erreur AJAX: ", error);
-
-            alert("Test error.");
-
+            alert("Erreur lors de l'exécution de la commande.");
         });
     }
-}
-
-// Fonction pour mettre à jour la quantité du produit
-function modifierAdresse(id_produit) {
-    // Récupérer la nouvelle quantité depuis le champ d'entrée
-    var nouvelleQuantite = document.getElementById('quantiteInput_' + id_produit).value;
-
-    // Logguer les données à envoyer dans la console pour le débogage
-    console.log("Mise à jour de la quantité pour l'ID du produit : " + id_produit);
-    console.log("Nouvelle quantité : " + nouvelleQuantite);
-
-    // Effectuer une requête AJAX pour mettre à jour la quantité
-    fetch("./include/ajax_cart.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "action=updateQuantite&id_produit=" + id_produit + "&nouvelleQuantite=" + nouvelleQuantite,
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("La réponse du réseau n'était pas correcte");
-        }
-        return response.text();
-    })
-    .then(responseText => {
-        // Logguer la réponse du serveur pour le débogage
-        console.log("Réponse du serveur : " + responseText);
-
-        // Recharger la page après la mise à jour réussie
-        location.reload();
-    })
-    .catch(error => {
-        // Logguer les erreurs survenues pendant la requête AJAX
-        console.error("Erreur AJAX : ", error);
-    });
 }
 
 // Fonction pour supprimer l'adresse
@@ -101,6 +66,12 @@ function supprimerAdresse(id_adresse, callback) {
         if (typeof callback === 'function') {
             callback();
         }
+
+        // Construire l'URL de redirection en utilisant le chemin de la page actuelle
+        var currentPath = window.location.pathname;
+        var profilPageURL = currentPath + "?profil";
+
+        window.location.href = profilPageURL; // Rediriger vers la page actuelle avec le paramètre ?profil
     })
     .catch(error => {
         console.error("Erreur AJAX : ", error);
@@ -131,6 +102,12 @@ function supprimerPaiement(id_paiement, callback) {
         if (typeof callback === 'function') {
             callback();
         }
+
+        // Construire l'URL de redirection en utilisant le chemin de la page actuelle
+        var currentPath = window.location.pathname;
+        var profilPageURL = currentPath + "?profil";
+
+        window.location.href = profilPageURL; // Rediriger vers la page actuelle avec le paramètre ?profil
     })
     .catch(error => {
         console.error("Erreur AJAX : ", error);
