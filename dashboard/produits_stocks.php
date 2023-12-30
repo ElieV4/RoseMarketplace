@@ -20,8 +20,8 @@
     <style>
         .outer-container{
             margin-top:50px;
-            margin-left:10%;
-            margin-right:10%;
+            margin-left:5%%;
+            margin-right:5%%;
             background-color: white;
             align-items: center;
             text-align: center;
@@ -65,6 +65,8 @@
                                 <th>Prix HT</th>
                                 <th>Prix TTC</th>
                                 <th>Prix TTC après commission</th>
+                                <th>Action</th>
+
                             </tr>";
                             $montant_commande = 0;
                             // Parcourir les résultats et afficher chaque ligne dans le tableau
@@ -93,10 +95,20 @@
                                     <td>'.$categorie.'</td>
                                     <td>'.$marque.'</td>
                                     <td>'.$description.'</td>
-                                    <td>'.$quantitestock.'</td>
+                                    <td>
+                                        <div class="quantity-container">
+                                        <input class="inputquantite" type="number" min=1  max="'.$quantitestock.'" id="quantiteInput_'.$id_produit.'" value="'.$quantitestock.'">
+                                        <button onclick="updateQuantite('.$id_produit.')">OK</button>
+                                        </div>
+                                    </td>
                                     <td>'.$prixHT.'€ </td>
                                     <td>'.$prixTTC.'€ </td>
                                     <td>'.$prixpostcom.'€ </td>
+                                    <td class="info">';
+                             
+                                    echo '<button><a href="espace_client_entreprise.php?modifproduit&id='.$id_produit.'">Modifier</a></button>';
+                                      
+                                    echo '<br><button onclick="retirerProduit(' . $id_produit . ', function() { location.reload(); })">Supprimer</button></td>
                             </tr>';
                             }
                         echo "</table><br>";
@@ -108,6 +120,7 @@
                     echo '<button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>';
                 ?>
         </div>
-    </div> 
+    </div>
+    <script src="javascript/produits.js"></script>
 </body>
 </html>

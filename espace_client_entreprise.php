@@ -137,6 +137,9 @@
                 }
                 else if(isset($_GET['ajouter_un_produit'])){
                     include('dashboard/ajouter_un_produit.php');
+                }                
+                else if(isset($_GET['modifproduit'])){
+                    include('dashboard/modifier_produit.php');
                 }
                 else if(isset($_GET['paiements'])){
                     include('dashboard/paiements.php');

@@ -113,7 +113,6 @@
     <meta charset="utf-8">
     <title>Rose. | Ajouter un produit</title>
     <link rel="stylesheet" type="text/css" href="../css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
     <style>
        .outer-container{
             margin-left:20%;
@@ -130,9 +129,6 @@
                 padding:10px;
                 width:20%;
                 height:auto;
-        }
-        .main {
-            background-color: white;
         }
     </style>
     </style>
