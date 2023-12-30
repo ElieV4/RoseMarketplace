@@ -51,7 +51,9 @@ function retirerProduit() {
         $id_produit = $_POST['id_produit'];
         include("connect.php");
 
-        $delete_query = "DELETE FROM panier WHERE id_produit = $id_produit";
+        $delete_query = "UPDATE produit
+            SET statut_produit = 'supprimé'
+            WHERE id_produit = $id_produit;";
         $result = mysqli_query($con, $delete_query);
         if ($result) {
             echo "Product deleted successfully";

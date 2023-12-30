@@ -43,11 +43,11 @@
     <div class="outer-container">
         <div class="content">
                 <?php
-                    $select_query = "SELECT id_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client 
+                    $select_query = "SELECT id_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client, statut_produit 
                     FROM produit 
                     LEFT JOIN photo USING (id_produit) 
                     LEFT JOIN client ON produit.id_fournisseur = client.id_client
-                    WHERE id_client = '$user'
+                    WHERE id_client = '$user' AND statut_produit = 'disponible'
                     GROUP BY id_produit";
                     $result = mysqli_query($con, $select_query);
                     
@@ -97,7 +97,7 @@
                                     <td>'.$description.'</td>
                                     <td>
                                         <div class="quantity-container">
-                                        <input class="inputquantite" type="number" min=1  max="'.$quantitestock.'" id="quantiteInput_'.$id_produit.'" value="'.$quantitestock.'">
+                                        <input class="inputquantite" type="number" min=1  id="quantiteInput_'.$id_produit.'" value="'.$quantitestock.'">
                                         <button onclick="updateQuantite('.$id_produit.')">OK</button>
                                         </div>
                                     </td>

@@ -54,6 +54,7 @@ CREATE TABLE produit (
 	description_produit text(1000), 
 	categorie_produit varchar(50), 
 	marque_produit varchar(50),
+	statut_produit ENUM('supprimé', 'disponible') NOT NULL DEFAULT 'disponible',
 		PRIMARY KEY (id_produit),
 		FOREIGN KEY (id_fournisseur) REFERENCES client (id_client));
 
