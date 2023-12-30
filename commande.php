@@ -302,6 +302,7 @@
                             <button id="executer_commande" onclick="executerCommande()" disabled>Passer commande</button>';
                             } else {
                                 echo "Aucun achat en cours";
+                                echo "<script>window.open('espace_client_particulier.php?suivi_commande','_self')</script>";
                             }
                         }
                     ?>

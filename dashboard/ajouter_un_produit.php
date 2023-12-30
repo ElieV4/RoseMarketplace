@@ -44,7 +44,7 @@
             $uploaded_images_data[] = $image_info;
         }
 
-        //check unique email query
+        //check unique product query
         $select_query1 = "SELECT * FROM produit 
             WHERE nom_produit='$nom_produit' AND marque_produit='$marque' AND id_fournisseur=$user" ;
         $result1 = mysqli_query($con,$select_query1);
