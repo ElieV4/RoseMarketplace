@@ -40,6 +40,7 @@
 <body>  
     <div class="outer-container">
         <div class="content">
+            <h3>Ventes</h3><br>
             <?php
                 // Code PHP pour générer les options des menus déroulants
                 function generateMonthOptions($selectedMonth) {
@@ -80,8 +81,23 @@
 
                     return $options;
                 }
+
+                function generateOptions($selectedValue, $query, $con) {
+                    $options = '<option value="all">Tous</option>';
+                
+                    $result = mysqli_query($con, $query);
+                    while ($row = mysqli_fetch_array($result)) {
+                        $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
+                        $selected = ($selectedValue == $value) ? 'selected' : '';
+                        $options .= "<option value='$value' $selected>$value</option>";
+                    }
+                
+                    return $options;
+                }
+
+                
             ?>
-            <form action="espace_client_entreprise.php?ventes" id="filters-form">
+            <form action="espace_client_entreprise.php?ventes" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">
                     <option value="all">Toutes</option>
@@ -96,45 +112,27 @@
 
                 <label for="categorie">Catégorie :</label>
                 <select name="cat" id="cat">
-                    <option value="all">Toutes</option>
-                    <?php 
-                        $select_cat = "SELECT DISTINCT categorie_produit FROM produit WHERE id_fournisseur = '$user' ";
-                        $result_cat = mysqli_query($con,$select_cat);
-                        while($rowcat=mysqli_fetch_array($result_cat)) {
-                            $categoriefiltre = $rowcat["categorie_produit"];
-                            echo '<option value="'.$categoriefiltre.'">'.$categoriefiltre.'</option>';
-                        }
+                    <?php
+                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit WHERE id_fournisseur = '$user'";
+                    echo generateOptions(isset($_GET['cat']) ? $_GET['cat'] : 'all', $query_cat, $con);
                     ?>
                 </select>
 
                 <label for="br">Marque :</label>
                 <select name="br" id="bran">
-                    <option value="all">Toutes</option>
-                    <?php 
-                        $select_brands = "SELECT DISTINCT marque_produit FROM produit WHERE id_fournisseur = '$user' ";
-                        $result_brands = mysqli_query($con,$select_brands);
-                        while($rowbrand=mysqli_fetch_array($result_brands)) {
-                            $marquefiltre = $rowbrand["marque_produit"];
-                            echo '<option value="'.$marquefiltre.'">'.$marquefiltre.'</option>';
-                        }
+                    <?php
+                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit WHERE id_fournisseur = '$user'";
+                    echo generateOptions(isset($_GET['br']) ? $_GET['br'] : 'all', $query_brands, $con);
                     ?>
                 </select>
 
                 <label for="id">Produit :</label>
                 <select name="id" id="id">
-                    <option value="all">Tous</option>
-                    <?php 
-                        $select_brands = "SELECT DISTINCT nom_produit, id_produit FROM produit WHERE id_fournisseur = '$user' ";
-                        $result_brands = mysqli_query($con,$select_brands);
-                        while($rowbrand=mysqli_fetch_array($result_brands)) {
-                            $valuefiltre = $rowbrand["id_produit"];
-                            $nomfiltre = $rowbrand["nom_produit"];
-                            echo '<option value="'.$valuefiltre.'">'.$nomfiltre.'</option>';
-                        }
+                    <?php
+                    $query_products = "SELECT DISTINCT nom_produit AS value, id_produit FROM produit WHERE id_fournisseur = '$user'";
+                    echo generateOptions(isset($_GET['id']) ? $_GET['id'] : 'all', $query_products, $con);
                     ?>
                 </select>
-                <br>
-
                 <label for="tri">Trier par :</label>
                 <select name="tri" id="tri">
                     <option value="dateasc">Date + ancienne</option>
@@ -145,8 +143,7 @@
                     <option value="cadesc">CA décroissant</option>
                 </select>
 
-                <button type="submit">Voir les ventes</button>
-
+                <button type="submit">Filtrer & trier</button>        <a href="espace_client_entreprise.php?ventes"><button>Réinitialiser</button></a>
             </form>
         
             <br>
@@ -164,6 +161,7 @@
                     if (isset($_GET['id'])) {
                         $valuefiltre = $_GET['id'];
                     }
+                    $tri = isset($_GET['tri']) ? $_GET['tri'] : 'datedesc';
                     $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
                     $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
                     $select_query = "SELECT
@@ -178,26 +176,27 @@
 
                     //rajout des filtres
                     if ($moisfiltre && $moisfiltre !== 'all') {
-                        $select_query .= " AND MONTH(date_ajout_produit) = '$moisfiltre'";
+                        $select_query .= " AND MONTH(date_commande) = '$moisfiltre'";
                     }
                     if ($anneefiltre && $anneefiltre !== 'all') {
-                        $select_query .= " AND YEAR(date_ajout_produit) = '$anneefiltre'";
+                        $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
                     }
                     if ($categoriefiltre !== 'all') {
-                        $select_query .= " AND c.categorie_produit = '$categoriefiltre'";
+                        $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
                     }                    
                     if ($marquefiltre !== 'all') {
-                        $select_query .= " AND c.marque_produit = '$marquefiltre'";
+                        $select_query .= " AND p.marque_produit = '$marquefiltre'";
                     }
 
                     if ($valuefiltre !== 'all') {
                         $select_query .= " AND c.id_produit = '$valuefiltre'";
                     }
-                    
+                    if (isset($_GET['reinit'])) {
+                        $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
+                    }
                     $select_query .= "GROUP BY mois, nom_produit ORDER BY";
 
                     //rajout du tri
-                    $tri = null;
                     switch ($tri) {
                         case 'dateasc':
                             $select_query .= " mois ASC";
@@ -221,21 +220,19 @@
                             $select_query .= " mois DESC";
                             break;
                     }
-
                     $result = mysqli_query($con, $select_query);
                     $rows = mysqli_num_rows($result);
                     if($rows == 0){
                         echo "Aucun résultat";
-                    } else {   
-                        echo '<h3>Ventes '.$nomfiltre.'</h3><br>';
-                
+                    } else {                   
                         if ($result) {
                             // Afficher le tableau HTML
                             echo '<table border=1>
                             <tr>
                                 <th>Mois</th>
                                 <th>Nombre de commandes</th>';
-                            if(isset($_GET['nom']) && $_GET['nom']!=='all'){
+                            if(isset($_GET['id']) && $_GET['id']!=='all'){
+                                echo '<td>Produit</td>';
                                 echo '<th>Quantité commandée</th>';
                             }
                             echo '<th>Montant commande</th>
@@ -270,7 +267,8 @@
                                 echo '<tr>
                                     <td>'.$mois.'</td>
                                     <td>'.$nombre_commandes.'</td>';
-                                if(isset($_GET['nom']) && $_GET['nom']!=='all'){
+                                if(isset($_GET['id']) && $_GET['id']!=='all'){
+                                    echo '<td>'.$nom_produit. ' '.$marque_produit.'</td>';
                                     echo '<td>'.$quantite_commandee.'</td>';
                                 }
                                 echo '<td>'.$montant_commande.'€</td>
@@ -281,7 +279,8 @@
                             echo '<tr>
                                 <td>Total</td>
                                 <td>'.$total_commandes.'</td>';
-                            if(isset($_GET['nom']) && $_GET['nom']!=='all'){
+                            if(isset($_GET['id']) && $_GET['id']!=='all'){
+                                echo '<td></td>';
                                 echo '<td>'.$total_quantité.'</td>';
                             }
                             echo '<td>'.$total_montant.'€</td>
