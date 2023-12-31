@@ -27,6 +27,7 @@
     <title>Rose. | Espace Entreprise</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <script src="javascript/produits.js"></script>
     <style>
         body {
             margin: 0;
@@ -34,7 +35,7 @@
         }
 
         .leftbar {
-            width: 20%;
+            width: 250px;
             background-color: #f8f9fa; /* Change the background color as needed */
             padding: 20px;
             box-sizing: border-box;
@@ -47,7 +48,7 @@
         }
 
         .dashboard {
-            width: 80%;
+            width: auto;
             text-align: left;
         }
 

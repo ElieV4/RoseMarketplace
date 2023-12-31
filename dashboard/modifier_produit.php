@@ -11,7 +11,7 @@
     $id_produit = $_GET['id'];
 
     //reload clean var
-    $form_nom_produit = $form_categorie =  $form_marque = $form_prixht = $form_quantite_stock = $form_description = "";
+    $form_produit = $form_categorie =  $form_marque = $form_prixht = $form_quantite_stock = $form_description = "";
 
     $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
     $image_produit = $images_produit_i = "";
@@ -32,7 +32,7 @@
 
 
     //load new var, insert & upload files
-        $form_nom_produit = mysqli_real_escape_string($con, $_POST["nom_produit"]);
+        $form_produit = mysqli_real_escape_string($con, $_POST["nom_produit"]);
         $form_categorie = mysqli_real_escape_string($con, $_POST["categorie"]);
         $form_marque = mysqli_real_escape_string($con, $_POST["marque"]);
         $form_prixht = mysqli_real_escape_string($con, $_POST["prixht"]);
@@ -55,7 +55,7 @@
             die(mysqli_error($con));
         } else {
             //insert images produit dans photo
-            if(isset($_FILES['images_produit_i'])){
+            if (isset($_FILES['images_produit_i']['tmp_name'][$key])) {
                 $uploaded_images_data = array();
                 foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
                     // recup file_data
@@ -107,7 +107,7 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Modifier un produit</title>
-    <link rel="stylesheet" type="text/css" href="css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <style>
     .outer-container{
             margin-left:20%;

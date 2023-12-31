@@ -15,8 +15,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Profil</title>
-    <link rel="stylesheet" type="text/css" href="../css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="../css/chatbox.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
     <style>
         .outer-container{
             border : solid lightgray 1px;
