@@ -124,7 +124,7 @@
                     <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?paiements">Paiements</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?ventes">Ventes</a></button><br><br>
                     <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
@@ -142,8 +142,8 @@
                 else if(isset($_GET['modifproduit'])){
                     include('dashboard/modifier_produit.php');
                 }
-                else if(isset($_GET['paiements'])){
-                    include('dashboard/paiements.php');
+                else if(isset($_GET['ventes'])){
+                    include('dashboard/ventes.php');
                 } else {
                     include('dashboard/produits_stocks.php');
                 }

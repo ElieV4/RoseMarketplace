@@ -20,8 +20,8 @@
     <style>
         .outer-container{
             margin-top:50px;
-            margin-left:5%%;
-            margin-right:5%%;
+            margin-left:5%;
+            margin-right:5%;
             background-color: white;
             align-items: center;
             text-align: center;x²

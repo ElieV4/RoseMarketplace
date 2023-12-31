@@ -70,7 +70,7 @@ CREATE TABLE commande (
     id_commande INT(11),
     date_commande TIMESTAMP,
     idclient_commande INT(11),
-    etat_commande VARCHAR(20),
+    etat_commande VARCHAR(20) ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraion', 'livrée', 'refusée','validée'),
     id_produit INT(11),
     quantité_produit INT(11),
     montant_total DECIMAL(9),
