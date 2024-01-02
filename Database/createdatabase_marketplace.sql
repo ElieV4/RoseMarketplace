@@ -6,7 +6,8 @@ CREATE TABLE gestionnaire (
 	id_gestionnaire VARCHAR(11), 
 	email_gestionnaire varchar(250), 
 	password_gestionnaire varchar(255), 
-		PRIMARY KEY (id_gestionnaire));
+		PRIMARY KEY (id_gestionnaire)
+);
 
 CREATE TABLE client (
     id_client INT(11) AUTO_INCREMENT,
@@ -22,17 +23,19 @@ CREATE TABLE client (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_gestionnaire VARCHAR(11),
 		PRIMARY KEY (id_client),
-		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire));
+		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire)
+);
 
 CREATE TABLE adresse (
     id_adresse INT(11) AUTO_INCREMENT,
     numetrue_adresse varchar(100),
     codepostal_adresse numeric(5),
     villeadresse_adresse varchar(50),
-	type_adresse ENUM('facturation','livraison'),
+	type_adresse ENUM('facturation','livraison') NOT NULL DEFAULT 'facturation',
 	id_client INT(11),
     	PRIMARY KEY (id_adresse),
-		FOREIGN KEY (id_client) REFERENCES client(id_client));
+		FOREIGN KEY (id_client) REFERENCES client(id_client)
+);
 
 CREATE TABLE paiement (
 	id_paiement INT(11) AUTO_INCREMENT, 
@@ -42,7 +45,8 @@ CREATE TABLE paiement (
 	titulaire varchar(150), 
 	id_client INT(11), 
 		PRIMARY KEY (id_paiement),
-		FOREIGN KEY (id_client) REFERENCES client (id_client));
+		FOREIGN KEY (id_client) REFERENCES client (id_client)
+);
 
 CREATE TABLE produit (
 	id_produit INT(11) AUTO_INCREMENT, 
@@ -55,34 +59,30 @@ CREATE TABLE produit (
 	marque_produit varchar(50),
 	statut_produit ENUM('supprimé', 'disponible') NOT NULL DEFAULT 'disponible',
 		PRIMARY KEY (id_produit),
-		FOREIGN KEY (id_fournisseur) REFERENCES client (id_client));
-
-CREATE TABLE facture (
-	id_facture INT(11) AUTO_INCREMENT,
-	idemetteur_facture INT(11),
-	iddestinataire_facture VARCHAR(11),
-	montantht_facture decimal(9),
-	id_commande INT(11) 
-		PRIMARY KEY (id_facture));
+		FOREIGN KEY (id_fournisseur) REFERENCES client (id_client)
+);
 
 CREATE TABLE commande (
+	id_commande_produit VARCHAR(50),
     id_commande INT(11),
     date_commande TIMESTAMP,
-    idclient_commande INT(11),
-    etat_commande VARCHAR(20) ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraion', 'livrée', 'refusée','validée'),
+    etat_commande ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraion', 'livrée', 'refusée','validée'),
     id_produit INT(11),
     quantité_produit INT(11),
     montant_total DECIMAL(9),
+	idclient_commande INT(11),
     id_fournisseur INT(11),
     id_facture INT(11),
-    id_commande_produit VARCHAR(50),
 	id_adresse INT(11),
 	id_paiement INT(11),
     PRIMARY KEY (id_commande_produit),
     CONSTRAINT uc_id_commande_produit UNIQUE (id_commande, id_produit),
-    FOREIGN KEY (id_client) REFERENCES client (id_client),
+    FOREIGN KEY (id_fournisseur) REFERENCES client (id_client),
+	FOREIGN KEY (idclient_commande) REFERENCES client (id_client),
     FOREIGN KEY (id_produit) REFERENCES produit (id_produit),
-    FOREIGN KEY (id_facture) REFERENCES facture (id_facture)
+	FOREIGN KEY (id_facture) REFERENCES facture (id_facture),
+    FOREIGN KEY (id_adresse) REFERENCES adresse (id_adresse),
+    FOREIGN KEY (id_paiement) REFERENCES paiement (id_paiement)
 );
 
 UPDATE commande SET id_commande_produit = CONCAT(id_commande, '-', id_produit);
@@ -96,18 +96,22 @@ CREATE TABLE message (
 	idgestionnaire_message VARCHAR(11), 
 		PRIMARY KEY (id_message),
 		FOREIGN KEY (idclient_message) REFERENCES client(id_client),
-		FOREIGN KEY (idgestionnaire_message) REFERENCES gestionnaire(id_gestionnaire));
+		FOREIGN KEY (idgestionnaire_message) REFERENCES gestionnaire(id_gestionnaire)
+);
 
 CREATE TABLE photo (
 	id_photo_produit INT(11) AUTO_INCREMENT,
 	file_photo_produit varchar(250),
-	id_produit INT(11) image LONGBLOB,
-	image_type varchar(250)
+	id_produit INT(11),
+	image LONGBLOB,
+	image_type varchar(250),
 		PRIMARY KEY (id_photo_produit),
-		FOREIGN KEY (id_produit) REFERENCES produit (id_produit));
+		FOREIGN KEY (id_produit) REFERENCES produit (id_produit)
+);
 
 CREATE TABLE panier (
 	id_produit INT(11) AUTO_INCREMENT,
 	quantité_produit INT(11),
-	adresse_ip VARCHAR(255) NOT NULL
-		PRIMARY KEY(id_produit));
+	adresse_ip VARCHAR(255) NOT NULL,
+		PRIMARY KEY(id_produit)
+);
