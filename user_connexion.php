@@ -5,57 +5,68 @@
 
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id']." est connecté";
+        $user = $_SESSION['user_id_id'];
+
     } else {
         //echo "déconnecté";
     }
-    $user = $_SESSION['user_id_id'];
 
     // Vérifie si l'utilisateur est déjà connecté
-    session_start();
     if (isset($_SESSION['user_id']) and !empty($_SESSION['user_id'])) {
         header("Location: espace_client_particulier.php");
         exit();
     }
 
     //reload clean var
-    $Err1 = "";
     $email = $mot_de_passe = "";
-
+    
     if (isset($_POST["user_login"])) {
+
         $email = $_POST["email"];
         $mot_de_passe = $_POST["mot_de_passe"];
- 
-
-        //verif password 
-        $select_query1 = "SELECT * FROM client WHERE email_client='$email'";
-        $result1 = mysqli_query($con,$select_query1);
-        $rows_count1= mysqli_num_rows($result1);
-        $rowdata = mysqli_fetch_assoc($result1);
-
+        
+        //verif password
+                $select_query1 = "SELECT 
+                    id_client AS id,
+                    email_client AS email,
+                    password_client AS password,
+                    type_client AS type
+                FROM client
+                WHERE email_client='$email'
+                UNION
+                SELECT 
+                    id_gestionnaire AS id,
+                    email_gestionnaire AS email,
+                    password_gestionnaire AS password,
+                    'gestionnaire' AS type
+                FROM gestionnaire
+                WHERE email_gestionnaire='$email';";
+            $result1 = mysqli_query($con,$select_query1);
+            $rows_count1= mysqli_num_rows($result1);
+            $rowdata = mysqli_fetch_assoc($result1);
         if ($rows_count1 > 0) {
-            $typeclient = $rowdata['type_client'];
-            if(password_verify($mot_de_passe,$rowdata['password_client'])){
-                    @session_start();
-                    $_SESSION['user_id']=$email;
-                    $_SESSION['user_id_id']=$rowdata['id_client'];
-                if($typeclient==0){
+            $type = $rowdata['type'];
+            if(password_verify($mot_de_passe,$rowdata['password'])){
+                $_SESSION['user_id']=$email;
+                $_SESSION['user_id_id']=$rowdata['id'];
+                if($type==0){
                     $_SESSION['user_type'] = 0;
                     echo "<script>alert('Connexion réussie')</script>";
                     echo "<script>window.open('espace_client_particulier.php','_self')</script>"; 
-                    //header("Location: espace_client_particulier.php");
-                    //exit();
-                } else {
+                }else if($type==1){
                     $_SESSION['user_type'] = 1;
                     echo "<script>alert('Connexion réussie')</script>";
                     echo "<script>window.open('espace_client_particulier.php','_self')</script>"; 
-                    //header("Location: espace_client_entreprise.php");
-                    //exit();
+                }else{
+                    $_SESSION['user_type'] = 'X';
+                    echo "<script>alert('Connexion réussie')</script>";
+                    echo "<script>window.open('espace_gestionnaire.php','_self')</script>"; 
                 }
             }else{
-            $Err1 = "Email et/ou mot de passe invalide";
+                $Err1 = "Email et/ou mot de passe invalide";
             }
         }else{
-            $Err1 = "Email et/ou mot de passe invalide";
+            $Err1 = "Email absent de nos serveurs";
         }
 
     }
@@ -129,6 +140,8 @@
         <?php 
         if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
             echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
+        } else if (isset($_SESSION['user_id'])&&$_SESSION['user_type']=='X'){
+            echo '<a href="user_connexion.php">Espace Admin</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -156,7 +169,7 @@
             <input type="email" id="email" name="email" placeholder= "juliendupond@gmail.com" required><br>         
             <label for="mot_de_passe" class="form-label">Mot de passe :</label><br>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
-            <span style="color: red;" class="error"><?php if(!isset($Err1)){
+            <span style="color: red;" class="error"><?php if(isset($Err1)){
                 echo $Err1;}else{}?></span><br>
             <p><a href="forgot_password_form.php">Mot de passe oublié ?</a></p>
             <br>
@@ -193,7 +206,5 @@
     <script src="javascript/chatbox.js"></script>
     <script src="javascript/search.js"></script>
     <script src="javascript/burgernavbar.js"></script>
-    <script src="javascript/form_input_pro.js"></script>
-    <script src="javascript/form_errors.js"></script>
 </body>
 </html>

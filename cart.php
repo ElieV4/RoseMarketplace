@@ -105,6 +105,8 @@
         <?php 
         if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
             echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
+        } else if (isset($_SESSION['user_id'])&&$_SESSION['user_type']=='X'){
+            echo '<a href="user_connexion.php">Espace Admin</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }

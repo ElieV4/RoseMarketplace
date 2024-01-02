@@ -1,48 +1,65 @@
-
 <?php 
     include("include/connect.php");
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
-        //echo $_SESSION['user_id']." est connecté";
+        //echo $_SESSION['user_id'];
+        //echo $_SESSION['user_type'];
+        // Si l'utilisateur est connecté et type 0, redirige vers espace_client_particulier.php
+        if($_SESSION['user_type']==0){
+            echo "header vers particulier";
+            header("Location: espace_client_particulier.php");
+            exit();
+        }
     } else {
-        //echo "déconnecté";
+        //echo "reconnexion demandée";
+        header("Location: user_connexion.php");
+        exit();
     }
-    $user = $_SESSION['user_id_id'];
 ?>
+
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <title>Rose. | A propos de nous</title>
+    <title>Rose. | Admin</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <script src="javascript/produits.js"></script>
     <style>
-        .outer-container{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:10px;
-            margin-bottom:10px;
-            background-color: white;
-            align-items: center;
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .leftbar {
+            width: 250px;
+            background-color: #f8f9fa; /* Change the background color as needed */
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dashboard {
+            width: auto;
             text-align: left;
-            padding:20px;
         }
-        .content{
-            text-align: justify;
+
+        .dash-button {
+            width: 200px;
         }
-        .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:30%;
-                height:auto;
-            }
     </style>
 </head>
+
 <body>
+
     <nav class="navbar">
         <div class="navdiv"> 
             <div class="search">
@@ -101,26 +118,38 @@
         }
         ?>        
     </nav>
-   
-    <div class="outer-container">
-        <div class="content">
-            <h1>Notre Histoire</h1>
-            <br>
-            <p>Le projet de ROSE., est né de notre passion partagée pour le bricolage et de notre désir de casser les conventions. Nous nous sommes rencontrés en 2019 au début de nos études, et avons rapidement découvert notre point commun inhabituel. À l'obtention de notre diplôme, il est devenu évident que nous devions concrétiser notre vision.</p>
-            <br>
-            <div class="imgcontainer">
-                <img src="images/friendssmiling.png">
-            </div>
-            <br>
-            <p>En tant que fervents amateurs de bricolage, nous avons toujours pris plaisir à créer et à rénover. Cependant, nous avons rapidement remarqué le manque d'originalité et de personnalité dans le monde des outils et des fournitures de bricolage. C'est à ce moment-là que l'idée de ROSE. a commencé à prendre forme. Notre objectif était de transformer l'expérience du bricolage en créant une marketplace unique qui le rendrait plus amusant, accessible et inspirant pour tous.</p>
-            <br>
-            <p>Le nom "ROSE." a été choisi pour évoquer la créativité et pour casser les codes associés à la couleur rose dans le monde du bricolage. Notre marketplace est devenue un espace où la couleur, le style et la pratique du bricolage se sont réunis. Au-delà de la simple vente d'outils, nous avons créé une communauté où les amateurs de bricolage peuvent se rassembler, partager des idées, apprendre et s'inspirer mutuellement.</p>
-            <br>
-            <div class="imgcontainer" >
-                <img class="sideimg" src="images/friendsstanding.png"><img class="sideimg" src="images/groupworking.png">
-            </div>
-            <br>
-            <p>C'est ainsi qu'est née la première marketplace de bricolage rose. Notre passion commune pour le bricolage a donné naissance à une aventure passionnante. ROSE. est bien plus qu'un projet pour nous, c'est une aventure que nous sommes fiers de partager avec vous.</p>
+
+    <div class="two-columns">
+        <div class="leftbar">
+            <h1>Espace Entreprise</h1><br>
+                    <?php echo "{$_SESSION['user_id']}"; ?><br><br>
+                    <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?ventes">Ventes</a></button><br><br>
+                    <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
+        </div>
+        <div class="dashboard">
+            <?php
+
+                if(isset($_GET['produits_stocks'])){
+                    include('dashboard/produits_stocks.php');
+                } 
+                else if(isset($_GET['commandes'])){
+                    include('dashboard/commandes.php');
+                }
+                else if(isset($_GET['ajouter_un_produit'])){
+                    include('dashboard/ajouter_un_produit.php');
+                }                
+                else if(isset($_GET['modifproduit'])){
+                    include('dashboard/modifier_produit.php');
+                }
+                else if(isset($_GET['ventes'])){
+                    include('dashboard/ventes.php');
+                } else {
+                    include('dashboard/ventes.php');
+                }
+            ?>
         </div>
     </div>
 

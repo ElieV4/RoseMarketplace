@@ -20,6 +20,14 @@ if ($mysqli->multi_query($sql)) {
 } else {
     echo "Erreur lors de la création de la base de données : " . $mysqli->error;
 }
+
+// insert compte gestionnaire 1
+$pw = 'admin';
+$password = password_hash($pw,PASSWORD_BCRYPT);
+$insert_query_admin = "INSERT INTO gestionnaire (id_gestionnaire, email_gestionnaire, password_gestionnaire)
+VALUES ('G1','gestionnaire@rose.com', '$password');";
+$sql_execute_admin = mysqli_query($con, $insert_query_admin);
+
 // Fermeture de la connexion
 $mysqli->close();
 ?>

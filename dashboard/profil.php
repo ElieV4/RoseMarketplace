@@ -65,6 +65,7 @@
                                 $client = $rowdata['prenom_client']. ' '. $rowdata['nom_client'];
                             } else {
                                 $entreprise = $rowdata['raisonsociale_client'];
+                                $siren = $rowdata['siren_client'];
                                 $client = $prenom_client . ' ' . $nom_client;
                             }
 
@@ -75,6 +76,7 @@
                                 <th>Titulaire du compte</th>";
                                 if($entreprise!==""){
                                     echo "<th>Entreprise</th>";
+                                    echo "<th>SIREN</th>";
                                 }
                             echo "</tr>";
                             echo '<tr>
@@ -83,6 +85,7 @@
                                 <td>'.$client.'</td>';
                                 if($entreprise!==""){
                                     echo '<td>'.$entreprise.'</td>';
+                                    echo '<td>'.$siren.'</td>';
                                 }
                             echo '</tr>';
                         }

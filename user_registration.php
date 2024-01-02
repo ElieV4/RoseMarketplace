@@ -5,13 +5,13 @@
 
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id']." est connecté";
+        $user = $_SESSION['user_id_id'];
     } else {
         //echo "déconnecté";
     }
-    $user = $_SESSION['user_id_id'];
  
     //reload clean var
-    $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
+    //$Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
     $email = $raisonsociale = $siren = $nom = $prenom = $date_de_naissance = $mot_de_passe = $confirmer_mot_de_passe = $adresse = $code_postal = $ville = $telephone = "";
 
     if (isset($_POST["user_register"])) {
@@ -77,6 +77,7 @@
         if ($Err1 || $Err2 || $Err3 || $Err4 || $Err5) {
             // Handle errors here if needed
         } else {
+            $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
             //insert query
             $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse)
                                      VALUES ('$adresse', '$code_postal', '$ville', 'facturation')";
@@ -170,6 +171,8 @@
         <?php 
         if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
             echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
+        } else if (isset($_SESSION['user_id'])&&$_SESSION['user_type']=='X'){
+            echo '<a href="user_connexion.php">Espace Admin</a>';
         } else {
             echo '<a href="user_connexion.php">Espace Client</a>';
         }
@@ -195,7 +198,7 @@
         	
             <label for="email" class="form-label">Email :</label><br>
             <input type="email" id="email" name="email" placeholder= "juliendupond@gmail.com" value="<?php echo htmlspecialchars($email); ?>" required><br>
-            <span style="color: red;" class="error" id="error-message1">*<?php echo $Err1;?></span><br>
+            <span style="color: red;" class="error" id="error-message1">*<?php if(isset($Err1)){echo $Err1;}else{}?></span><br>
             
             <label for="type">Etes-vous :</label>
             <input type="radio" id="particulier" name="type" value="particulier" checked onclick="toggleFields()"> <label for="particulier">Un particulier</label>
@@ -211,7 +214,7 @@
             <div id="sirenField" class="hidden">
                 <label for="siren">N° de SIREN :</label><br>
                 <input type="number" id="siren" name="siren" placeholder= "890283744" value="<?php echo htmlspecialchars($siren); ?>"><br>
-                <span style="color: red;" class="error" id="error-message2">*<?php echo $Err2;?></span><br>
+                <span style="color: red;" class="error" id="error-message2">*<?php if(isset($Err2)){echo $Err2;}else{}?></span><br>
             </div>
 
             <label for="nom" class="form-label">Nom :</label><br>
@@ -233,12 +236,12 @@
             
             <label for="telephone" class="form-label">Numéro de téléphone :</label><br>
             <input type="tel" id="telephone" name="telephone" placeholder= "0601020304" value="<?php echo htmlspecialchars($telephone); ?>"><br>
-            <span style="color: red;" class="error" id="error-message3"><?php echo $Err3;?></span><br>
+            <span style="color: red;" class="error" id="error-message3"><?php if(isset($Err3)){echo $Err3;}else{}?></span><br>
             <br>
             
             <label for="date_de_naissance" class="form-label">Date de naissance :</label><br>
             <input type="date" id="date_de_naissance" name="date_de_naissance" value="<?php echo htmlspecialchars($date_de_naissance); ?>"><br>
-            <span style="color: red;" class="error" id="error-message4"><?php echo $Err4;?></span><br>
+            <span style="color: red;" class="error" id="error-message4"><?php if(isset($Err4)){echo $Err4;}else{}?></span><br>
             
             <label for="mot_de_passe" class="form-label">Mot de passe :</label><br>
             <input type="password" id="mot_de_passe" name="mot_de_passe" value="<?php echo htmlspecialchars($mot_de_passe); ?>" required><br>
@@ -247,7 +250,7 @@
             
             <label for="confirmer_mot_de_passe" class="form-label">Confirmer le mot de passe :</label><br>
             <input type="password" id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" value="<?php echo htmlspecialchars($confirmer_mot_de_passe); ?>" required><br>
-            <span style="color: red;" class="error" id="error-message5">* <?php echo $Err5;?></span><br>
+            <span style="color: red;" class="error" id="error-message5">*<?php if(isset($Err5)){echo $Err5;}else{}?></span><br>
             <br>
        
             <input type="submit" value="Inscription" name="user_register">

@@ -3,9 +3,9 @@ CREATE DATABASE IF NOT EXISTS rosemarketplace;
 USE rosemarketplace;
 
 CREATE TABLE gestionnaire (
-	id_gestionnaire INT(11) AUTO_INCREMENT, 
+	id_gestionnaire VARCHAR(11), 
 	email_gestionnaire varchar(250), 
-	password_gestionnaire varchar(50), 
+	password_gestionnaire varchar(255), 
 		PRIMARY KEY (id_gestionnaire));
 
 CREATE TABLE client (
@@ -19,7 +19,6 @@ CREATE TABLE client (
     password_client varchar(255),
     numtel_client numeric(10) ZEROFILL,
     datedenaissance_client date,
-    fournisseur binary(2),
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_gestionnaire INT(11),
 		PRIMARY KEY (id_client),
@@ -112,26 +111,3 @@ CREATE TABLE panier (
 	quantité_produit INT(11),
 	adresse_ip VARCHAR(255) NOT NULL
 		PRIMARY KEY(id_produit));
-
-CREATE TABLE constitue (
-	id_commande INT(11),
-	id_produit INT(11) NOT NULL,
-	nombrearticle_commande numeric(3) 
-		PRIMARY KEY (id_commande, id_produit),
-		FOREIGN KEY (id_commande) REFERENCES commande (id_commande),
- 		FOREIGN KEY (id_produit) REFERENCES produit (id_produit));
-
-CREATE TABLE fournit (
-	id_produit INT(11) id_client INT(11) NOT NULL 
-		PRIMARY KEY (id_produit,id_client),
-		FOREIGN KEY (id_produit) REFERENCES produit (id_produit),
- 		FOREIGN KEY (id_client) REFERENCES client (id_client));
-
-CREATE TABLE envoie___recoit (
-	id_message INT(11),
-	id_gestionnaire INT(11) NOT NULL,
-	id_client INT(11) NOT NULL 
-		PRIMARY KEY (id_message,id_gestionnaire,id_client),
-		FOREIGN KEY (id_message) REFERENCES message (id_message),
-		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire),
-		FOREIGN KEY (id_client) REFERENCES client (id_client));
