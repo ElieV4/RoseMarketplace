@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Rose. | Ajouter un produit</title>
+    <title>Rose. | Produits & Stocks</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
     <style>

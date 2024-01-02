@@ -114,7 +114,7 @@
                 }
             ?>
             <button class="dash-button"><a href="cart.php">Votre panier</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?historique_commande">Historique de commandes</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?historique_commandes">Historique de commandes</a></button><br><br>
             <button class="dash-button"><a href="espace_client_particulier.php?suivi_commande">Suivre votre commande</a></button><br><br>
             <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
@@ -123,8 +123,8 @@
                 if(isset($_GET['profil'])){
                     include('dashboard/profil.php');
                 }                
-                else if(isset($_GET['historique_commande'])){
-                    include('dashboard/historique_commande.php');
+                else if(isset($_GET['historique_commandes'])){
+                    include('dashboard/historique_commandes.php');
                 }                
                 else if(isset($_GET['suivi_commande'])){
                     include('dashboard/suivi_commande.php');

@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Rose. | Commandes</title>
+    <title>Rose. | Historique de commandes</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <style>
         .outer-container{
@@ -26,71 +26,54 @@
             text-align: center;
         }
         .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:20%;
-                height:auto;
+            display:flex;
+            align-items: center;
+            margin:5%;
+            padding:10px;
+            width:20%;
+            height:auto;
         }
-        <style>
-        .main {
-        .main {
-            background-color: white;
+        .content {
+            text-align : justify;
         }
-    </style>
+        </style>
 </head>
 <body>  
     <div class="outer-container">
         <div class="content">
             <?php
-                $select_query = "SELECT *
+                $select_query = "SELECT *, CONCAT(nom_produit, ' ', marque_produit, ' ',categorie_produit, ' ', description_produit)
                                 FROM commande c
-                                LEFT JOIN produit p ON c.id_produit = p.id_produit
+                                LEFT JOIN produit pr ON c.id_produit = pr.id_produit
+                                LEFT JOIN photo ph ON c.id_produit = ph.id_produit
                                 LEFT JOIN client cl ON c.idclient_commande = cl.id_client
+                                LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
+                                LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                                 LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                                WHERE c.id_fournisseur = '$user'
+                                WHERE c.idclient_commande = '$user'
                                 ORDER BY date_commande DESC";
                 $result = mysqli_query($con, $select_query);
                 
+                echo "<table>";
                 if ($result) {
-                    // Afficher le tableau HTML
-                    echo "<table border='1'>
-                        <tr>
-                            <th>ID Commande</th>
-                            <th>Informations client</th>
-                            <th>Nom du produit</th>
-                            <th>Marque</th>
-                            <th>Quantité commandée</th>
-                            <th>Date commande</th>
-                            <th>Statut commande</th>
-                        </tr>";
-                    $montant_commande = 0;
                     // Parcourir les résultats et afficher chaque ligne dans le tableau
                     while ($rowdata = mysqli_fetch_assoc($result)) {
                         $id_commande = $rowdata['id_commande'];
+                        $fournisseur = $rowdata['raisonsociale_client'];
                         $nom_produit = $rowdata['nom_produit'];
                         $marque_produit = $rowdata['marque_produit'];
                         $quantité_produit = $rowdata['quantité_produit'];
                         $date_commande = $rowdata['date_commande'];
                         $type_client = $rowdata['type_client'];
-                        if($type_client==0){
-                            $client = $rowdata['prenom_client'] & ' ' & $rowdata['nom_client'];;
-                        } else {
-                            $client = $rowdata['raisonsociale_client'];
-                        }
+
                         $adresse = $rowdata['numetrue_adresse'];
                         $codepostal = $rowdata['codepostal_adresse'];
                         $ville = $rowdata['villeadresse_adresse'];
                         $statut = $rowdata['etat_commande'];
 
                         echo '<tr>
-                                <td>'.$id_commande.'</td>
-                                <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
-                                <td>'.$nom_produit.'</td>
-                                <td>'.$marque_produit.'</td>
-                                <td>'.$quantité_produit.'</td>
-                                <td>'.$date_commande.'</td>
+                                <td>Commande N°'.$id_commande.'<br>effectuée le <br>'.$date_commande.'</td>
+                                <td>('.$quantité_produit.') '.$nom_produit.'<br>'.$marque_produit.'<br>Vendu par : '.$fournisseur.'</td>
                                 <td><button>'.$statut.'</button></td>
                             </tr>';
                     }

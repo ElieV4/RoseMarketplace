@@ -2,6 +2,16 @@
     include("include/connect.php");
     // Vérifie si l'utilisateur est déjà connecté
     session_start();
+
+    if (isset($_SESSION['user_id'])) {
+        //echo $_SESSION['user_id']." est connecté";
+    } else {
+        //echo "déconnecté";
+    }
+    $user = $_SESSION['user_id_id'];
+
+    // Vérifie si l'utilisateur est déjà connecté
+    session_start();
     if (isset($_SESSION['user_id']) and !empty($_SESSION['user_id'])) {
         header("Location: espace_client_particulier.php");
         exit();
