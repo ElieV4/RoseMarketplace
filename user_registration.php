@@ -11,7 +11,7 @@
     }
  
     //reload clean var
-    //$Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
+    $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
     $email = $raisonsociale = $siren = $nom = $prenom = $date_de_naissance = $mot_de_passe = $confirmer_mot_de_passe = $adresse = $code_postal = $ville = $telephone = "";
 
     if (isset($_POST["user_register"])) {
@@ -82,14 +82,23 @@
             $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse)
                                      VALUES ('$adresse', '$code_postal', '$ville', 'facturation')";
             $sql_execute_adresse = mysqli_query($con, $insert_query_adresse);
-
             if (!$sql_execute_adresse) {
                 echo "Erreur SQLquery adresse: ";
                 die(mysqli_error($con));
             }
 
-            $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, fournisseur, date_creation, id_gestionnaire)
-                                   VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', NULL, CURRENT_TIMESTAMP, NULL)";
+            //recup id_gestionnaire avec le moins de clients
+            $gest_query = "SELECT id_gestionnaire, COUNT(id_gestionnaire) AS occurrences
+                FROM client
+                GROUP BY id_gestionnaire
+                ORDER BY occurrences
+                LIMIT 1;";
+            $gest_result = mysqli_query($con, $gest_query);
+            $gest_data = mysqli_fetch_assoc($gest_result);
+            $id_gestionnaire = $gest_data['id_gestionnaire'];
+
+            $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, date_creation, id_gestionnaire)
+                                   VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', CURRENT_TIMESTAMP, '$id_gestionnaire')";
             $sql_execute_client = mysqli_query($con, $insert_query_client);
 
             if ($sql_execute_client) {

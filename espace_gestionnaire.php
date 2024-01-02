@@ -123,31 +123,22 @@
         <div class="leftbar">
             <h1>Espace Entreprise</h1><br>
                     <?php echo "{$_SESSION['user_id']}"; ?><br><br>
-                    <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?ventes">Ventes</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?contrats">Contrats</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?factures">Factures</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?messagerie">Messagerie</a></button><br><br>
                     <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
             <?php
 
-                if(isset($_GET['produits_stocks'])){
-                    include('dashboard/produits_stocks.php');
+                if(isset($_GET['contrats'])){
+                    include('dashboard/contrats.php');
                 } 
-                else if(isset($_GET['commandes'])){
-                    include('dashboard/commandes.php');
+                else if(isset($_GET['factures'])){
+                    include('dashboard/factures.php');
                 }
-                else if(isset($_GET['ajouter_un_produit'])){
-                    include('dashboard/ajouter_un_produit.php');
-                }                
-                else if(isset($_GET['modifproduit'])){
-                    include('dashboard/modifier_produit.php');
-                }
-                else if(isset($_GET['ventes'])){
-                    include('dashboard/ventes.php');
-                } else {
-                    include('dashboard/ventes.php');
+                else if(isset($_GET['messagerie'])){
+                    include('dashboard/messagerie.php');
                 }
             ?>
         </div>
