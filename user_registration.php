@@ -78,14 +78,6 @@
             // Handle errors here if needed
         } else {
             $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
-            //insert query
-            $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse)
-                                     VALUES ('$adresse', '$code_postal', '$ville', 'facturation')";
-            $sql_execute_adresse = mysqli_query($con, $insert_query_adresse);
-            if (!$sql_execute_adresse) {
-                echo "Erreur SQLquery adresse: ";
-                die(mysqli_error($con));
-            }
 
             //recup id_gestionnaire avec le moins de clients
             $gest_query = "SELECT id_gestionnaire, COUNT(id_gestionnaire) AS occurrences
@@ -97,9 +89,28 @@
             $gest_data = mysqli_fetch_assoc($gest_result);
             $id_gestionnaire = $gest_data['id_gestionnaire'];
 
+            //insert query
+            //d'abord client
             $insert_query_client = "INSERT INTO client (email_client, type_client, raisonsociale_client, siren_client, nom_client, prenom_client, password_client, numtel_client, datedenaissance_client, date_creation, id_gestionnaire)
                                    VALUES ('$email', '$type', '$raisonsociale', '$siren', '$nom', '$prenom', '$HASHED_mot_de_passe', '$telephone', '$date_de_naissance', CURRENT_TIMESTAMP, '$id_gestionnaire')";
             $sql_execute_client = mysqli_query($con, $insert_query_client);
+            
+            //recup id_client
+            $id_query = "SELECT * FROM client 
+                WHERE email_client = '$email'" ;
+            $idresult = mysqli_query($con,$id_query);
+            $rowdata2 = mysqli_fetch_assoc($idresult);
+            $id_client = $rowdata2['id_client'];
+
+            // puis l'adresse
+            $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse, id_client)
+            VALUES ('$adresse', '$code_postal', '$ville', 'facturation', '$id_client')";
+            $sql_execute_adresse = mysqli_query($con, $insert_query_adresse);
+            
+            if (!$sql_execute_adresse) {
+            echo "Erreur SQLquery adresse: ";
+            die(mysqli_error($con));
+            }
 
             if ($sql_execute_client) {
                 echo "<script>alert('Compte ROSE ajouté avec succès')</script>";
@@ -225,14 +236,14 @@
                 <input type="number" id="siren" name="siren" placeholder= "890283744" value="<?php echo htmlspecialchars($siren); ?>"><br>
                 <span style="color: red;" class="error" id="error-message2">*<?php if(isset($Err2)){echo $Err2;}else{}?></span><br>
             </div>
-
-            <label for="nom" class="form-label">Nom :</label><br>
-            <input type="text" id="nom" name="nom" placeholder= "Julien" value="<?php echo htmlspecialchars($nom); ?>" required><br>
-            <span style="color: red;">*</span><br>
             
             <label for="prenom" class="form-label">Prénom :</label><br>
             <input type="text" id="prenom" name="prenom" placeholder= "Dupond" value="<?php echo htmlspecialchars($prenom); ?>" required><br>
             <span style="color: red;">*</span><br> 
+
+            <label for="nom" class="form-label">Nom :</label><br>
+            <input type="text" id="nom" name="nom" placeholder= "Julien" value="<?php echo htmlspecialchars($nom); ?>" required><br>
+            <span style="color: red;">*</span><br>
             
             <label for="adresse" class="form-label">Adresse :</label><br>
             <input type="text" id="adresse" name="adresse" placeholder= "31, Rue du marteau" value="<?php echo htmlspecialchars($adresse); ?>"><br><br>

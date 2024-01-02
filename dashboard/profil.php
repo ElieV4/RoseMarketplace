@@ -74,7 +74,7 @@
                                 <th>ID Client</th>
                                 <th>Email</th>
                                 <th>Titulaire du compte</th>";
-                                if($entreprise!==""){
+                                if(isset($entreprise)){
                                     echo "<th>Entreprise</th>";
                                     echo "<th>SIREN</th>";
                                 }
@@ -83,7 +83,7 @@
                                 <td>'.$id_client.'</td>
                                 <td>'.$email_client.'</td>
                                 <td>'.$client.'</td>';
-                                if($entreprise!==""){
+                                if(isset($entreprise)){
                                     echo '<td>'.$entreprise.'</td>';
                                     echo '<td>'.$siren.'</td>';
                                 }

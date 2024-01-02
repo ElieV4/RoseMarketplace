@@ -63,10 +63,10 @@
                                 <th>Catégorie</th>
                                 <th>Marque</th>
                                 <th>Description</th>
-                                <th>Quantité en stock</th>
+                                <th>Stock</th>
                                 <th>Prix HT</th>
                                 <th>Prix TTC</th>
-                                <th>Prix TTC après commission</th>
+                                <th>TTC après commission</th>
                                 <th>Action</th>
 
                             </tr>";
@@ -93,13 +93,13 @@
                             echo '<tr>
                                     <td>'.$id_produit.'</td>
                                     <td><img src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100px;"></td>
-                                    <td>'.$produit.'</td>
+                                    <td><a href="page_produit.php?id='.$id_produit.'">'.$produit.'</a></td>
                                     <td>'.$categorie.'</td>
                                     <td>'.$marque.'</td>
                                     <td>'.$description.'</td>
                                     <td>
                                         <div class="quantity-container">
-                                        <input class="inputquantite" type="number" min=1  id="quantiteInput_'.$id_produit.'" value="'.$quantitestock.'">
+                                        <input class="inputquantite" type="number" min=1  id="quantiteInput_'.$id_produit.'" value="'.$quantitestock.'" style="width: 50px;">
                                         <button onclick="updateStock('.$id_produit.')">OK</button>
                                         </div>
                                     </td>

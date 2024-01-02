@@ -63,7 +63,7 @@
                         $quantité_produit = $rowdata['quantité_produit'];
                         $date_commande = $rowdata['date_commande'];
                         $type_client = $rowdata['type_client'];
-
+                        
                         $adresse = $rowdata['numetrue_adresse'];
                         $codepostal = $rowdata['codepostal_adresse'];
                         $ville = $rowdata['villeadresse_adresse'];

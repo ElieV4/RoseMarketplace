@@ -60,7 +60,6 @@
                             <th>ID Commande</th>
                             <th>Informations client</th>
                             <th>Nom du produit</th>
-                            <th>Marque</th>
                             <th>Quantité commandée</th>
                             <th>Date commande</th>
                             <th>Statut commande</th>
@@ -75,7 +74,7 @@
                         $date_commande = $rowdata['date_commande'];
                         $type_client = $rowdata['type_client'];
                         if($type_client==0){
-                            $client = $rowdata['prenom_client'] & ' ' & $rowdata['nom_client'];;
+                            $client = $rowdata['prenom_client']. ' ' . $rowdata['nom_client'];
                         } else {
                             $client = $rowdata['raisonsociale_client'];
                         }
@@ -87,8 +86,7 @@
                         echo '<tr>
                                 <td>'.$id_commande.'</td>
                                 <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
-                                <td>'.$nom_produit.'</td>
-                                <td>'.$marque_produit.'</td>
+                                <td>'.$nom_produit.'<br>'.$marque_produit.'</td>
                                 <td>'.$quantité_produit.'</td>
                                 <td>'.$date_commande.'</td>
                                 <td><button>'.$statut.'</button></td>

@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS rosemarketplace;
+CREATE DATABASE IF NOT EXISTS rosemarketplace1;
 
-USE rosemarketplace;
+USE rosemarketplace1;
 
 CREATE TABLE gestionnaire (
 	id_gestionnaire VARCHAR(11), 
@@ -20,7 +20,7 @@ CREATE TABLE client (
     numtel_client numeric(10) ZEROFILL,
     datedenaissance_client date,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_gestionnaire INT(11),
+    id_gestionnaire VARCHAR(11),
 		PRIMARY KEY (id_client),
 		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire));
 
@@ -60,7 +60,7 @@ CREATE TABLE produit (
 CREATE TABLE facture (
 	id_facture INT(11) AUTO_INCREMENT,
 	idemetteur_facture INT(11),
-	iddestinataire_facture INT(11),
+	iddestinataire_facture VARCHAR(11),
 	montantht_facture decimal(9),
 	id_commande INT(11) 
 		PRIMARY KEY (id_facture));
@@ -93,7 +93,7 @@ CREATE TABLE message (
 	contenu_message text(1000),
 	sens binary(1),
 	idclient_message INT(11),
-	idgestionnaire_message INT(11) 
+	idgestionnaire_message VARCHAR(11), 
 		PRIMARY KEY (id_message),
 		FOREIGN KEY (idclient_message) REFERENCES client(id_client),
 		FOREIGN KEY (idgestionnaire_message) REFERENCES gestionnaire(id_gestionnaire));
