@@ -66,7 +66,7 @@ CREATE TABLE commande (
 	id_commande_produit VARCHAR(50),
     id_commande INT(11),
     date_commande TIMESTAMP,
-    etat_commande ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraion', 'livrée', 'refusée','validée'),
+    etat_commande ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraison', 'livrée', 'refusée','validée'),
     id_produit INT(11),
     quantité_produit INT(11),
     montant_total DECIMAL(9),
@@ -84,8 +84,6 @@ CREATE TABLE commande (
     FOREIGN KEY (id_adresse) REFERENCES adresse (id_adresse),
     FOREIGN KEY (id_paiement) REFERENCES paiement (id_paiement)
 );
-
-UPDATE commande SET id_commande_produit = CONCAT(id_commande, '-', id_produit);
 
 CREATE TABLE message (
 	id_message INT(11) AUTO_INCREMENT,

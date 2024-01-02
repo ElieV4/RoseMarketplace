@@ -1,6 +1,6 @@
 <?php 
 
-
+ echo "'à valider', 'en préparation', 'en cours d'envoi', 'en cours de livraion', 'livrée', 'refusée','validée')";
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id']." est connecté";
     } else {
@@ -89,7 +89,7 @@
                                 <td>'.$nom_produit.'<br>'.$marque_produit.'</td>
                                 <td>'.$quantité_produit.'</td>
                                 <td>'.$date_commande.'</td>
-                                <td><button>'.$statut.'</button></td>
+                                <td><button class="statut-btn" data-etat-commande="'.$statut.'" data-commande-id="'.$id_commande.'">'.$statut.'</button></td>
                             </tr>';
                     }
                     echo "</table>";
@@ -99,6 +99,50 @@
                 }
             ?>
         </div>
-    </div> 
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.statut-btn');
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var commandeId = this.getAttribute('data-commande-id');
+                    var etatCommande = this.getAttribute('data-etat-commande');
+
+                    // Ajoutez une vérification pour désactiver le bouton si l'état est 'livrée', 'validée' ou 'refusée'
+                    if (etatCommande === 'livrée' || etatCommande === 'validée' || etatCommande === 'refusée') {
+                        console.log('Le bouton est désactivé car l\'état est ' + etatCommande);
+                        return;
+                    }
+                    // Mettez à jour le statut en appelant le script PHP
+                    fetch('include/update_statut.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'commandeId=' + encodeURIComponent(commandeId),
+                    })
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(function (result) {
+                        // Mettez à jour le texte du bouton et désactivez-le
+                        etatCommande = result.trim(); // Mettez à jour l'état du bouton avec le nouvel état
+                        button.innerText = etatCommande;
+                        button.disabled = true;
+                        
+                        // Reload the page after successful update
+                        location.reload();
+                    })
+                    .catch(function (error) {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

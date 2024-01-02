@@ -129,7 +129,7 @@
                     <?php echo "{$_SESSION['user_id']}"; ?><br><br>
                     <button class="dash-button"><a href="espace_client_particulier.php">Espace client</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
-                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes</a></button><br><br>
+                    <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes en cours</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?ventes">Ventes</a></button><br><br>
                     <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
