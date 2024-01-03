@@ -135,6 +135,9 @@
                 }                
                 else if(isset($_GET['suivi_commande'])){
                     include('dashboard/suivi_commande.php');
+                //si filtre activé sur historique_commandes alors recharge la page (sinon espace reset et renvoie sur profil par défaut)
+                } else if(isset($_GET['tri_hist'])){
+                    include('dashboard/historique_commandes.php');
                 } else {
                     include('dashboard/profil.php');
                 }

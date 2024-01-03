@@ -14,7 +14,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Rose. | Profil</title>
+    <title>Rose. | Ventes</title>
+    <script src="javascript/dashboard.js"></script>
     <style>
         .outer-container{
             margin-top:50px;
@@ -36,24 +37,6 @@
             background-color: white;
         }
     </style>
-    <script>
-        function resetFilters() {
-            // Récupérer l'URL actuelle
-            var currentUrl = window.location.href;
-
-            // Vérifier s'il y a des paramètres GET dans l'URL
-            if (currentUrl.indexOf('?') !== -1) {
-                // Extraire la partie de l'URL avant le premier paramètre GET
-                var baseUrl = currentUrl.split('?')[0];
-
-                // Construire la nouvelle URL avec uniquement le paramètre 'ventes'
-                var newUrl = baseUrl + '?ventes';
-
-                // Rediriger vers la nouvelle URL
-                window.location.href = newUrl;
-            }
-        }
-    </script>
 </head>
 <body>  
     <div class="outer-container">
