@@ -55,6 +55,7 @@
                     // Afficher le tableau HTML
                     echo "<table border='1'>
                         <tr>
+                            <th></th>
                             <th>ID Commande</th>
                             <th>Informations client</th>
                             <th>Nom du produit</th>
@@ -66,6 +67,7 @@
                     // Parcourir les résultats et afficher chaque ligne dans le tableau
                     while ($rowdata = mysqli_fetch_assoc($result)) {
                         $id_commande = $rowdata['id_commande'];
+                        $id_produit = $rowdata['id_produit'];
                         $nom_produit = $rowdata['nom_produit'];
                         $marque_produit = $rowdata['marque_produit'];
                         $quantité_produit = $rowdata['quantité_produit'];
@@ -81,7 +83,19 @@
                         $ville = $rowdata['villeadresse_adresse'];
                         $statut = $rowdata['etat_commande'];
 
+                        //select first photo
+                        $photo_query = "SELECT MIN(id_photo_produit) AS min_photo_id, image_type, image
+                            FROM photo 
+                            WHERE id_produit = '$id_produit'
+                            GROUP BY id_produit";
+                        $photoresult = mysqli_query($con, $photo_query);
+                        $photodata = mysqli_fetch_assoc($photoresult);
+                        $filepath = $photodata['image'];
+                        $image_type = $photodata['image_type'];
+                        
+
                         echo '<tr>
+                                <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 50px;"></a></td>
                                 <td>'.$id_commande.'</td>
                                 <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
                                 <td>'.$nom_produit.'<br>'.$marque_produit.'</td>

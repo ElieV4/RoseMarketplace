@@ -35,7 +35,31 @@
         .content {
             text-align : justify;
         }
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .tr:nth-child(even) {
+            background-color: lightgrey;
+        }
     </style>
+    <script>
+        function toggleDetails(commandeId) {
+            var detailsRow = document.getElementById('details-' + commandeId);
+            if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+                detailsRow.style.display = 'table-row';
+            } else {
+                detailsRow.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>  
     <div class="outer-container">
@@ -144,84 +168,99 @@
             </form>
             <br>
             <?php
-                $categoriefiltre = 'all';
-                if (isset($_GET['cat'])) {
-                    $categoriefiltre = $_GET['cat'];
-                }                    
-                $marquefiltre = 'all';
-                if (isset($_GET['br'])) {
-                    $marquefiltre = $_GET['br'];
-                }                    
-                $valuefiltre = 'all';
-                if (isset($_GET['id'])) {
-                    $valuefiltre = $_GET['id'];
-                }
-                $tri_hist = isset($_GET['tri_hist']) ? $_GET['tri_hist'] : 'datedesc';
-                $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
-                $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
-                $select_query = "SELECT *, 
-                    CONCAT(nom_produit, ' ', marque_produit, ' ',categorie_produit, ' ', description_produit),         -- si ajout d'une searchbar                
+                //declaration des variables pour la requete
+                    $categoriefiltre = 'all';
+                    if (isset($_GET['cat'])) {
+                        $categoriefiltre = $_GET['cat'];
+                    }                    
+                    $marquefiltre = 'all';
+                    if (isset($_GET['br'])) {
+                        $marquefiltre = $_GET['br'];
+                    }                    
+                    $valuefiltre = 'all';
+                    if (isset($_GET['id'])) {
+                        $valuefiltre = $_GET['id'];
+                    }
+                    $tri_hist = isset($_GET['tri_hist']) ? $_GET['tri_hist'] : 'datedesc';
+                    $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
+                    $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
+
+                $select_query = "SELECT *,
+                    CONCAT(nom_produit, ' ', marque_produit, ' ',categorie_produit, ' ', description_produit) AS searchbar,         -- si ajout d'une searchbar                
                     DATE_FORMAT(date_commande, '%Y-%m') AS mois
                     FROM commande c
                     LEFT JOIN produit pr ON c.id_produit = pr.id_produit
-                    LEFT JOIN photo ph ON c.id_produit = ph.id_produit
                     LEFT JOIN client cl ON c.idclient_commande = cl.id_client
                     LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
                     LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
                     WHERE c.idclient_commande = '$user'";
                 //rajout des filtres
-                if ($moisfiltre && $moisfiltre !== 'all') {
-                    $select_query .= " AND MONTH(date_commande) = '$moisfiltre'";
-                }
-                if ($anneefiltre && $anneefiltre !== 'all') {
-                    $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
-                }
-                if ($categoriefiltre !== 'all') {
-                    $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
-                }                    
-                if ($marquefiltre !== 'all') {
-                    $select_query .= " AND p.marque_produit = '$marquefiltre'";
-                }
+                    if ($moisfiltre && $moisfiltre !== 'all') {
+                        $select_query .= " AND MONTH(date_commande) = '$moisfiltre'";
+                    }
+                    if ($anneefiltre && $anneefiltre !== 'all') {
+                        $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
+                    }
+                    if ($categoriefiltre !== 'all') {
+                        $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
+                    }                    
+                    if ($marquefiltre !== 'all') {
+                        $select_query .= " AND p.marque_produit = '$marquefiltre'";
+                    }
 
-                if ($valuefiltre !== 'all') {
-                    $select_query .= " AND c.id_produit = '$valuefiltre'";
-                }
-                if (isset($_GET['reinit'])) {
-                    $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
-                }
-                $select_query .= "ORDER BY";
+                    if ($valuefiltre !== 'all') {
+                        $select_query .= " AND c.id_produit = '$valuefiltre'";
+                    }
+                    if (isset($_GET['reinit'])) {
+                        $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
+                    }
+                    $select_query .= "ORDER BY";
 
                 //rajout du tri
-                switch ($tri_hist) {
-                    case 'dateasc':
-                        $select_query .= " mois ASC";
-                        break;
-                    case 'datedesc':
-                        $select_query .= " mois DESC";
-                        break;
-                    case 'prixasc':
-                        $select_query .= " prixht_produit ASC";
-                        break;
-                    case 'prixdesc':
-                        $select_query .= " prixht_produit DESC";
-                        break;
-                    default:
-                        $select_query .= " mois DESC";
-                        break;
-                }                
+                    switch ($tri_hist) {
+                        case 'dateasc':
+                            $select_query .= " mois ASC";
+                            break;
+                        case 'datedesc':
+                            $select_query .= " mois DESC";
+                            break;
+                        case 'prixasc':
+                            $select_query .= " prixht_produit ASC";
+                            break;
+                        case 'prixdesc':
+                            $select_query .= " prixht_produit DESC";
+                            break;
+                        default:
+                            $select_query .= " mois DESC";
+                            break;
+                    }
                 $result = mysqli_query($con, $select_query);
                 echo "<table>";
                 if ($result) {
                     // Parcourir les résultats et afficher chaque ligne dans le tableau
+                    $evenRow = false;
                     while ($rowdata = mysqli_fetch_assoc($result)) {
                         $id_commande = $rowdata['id_commande'];
                         $fournisseur = $rowdata['raisonsociale_client'];
+                        $date_commande = $rowdata['date_commande'];
+                        $type_client = $rowdata['type_client'];
+
+                        $id_produit = $rowdata['id_produit'];
                         $nom_produit = $rowdata['nom_produit'];
                         $marque_produit = $rowdata['marque_produit'];
                         $quantité_produit = $rowdata['quantité_produit'];
-                        $date_commande = $rowdata['date_commande'];
-                        $type_client = $rowdata['type_client'];
+                        $produit = $rowdata['nom_produit'];
+                        
+                        //select first photo
+                        $photo_query = "SELECT MIN(id_photo_produit) AS min_photo_id, image_type, image
+                            FROM photo 
+                            WHERE id_produit = '$id_produit'
+                            GROUP BY id_produit";
+                        $photoresult = mysqli_query($con, $photo_query);
+                        $photodata = mysqli_fetch_assoc($photoresult);
+                        $filepath = $photodata['image'];
+                        $image_type = $photodata['image_type'];
                         
                         $adresse = $rowdata['numetrue_adresse'];
                         $codepostal = $rowdata['codepostal_adresse'];
@@ -231,31 +270,36 @@
                         $type_paiement = $rowdata['type_paiement'];
                         $titulaire =  $rowdata['titulaire'];      
 
-                        echo '<tr>
-                                <td>Commande N°'.$id_commande.'<br>effectuée le <br>'.$date_commande.'</td>
-                                <td>('.$quantité_produit.') '.$nom_produit.'<br>'.$marque_produit.'<br>Vendu par : '.$fournisseur.'</td>
-                                <td><button>'.$statut.'</button><br><button>Plus de détails</button></td>
-                            </tr>
-                            <tr class=details>
-                                <td>Adresse de livraison :<br>'.$adresse.'<br>'.$codepostal. ' '.$ville.'</td>';
-                        if($type_paiement == 'iban'){
-                            $iban = $rowdata['iban'];
-                            echo '<td>Payée par :<br>Compte Courant '.$iban.'</td>';
-                        } else {
+                        echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
+                            <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 50px;"></a></td>
+                            <td>Commande N°'.$id_commande.'<br>effectuée le <br>'.$date_commande.'</td>
+                            <td>('.$quantité_produit.') '.$nom_produit.'<br>'.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'</td>
+                            <td><button>'.$statut.'</button><br>
+                            <button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>
+                        </tr>
+                        <tr id="details-'.$id_commande.'" class="details" style="display: none;">
+                            <td></td>
+                            <td>Adresse de livraison :<br>'.$adresse.'<br>'.$codepostal. ' '.$ville.'</td>';
+                            if($type_paiement == 'iban'){
+                                $iban = $rowdata['iban'];
+                                echo '<td>Payée par :<br>Compte Courant '.$iban.'</td>';
+                            } else {
                             $banquecb = $rowdata['banquecb'];
                             $numcb = $rowdata['numcb'];
                             $expirationcb = $rowdata['expirationcb'];
-                            echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>';
-                        }
-                        echo '<td></td>
-                            </tr>';
+                            echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
+                            <td></td>';
+                        }                        
+                        echo '</tr>';
+                        $evenRow = !$evenRow; // Alterner les couleurs de fond
+
                     }
                     echo "</table>";
                 } else {
                     // En cas d'erreur lors de l'exécution de la requête
                     echo "Erreur dans la requête : " . mysqli_error($con);
                 }
-            ?>
+            ?>  
         </div>
     </div> 
 </body>
