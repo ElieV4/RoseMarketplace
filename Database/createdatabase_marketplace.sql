@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS rosemarketplace1;
+CREATE DATABASE IF NOT EXISTS rosemarketplace;
 
-USE rosemarketplace1;
+USE rosemarketplace;
 
 CREATE TABLE gestionnaire (
 	id_gestionnaire VARCHAR(11), 
@@ -40,8 +40,8 @@ CREATE TABLE adresse (
 CREATE TABLE paiement (
 	id_paiement INT(11) AUTO_INCREMENT, 
 	iban varchar(34), bic varchar(11), 
-	numcb numeric(16), datedexpcb varchar(7), cryptogrammecb numeric(3), banquecb varchar(50),
-	typepaiement ENUM('iban','cb'), 
+	numcb numeric(16), expirationcb varchar(7), cryptogrammecb numeric(3), banquecb varchar(50),
+	type_paiement ENUM('iban','cb'), 
 	titulaire varchar(150), 
 	id_client INT(11), 
 		PRIMARY KEY (id_paiement),
@@ -55,7 +55,8 @@ CREATE TABLE produit (
 	prixht_produit decimal(7), 
 	quantitestock_produit numeric(6), 
 	description_produit text(1000), 
-	categorie_produit varchar(50), 
+	categorie_produit varchar(50),
+	date_ajout_produit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	marque_produit varchar(50),
 	statut_produit ENUM('supprimé', 'disponible') NOT NULL DEFAULT 'disponible',
 		PRIMARY KEY (id_produit),
@@ -72,7 +73,6 @@ CREATE TABLE commande (
     montant_total DECIMAL(9),
 	idclient_commande INT(11),
     id_fournisseur INT(11),
-    id_facture INT(11),
 	id_adresse INT(11),
 	id_paiement INT(11),
     PRIMARY KEY (id_commande_produit),
@@ -80,7 +80,6 @@ CREATE TABLE commande (
     FOREIGN KEY (id_fournisseur) REFERENCES client (id_client),
 	FOREIGN KEY (idclient_commande) REFERENCES client (id_client),
     FOREIGN KEY (id_produit) REFERENCES produit (id_produit),
-	FOREIGN KEY (id_facture) REFERENCES facture (id_facture),
     FOREIGN KEY (id_adresse) REFERENCES adresse (id_adresse),
     FOREIGN KEY (id_paiement) REFERENCES paiement (id_paiement)
 );

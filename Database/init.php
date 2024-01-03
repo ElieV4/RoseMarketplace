@@ -3,7 +3,7 @@
 $server = "localhost";
 $user = "root";
 $password = "";
-$database = "rosemarketplace1";
+$database = "rosemarketplace";
 
 // Connexion à la base de données MySQL
 $mysqli = new mysqli($server, $user, $password);
@@ -15,10 +15,10 @@ if ($mysqli->connect_error) {
 
 // Création de la base de données
 $sql = file_get_contents("createdatabase_marketplace.sql");
-if ($mysqli->multi_query($sql)) {
+    if ($mysqli->multi_query($sql)) {
     // Vérifier si la première requête s'est exécutée avec succès
     if ($mysqli->errno === 0) {
-        $con = mysqli_connect('localhost', 'root', '', 'rosemarketplace1');
+        $con = mysqli_connect('localhost', 'root', '', 'rosemarketplace');
         if (!$con) {
             die(mysqli_error($con));
         } else {
@@ -46,6 +46,8 @@ if ($mysqli->multi_query($sql)) {
 } else {
     echo "Erreur lors de la création de la base de données : " . $mysqli->error;
 }
+//// insert les valeurs --gestionnaire > client > adresse > produit > photo
+// commande bug à cause des id_paiement / id_adresse absents 
 
 // Fermeture de la connexion
 $mysqli->close();
