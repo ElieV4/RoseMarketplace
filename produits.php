@@ -42,6 +42,10 @@
             }
             .product {
                 width: 23%; 
+                min-width: 200px;
+                margin-bottom: 20px;
+            }
+            .result {
                 margin-bottom: 20px;
             }
         </style>    
@@ -109,7 +113,7 @@
         <div class="outer-container">
             <div class="content">
                 <div class="slogan">
-                    <h1>Produits ROSE.</h1>
+                    <h1>Produits ROSE.</h1><br>
                 </div>
                 <?php
                     function generateOptions($selectedValue, $query, $con) {
@@ -218,9 +222,11 @@
                         $rows = mysqli_num_rows($result);
                         $search = null;
                         if($rows == 0){
-                            echo "Aucun résultat actuellement sur le site, veuillez reformuler votre requête.";
+                            echo '<div class="result">
+                                Aucun résultat actuellement sur le site, veuillez reformuler votre requête.';
                         } else {
-                            echo '<i>'.$rows.' résultats pour votre recherche '. $search.'</i><br><br>';
+                            echo '<i>'.$rows.' résultats pour votre recherche '. $search.'</i><br><br>
+                            </div>';
                         }
 
                         echo '<div class="product-container">';
