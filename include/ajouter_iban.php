@@ -11,6 +11,8 @@
     $user = $_SESSION['user_id_id'];
     $form_titulaire = $form_iban = $form_bic = "";
 
+    $currentPath = $_SERVER['PHP_SELF'];
+
     if (isset($_POST["ajouter_iban"])) {
         $form_titulaire = mysqli_real_escape_string($con, $_POST["titulaire"]);
         $form_iban = mysqli_real_escape_string($con,$_POST["iban"]);
@@ -25,10 +27,11 @@
             echo "Erreur SQLquery paiement: ";
             die(mysqli_error($con));
         } else {
-            echo "<script>window.open('commande.php','_self')</script>";
+            echo "<script>window.open('$currentPath','_self')</script>";
         }
-
-        $id_paiement_new = mysqli_insert_id($con);
+    }
+    if (isset($_POST["annuler"])) {
+        echo "<script>window.open('$currentPath','_self')</script>";
     }
 ?>
 <!DOCTYPE html>
@@ -50,8 +53,8 @@
     <label for="bic" class="form-label">BIC :</label><br>
     <input type="text" id="bic" name="bic" required value="<?php echo htmlspecialchars($form_bic); ?>"><br><br>
     
-    <input type="submit" value="Ajouter" name="ajouter_iban">
-    <button><a href="commande.php">Annuler</a></button>
+    <button><input type="submit" value="Ajouter" name="ajouter_iban"></button>
+    <button><input type="submit" value="Annuler" name="annuler"></button>
     </form>
 </body>
 </html>

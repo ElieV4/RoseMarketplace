@@ -10,6 +10,8 @@
     $user = $_SESSION['user_id_id'];
     $form_banquecb = $form_titulaire = $form_numcb = $form_expirationcb = $form_cryptogrammecb = "";
 
+    $currentPath = $_SERVER['PHP_SELF'];
+
     if (isset($_POST["ajouter_paiement"])) {
         $form_titulaire = mysqli_real_escape_string($con, $_POST["titulaire"]);
         $form_numcb = mysqli_real_escape_string($con,$_POST["numcb"]);
@@ -26,10 +28,11 @@
             echo "Erreur SQLquery paiement: ";
             die(mysqli_error($con));
         } else {
-            echo "<script>window.open('commande.php','_self')</script>";
+            echo "<script>window.open('$currentPath','_self')</script>";
         }
-
-        $id_paiement_new = mysqli_insert_id($con);
+    }
+    if (isset($_POST["annuler"])) {
+        echo "<script>window.open('$currentPath','_self')</script>";
     }
 ?>
 <!DOCTYPE html>
@@ -57,8 +60,8 @@
     <label for="cryptogrammecb" class="form-label">CVV :</label><br>
     <input type="number" id="cryptogrammecb" name="cryptogrammecb" pattern="\d{3}" required value="<?php echo htmlspecialchars($form_cryptogrammecb); ?>"><br><br>
     
-    <input type="submit" value="Ajouter" name="ajouter_paiement">
-    <button><a href="commande.php">Annuler</a></button>
+    <button><input type="submit" value="Ajouter" name="ajouter_paiement"></button>
+    <button><input type="submit" value="Annuler" name="annuler"></button>
     </form>
     <br>
 </body>

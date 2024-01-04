@@ -10,6 +10,8 @@
     $user = $_SESSION['user_id_id'];
     $form_adresse = $form_code_postal = $form_ville = "";
 
+    $currentPath = $_SERVER['PHP_SELF'];
+
     if (isset($_POST["ajouter_adresse"])) {
         if (isset($_POST["copie_facturation"])) {
         
@@ -27,11 +29,11 @@
             echo "Erreur SQLquery adresse: ";
             die(mysqli_error($con));
         } else {
-            echo "<script>window.open('commande.php','_self')</script>";
+            echo "<script>window.open('.$currentPath.','_self')</script>";
         }
-
-        $id_adresse_new = mysqli_insert_id($con);
-        echo "voici". $id_adresse_new; // Récupère l'ID de la dernière insertion
+    }
+    if (isset($_POST["annuler"])) {
+        echo "<script>window.open('$currentPath','_self')</script>";
     }
 ?>
 <!DOCTYPE html>
@@ -53,8 +55,8 @@
     <label for="ville" class="form-label">Ville :</label><br>
     <input type="text" id="ville" name="ville" placeholder= "Paris" required value="<?php echo htmlspecialchars($form_ville); ?>"><br><br>
     
-    <input type="submit" value="Ajouter" name="ajouter_adresse">
-    <button><a href="commande.php">Annuler</a></button>
+    <button><input type="submit" value="Ajouter" name="ajouter_adresse"></button>
+    <button><input type="submit" value="Annuler" name="annuler"></button>
     </form>
     <br>
 </body>

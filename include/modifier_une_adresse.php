@@ -20,6 +20,8 @@
     $form_ville = $rowdata['villeadresse_adresse'];
     $form_codepostal = $rowdata['codepostal_adresse'];
 
+    $currentPath = $_SERVER['PHP_SELF'];
+
     if (isset($_POST["modifier_adresse"])) {
         
         $form_adresse = mysqli_real_escape_string($con, $_POST["adresse"]);
@@ -38,13 +40,11 @@
             echo "Erreur SQLquery adresse: ";
             die(mysqli_error($con));
         } else {
-            $currentPath = $_SERVER['PHP_SELF'];
-            $profilPageURL = $currentPath . "?profil";
-            echo "<script>window.open('$profilPageURL','_self')</script>";
+            echo "<script>window.open('$currentPath','_self')</script>";
         }
-
-        $id_adresse_new = mysqli_insert_id($con);
-        echo "voici". $id_adresse_new; // Récupère l'ID de la dernière insertion
+    }
+    if (isset($_POST["annuler"])) {
+        echo "<script>window.open('$currentPath','_self')</script>";
     }
 ?>
 <!DOCTYPE html>
@@ -64,7 +64,7 @@
     <input type="text" id="ville" name="ville" value="<?php echo htmlspecialchars($form_ville); ?>"><br>
     
     <button><input type="submit" value="Modifier" name="modifier_adresse"></button>
-    <button><a href="commande.php">Annuler</a></button>
+    <button><input type="submit" value="Annuler" name="annuler"></button>
     </form>
 </body>
 </html>
