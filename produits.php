@@ -36,12 +36,12 @@
                     heigth:auto;
             }
             .product-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
             .product {
-                width: 23%; /* Choisir la largeur en pourcentage en fonction de votre mise en page */
+                width: 23%; 
                 margin-bottom: 20px;
             }
         </style>    
@@ -149,7 +149,8 @@
                         <option value="prixasc">Prix croissant</option>
                         <option value="prixdesc">Prix décroissant</option>
                     </select>
-
+                    <input type="text" id="mysearch">
+                    <br>
                     <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
                 </form>
             
@@ -217,8 +218,9 @@
                         if($rows == 0){
                             echo "Aucun résultat actuellement sur le site, veuillez reformuler votre requête.";
                         } else {
-                            echo $rows.' résultats pour votre recherche '. $search.'<br><br>';
+                            echo '<i>'.$rows.' résultats pour votre recherche '. $search.'</i><br><br>';
                         }
+
                         echo '<div class="product-container">';
                         if(isset($result)){
                             while ($rowdata = mysqli_fetch_assoc($result)) {
