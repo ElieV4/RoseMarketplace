@@ -1,24 +1,23 @@
-// ventes / historique commandes > bouton réinitialiser 
+// ventes / historique / commandes > bouton réinitialiser la page
 function resetFilters() {
 	// Récupérer l'URL actuelle
 	var currentUrl = window.location.href;
 
-	// Vérifier s'il y a des paramètres GET dans l'URL
-	if (currentUrl.indexOf('?') !== -1) {
-		// Extraire la partie de l'URL avant le premier paramètre GET
-		var baseUrl = currentUrl.split('?')[0];
+    // Extraire la partie de l'URL avant le premier paramètre GET
+    var baseUrl = currentUrl.split('?')[0];
 
-		// Construire la nouvelle URL avec uniquement le paramètre 'ventes'
-		if(baseUrl.includes('ventes')){
-			var newUrl = baseUrl + '?ventes';
-		} else if (baseUrl.includes('historique')) {
-			var newUrl = baseUrl + '?historique_commandes';
-		} else {
-			var newUrl = baseUrl + '?commandes';
-		}
-		// Rediriger vers la nouvelle URL
-		window.location.href = newUrl;
-	}
+    // Construire la nouvelle URL avec uniquement le paramètre 'ventes'
+    if(currentUrl.includes('ventes')){
+        var newUrl = baseUrl + '?ventes';
+    } else if (currentUrl.includes('historique')) {
+        var newUrl = baseUrl + '?historique_commandes';
+    } else {
+
+        var newUrl = baseUrl + '?commandes';
+    }
+    // Rediriger vers la nouvelle URL
+    window.location.href = newUrl;
+
 }
 
 

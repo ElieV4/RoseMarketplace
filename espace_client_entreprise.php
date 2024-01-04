@@ -153,6 +153,9 @@
                 }
                 else if(isset($_GET['ventes'])){
                     include('dashboard/ventes.php');
+                }               
+                else if(isset($_GET['tri-vt'])){
+                        include('dashboard/ventes.php');
                 } else {
                     include('dashboard/ventes.php');
                 }

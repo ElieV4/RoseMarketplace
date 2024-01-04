@@ -134,8 +134,8 @@
                     echo generateOptions(isset($_GET['id']) ? $_GET['id'] : 'all', $query_products, $con);
                     ?>
                 </select>
-                <label for="tri">Trier par :</label>
-                <select name="tri" id="tri">
+                <label for="tri-vt">Trier par :</label>
+                <select name="tri-vt" id="tri-vt">
                     <option value="dateasc">Date + ancienne</option>
                     <option value="datedesc">Date + récente</option>
                     <option value="nbasc">Nb commandes croissant</option>
@@ -162,7 +162,7 @@
                     if (isset($_GET['id'])) {
                         $valuefiltre = $_GET['id'];
                     }
-                    $tri = isset($_GET['tri']) ? $_GET['tri'] : 'datedesc';
+                    $tri = isset($_GET['tri-vt']) ? $_GET['tri-vt'] : 'datedesc';
                     $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
                     $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
                     $select_query = "SELECT
