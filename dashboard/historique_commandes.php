@@ -194,7 +194,7 @@
                     LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
                     LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                    WHERE c.idclient_commande = '$user' AND etat_commande IN ('validée','refusée') ";
+                    WHERE c.idclient_commande = '$user' ";
                 //rajout des filtres
                     if ($moisfiltre && $moisfiltre !== 'all') {
                         $select_query .= " AND MONTH(date_commande) = '$moisfiltre'";

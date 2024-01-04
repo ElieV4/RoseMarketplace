@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     case 'livrée':
                         // Ne rien faire, car la commande est déjà livrée
                         break;
-
+                    
                     default:
                         // Si l'état n'est pas géré, renvoyez une erreur
                         $response = 'Erreur : État non géré';

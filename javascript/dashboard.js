@@ -22,7 +22,7 @@ function resetFilters() {
 }
 
 
-// commandes > boutons état de commande 
+// commandes > bouton update état de commande 
 document.addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('.statut-btn');
 

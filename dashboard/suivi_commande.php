@@ -52,18 +52,39 @@
     </style>
     <script>
         function toggleDetails(commandeId) {
-    var detailsRow = document.getElementById('details-' + commandeId);
+            var detailsRow = document.getElementById('details-' + commandeId);
 
-    if (detailsRow) {
-        if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
-            detailsRow.style.display = 'table-row';
-        } else {
-            detailsRow.style.display = 'none';
+            if (detailsRow) {
+                if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+                    detailsRow.style.display = 'table-row';
+                } else {
+                    detailsRow.style.display = 'none';
+                }
+            } else {
+                console.error('Element not found: details-' + commandeId);
+            }
         }
-    } else {
-        console.error('Element not found: details-' + commandeId);
+    </script>
+    <script>
+    function updateStatut(commandeId, nouveauStatut) {
+        // Utilisez AJAX pour envoyer une demande au serveur pour mettre à jour le statut et envoyer un message
+        // Ici, j'utilise l'API Fetch comme exemple
+
+        fetch('include/accepter_commande.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ commandeId: commandeId, nouveauStatut: nouveauStatut }),
+        })
+        .then(data => {
+            // Actualisez la page ou effectuez d'autres actions nécessaires
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Erreur lors de la mise à jour du statut :', error);
+        });
     }
-}
     </script>
 </head>
 <body>  
@@ -89,7 +110,7 @@
                 <label for="idc">Commande N° :</label>
                 <select name="idc" id="idc">
                     <?php
-                    $query_products = "SELECT DISTINCT id_commande AS value FROM commande WHERE idclient_commande = '$user' AND etat_commande NOT IN ('validée','refusée')";
+                    $query_products = "SELECT DISTINCT id_commande AS value FROM commande WHERE idclient_commande = '$user' AND etat_commande <> 'validée'";
                     echo generateOptions(isset($_GET['idc']) ? $_GET['idc'] : 'all', $query_products, $con);
                     ?>
                 </select>
@@ -112,7 +133,7 @@
                     LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
                     LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                    WHERE c.idclient_commande = '$user' AND etat_commande NOT IN ('validée','refusée') ";
+                    WHERE c.idclient_commande = '$user' AND etat_commande <> 'validée' ";
 
                     if ($valuefiltre !== 'all') {
                         $select_query .= " AND id_commande = '$valuefiltre'";
@@ -167,14 +188,22 @@
                             $titulaire =  $rowdata['titulaire'];     
 
                             echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
-                                <td>'; if(isset($_GET['idc'])) { echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>';}
-                                echo '<td>Commande N°'.$id_commande.'<br>effectuée le '.date('d/m/y à H:i', strtotime($date_commande)).'</td>
+                                <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>
+                                <td>Commande N°'.$id_commande.'<br>effectuée le '.date('d/m/y à H:i', strtotime($date_commande)).'</td>
                                 <td>('.$quantité_produit.') '.$nom_produit.' '.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'<br>'.$montant.'€</td>
-                                <td><button>'.$statut.'</button></td>
-                            </tr>';
+                                <td>'.$statut.'<br>';
+                                if ($statut == 'livrée') {
+                                    echo '<button onclick="updateStatut('.$id_commande.', \'validée\')">Accepter</button>
+                                    <button onclick="updateStatut('.$id_commande.', \'refusée\')">Refuser</button>';
+                                }
+                                if ($statut == 'refusée') {
+                                    echo '<button onclick="#">Contacter le SAV</button>';
+                                }
+                            echo '</tr>';
                         }
                         
-                        // cett partie ne s'affiche que quand une commande est sélectionnée
+                        // cette partie ne s'affiche que quand une commande est sélectionnée
+                        if(isset($_GET['idc'])) {
                         if($_GET['idc']!=='all') {
                             mysqli_data_seek($result, 0);
                             $fin = false;
@@ -196,21 +225,19 @@
                                             $banquecb = $rowdata['banquecb'];
                                             $numcb = $rowdata['numcb'];
                                             $expirationcb = $rowdata['expirationcb'];
-                                            echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
-                                            <td><button onclick="toggleDetails('.$id_commande.')">Voir la facture</button></td>';
+                                            echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>';
                                         } else {
-                                            echo '<td>Informations de paiement supprimées<br></td>
-                                            <td><button onclick="editFacture('.$id_commande.')">Voir la facture</button></td>';
+                                            echo '<td>Informations de paiement supprimées<br></td>';
                                         }
-                                    echo '<td></td>
-                                    </tr>';
+                                    echo '<td><button onclick="editFacture('.$id_commande.')">Voir la facture</button></td>
+                                        <td></td>
+                                        </tr>';
                                     echo '<br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>';
                                     echo "</table><br><br>";
 
                                     $fin = true;
                                 }
                             } 
-                        }                    
                             // la frise chrono s'affiche quoiqu'il arrive en dessous des produits   
                             echo '<table><tr>';
                             if($date_preparation!==null){
@@ -225,7 +252,12 @@
                             if($date_livree!==null){
                             echo '<td>Délivrée le<br>'.($date_livree ? date("d/m/y à H:i", strtotime($date_livree)) : "").'</td>';
                             }
-                            echo '</tr></table>';                                
+                            echo '</tr></table>'; 
+                        }
+                        }  
+                        //ferme la table si pas pas détails & pas de get
+                        echo '</tr></table>'; 
+                                                           
                     }  else {
                     // En cas d'erreur lors de l'exécution de la requête
                     echo "Erreur dans la requête : " . mysqli_error($con);
