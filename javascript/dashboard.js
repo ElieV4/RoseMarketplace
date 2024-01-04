@@ -11,8 +11,9 @@ function resetFilters() {
         var newUrl = baseUrl + '?ventes';
     } else if (currentUrl.includes('historique')) {
         var newUrl = baseUrl + '?historique_commandes';
+    } else if (currentUrl.includes('produits.php')) {
+        var newUrl = baseUrl ;
     } else {
-
         var newUrl = baseUrl + '?commandes';
     }
     // Rediriger vers la nouvelle URL
