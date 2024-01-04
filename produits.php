@@ -149,7 +149,7 @@
                         <option value="prixasc">Prix croissant</option>
                         <option value="prixdesc">Prix décroissant</option>
                     </select>
-                    <input type="text" id="mysearch">
+                    <input type="text" name="search" id="search">
                     <br>
                     <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
                 </form>
@@ -165,9 +165,11 @@
                         $marquefiltre = 'all';
                         if (isset($_GET['br'])) {
                             $marquefiltre = $_GET['br'];
-                        }                    
+                        }
                         if (isset($_GET['mysearch'])) {
                             $search = $_GET['mysearch'];
+                        } else if (isset($_GET['search'])) {
+                            $search = $_GET['search'];
                         }
                         $tri = isset($_GET['tri-vt']) ? $_GET['tri-vt'] : 'datedesc';
                         $select_query = "SELECT *,
