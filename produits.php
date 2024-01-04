@@ -35,6 +35,15 @@
                     width:250px;
                     heigth:auto;
             }
+            .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+            .product {
+                width: 23%; /* Choisir la largeur en pourcentage en fonction de votre mise en page */
+                margin-bottom: 20px;
+            }
         </style>    
     </head>
     <body>
@@ -210,6 +219,7 @@
                         } else {
                             echo $rows.' résultats pour votre recherche '. $search.'<br><br>';
                         }
+                        echo '<div class="product-container">';
                         if(isset($result)){
                             while ($rowdata = mysqli_fetch_assoc($result)) {
                                 $id_produit = $rowdata['id_produit'];
@@ -228,6 +238,7 @@
                                 echo '</div>';
                             }
                         }
+                        echo '</div>'
                 
                     ?>
                 </div>
