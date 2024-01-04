@@ -64,7 +64,7 @@
 <body>  
     <div class="outer-container">
         <div class="content">
-        <h3>Historique de commandes</h3><br>
+        <h3>Votre historique d'achats</h3><br>
             <?php
                 // Code PHP pour générer les options des menus déroulants
                 function generateMonthOptions($selectedMonth) {
@@ -135,7 +135,7 @@
                 <label for="categorie">Catégorie :</label>
                 <select name="cat" id="cat">
                     <?php
-                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit WHERE id_fournisseur = '$user'";
+                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
                     echo generateOptions(isset($_GET['cat']) ? $_GET['cat'] : 'all', $query_cat, $con);
                     ?>
                 </select>
@@ -143,7 +143,7 @@
                 <label for="br">Marque :</label>
                 <select name="br" id="bran">
                     <?php
-                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit WHERE id_fournisseur = '$user'";
+                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
                     echo generateOptions(isset($_GET['br']) ? $_GET['br'] : 'all', $query_brands, $con);
                     ?>
                 </select>
@@ -151,7 +151,7 @@
                 <label for="id">Produit :</label>
                 <select name="id" id="id">
                     <?php
-                    $query_products = "SELECT DISTINCT nom_produit AS value, id_produit FROM produit WHERE id_fournisseur = '$user'";
+                    $query_products = "SELECT DISTINCT nom_produit AS value, id_produit FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
                     echo generateOptions(isset($_GET['id']) ? $_GET['id'] : 'all', $query_products, $con);
                     ?>
                 </select>
@@ -194,7 +194,7 @@
                     LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
                     LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                    WHERE c.idclient_commande = '$user'";
+                    WHERE c.idclient_commande = '$user' AND etat_commande IN ('validée','refusée') ";
                 //rajout des filtres
                     if ($moisfiltre && $moisfiltre !== 'all') {
                         $select_query .= " AND MONTH(date_commande) = '$moisfiltre'";
@@ -238,7 +238,8 @@
                 $result = mysqli_query($con, $select_query);
                 $rows = mysqli_num_rows($result);
                 if($rows == 0){
-                    echo "Aucun résultat";
+                    echo "<p>Aucun résultat<p><br>
+                        <a href='produits.php'><button>Visiter la boutique</button></a>";
                 } else { 
                     if ($result) {
                         // Parcourir les résultats et afficher chaque ligne dans le tableau
@@ -278,7 +279,7 @@
                             echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
                                 <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>
                                 <br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>
-                                <td>Commande N°'.$id_commande.'<br>effectuée le '.$date_commande.'</td>
+                                <td>Commande N°'.$id_commande.'<br>effectuée le '.date('d/m/y à H:i', strtotime($date_commande)).'</td>
                                 <td>('.$quantité_produit.') '.$nom_produit.' '.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'<br>'.$montant.'€</td>
                                 <td><button>'.$statut.'</button></td>
                             </tr>

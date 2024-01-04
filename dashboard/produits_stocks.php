@@ -43,6 +43,7 @@
 <body>  
     <div class="outer-container">
         <div class="content">
+            <h3>Votre boutique ROSE.</h3><br>
                 <?php
                     $select_query = "SELECT id_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client, statut_produit 
                     FROM produit 
@@ -121,6 +122,7 @@
                 ?>
             <button class="dash-button"><a href="espace_client_entreprise.php?ajouter_un_produit">Ajouter un produit</a></button><br><br>
             <div id="produitssupprimés" style="display: none;">
+            <h3>Anciens produits</h3><br>
                 <?php
                     $select_query = "SELECT id_produit,quantitestock_produit, date_ajout_produit, description_produit,MIN(id_photo_produit) AS min_photo_id, image_type, image, nom_produit, categorie_produit, marque_produit, prixht_produit, raisonsociale_client, statut_produit 
                     FROM produit 

@@ -41,7 +41,7 @@
 <body>  
     <div class="outer-container">
         <div class="content">
-        <h3>Commandes en cours</h3><br>
+        <h3>Vos commandes en cours</h3><br>
             <?php
                 // Code PHP pour générer les options des menus déroulants
                 function generateMonthOptions($selectedMonth) {
@@ -168,7 +168,7 @@
                     LEFT JOIN produit p ON c.id_produit = p.id_produit
                     LEFT JOIN client cl ON c.idclient_commande = cl.id_client
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                    WHERE c.id_fournisseur = '$user'";
+                    WHERE c.id_fournisseur = '$user' AND etat_commande <> 'validée'";
 
                 //rajout des filtres
                     if ($moisfiltre && $moisfiltre !== 'all') {
@@ -265,7 +265,7 @@
                                     <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
                                     <td>'.$nom_produit.'<br>'.$marque_produit.'</td>
                                     <td>'.$quantité_produit.'</td>
-                                    <td>'.$date_commande.'</td>
+                                    <td>'.date('d/m/y H:i', strtotime($date_commande)).'</td>
                                     <td><button type="button" class="statut-btn" data-etat-commande="'.$statut.'" data-commande-id="'.$id_commande.'">'.$statut.'</button></td>
                                 </tr>';
                         }

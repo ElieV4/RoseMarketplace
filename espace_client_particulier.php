@@ -121,8 +121,8 @@
                 }
             ?>
             <button class="dash-button"><a href="cart.php">Votre panier</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?historique_commandes">Historique de commandes</a></button><br><br>
-            <button class="dash-button"><a href="espace_client_particulier.php?suivi_commande">Suivre votre commande</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?historique_commandes">Historique d'achats</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?suivi_commande">Suivi de commande</a></button><br><br>
             <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
@@ -135,9 +135,10 @@
                 }                
                 else if(isset($_GET['suivi_commande'])){
                     include('dashboard/suivi_commande.php');
-                //si filtre activé sur historique_commandes alors recharge la page (sinon espace reset et renvoie sur profil par défaut)
                 } else if(isset($_GET['tri_hist'])){
-                    include('dashboard/historique_commandes.php');
+                    include('dashboard/historique_commandes.php');                
+                } else if(isset($_GET['idc'])){
+                        include('dashboard/suivi_commande.php');
                 } else {
                     include('dashboard/profil.php');
                 }
