@@ -30,9 +30,6 @@
             echo "<script>window.open('$currentPath','_self')</script>";
         }
     }
-    if (isset($_POST["annuler"])) {
-        echo "<script>window.open('$currentPath','_self')</script>";
-    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,6 +37,11 @@
     <meta charset="utf-8">
     <title>Rose. | Passer commande</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
+    <script>
+    function annuler() {
+        window.location.href = '<?php echo $currentPath; ?>';
+    }
+    </script>
 </head>
 <body>   
     <form method="POST" action="" enctype="multipart/form-data">
@@ -53,8 +55,7 @@
     <label for="bic" class="form-label">BIC :</label><br>
     <input type="text" id="bic" name="bic" required value="<?php echo htmlspecialchars($form_bic); ?>"><br><br>
     
-    <button><input type="submit" value="Ajouter" name="ajouter_iban"></button>
-    <button><input type="submit" value="Annuler" name="annuler"></button>
+    <button><input type="submit" value="Ajouter" name="ajouter_iban"></button><button onclick="annuler()">Annuler</button>
     </form>
 </body>
 </html>

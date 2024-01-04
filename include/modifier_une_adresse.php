@@ -57,11 +57,11 @@
 <body>  
     <form method="POST" action="" enctype="multipart/form-data">
     
-    <input type="text" id="adresse" name="adresse" value="<?php echo htmlspecialchars($form_adresse); ?>"><br>
+    <input type="text" id="adresse" name="adresse" value="<?php echo htmlspecialchars($form_adresse); ?>" required><br>
     
-    <input type="number" id="code_postal" name="code_postal" pattern="\d{5}" value="<?php echo htmlspecialchars($form_codepostal); ?>"><br>
+    <input type="number" id="code_postal" name="code_postal" pattern="\d{5}" value="<?php echo htmlspecialchars($form_codepostal); ?>" required><br>
     
-    <input type="text" id="ville" name="ville" value="<?php echo htmlspecialchars($form_ville); ?>"><br>
+    <input type="text" id="ville" name="ville" value="<?php echo htmlspecialchars($form_ville); ?>" required><br>
     
     <button><input type="submit" value="Modifier" name="modifier_adresse"></button>
     <button><input type="submit" value="Annuler" name="annuler"></button>
