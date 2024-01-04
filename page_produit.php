@@ -102,10 +102,9 @@
    
     <div class="outer-container">
         <div class="content">
-
+            <div class="goback"><?php echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';?></div>
+            <div class="product">
                 <?php
-                echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';
-
                 if(isset($_GET['id'])){
                         $id_produit = $_GET['id'];
                         $select_query = "SELECT *
@@ -126,10 +125,9 @@
                         $stock = $rowdata['quantitestock_produit'];
                         $date_ajout = $rowdata['date_ajout_produit'];
                         $description = $rowdata['description_produit'];
- 
-                    echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 10%; max-height: 10%;"><br>';
-                    echo ''.$produit." ".$marque.'<br>';
-                    echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>';
+                    echo '<h2>'.$produit." ".$marque.'</h2>';
+                    echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 300px; max-height: 10%;"><br>';
+                    echo 'Vendu.e par <a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>';
                     echo ''.$description.'<br><br>';
                 }else{
                     echo 'Erreur DB, veuillez revenir à la page précédente';
@@ -169,6 +167,68 @@
                     }
                 }
                 ?>
+            </div>
+            <br>
+            <div class="other-products">
+                <?php
+                    if(isset($_GET['id'])){
+                        $id_produit = $_GET['id'];
+                        $select_query = "SELECT *
+                            FROM produit 
+                            LEFT JOIN photo USING (id_produit) 
+                            LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                            WHERE categorie_produit='$categorie' AND id_produit <> '$id_produit'
+                            LIMIT 5;";
+                        $result = mysqli_query($con, $select_query);
+                        $rows = mysqli_num_rows($result);
+
+                        echo '<table><tr>';
+                        if($rows == 0){
+                            $select_query2 = "SELECT *
+                                FROM produit 
+                                LEFT JOIN photo USING (id_produit) 
+                                LEFT JOIN client ON produit.id_fournisseur = client.id_client 
+                                WHERE categorie_produit<>'$categorie' AND id_produit <> '$id_produit'
+                                LIMIT 5;";
+                            $result2 = mysqli_query($con, $select_query2);
+                            $rows2 = mysqli_num_rows($result2);
+
+                            while ($rowdata = mysqli_fetch_assoc($result2)) {
+                                $id_produit2 = $rowdata['id_produit'];
+                                $filepath = $rowdata['image'];
+                                $image_type = $rowdata['image_type'];
+                                $produit = $rowdata['nom_produit'];
+                                $marque = $rowdata['marque_produit'];
+                                $vendeur = $rowdata['raisonsociale_client'];
+                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                echo '<td>
+                                <a href="page_produit.php?id=' . $id_produit2 . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 150px; max-height: 10%;"></a><br>';
+                                echo ''.$produit."<br>".$marque.'<br>';
+                                echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>
+                                </td>';
+                            }
+                        } else {
+                            while ($rowdata = mysqli_fetch_assoc($result)) {
+                                $id_produit2 = $rowdata['id_produit'];
+                                $filepath = $rowdata['image'];
+                                $image_type = $rowdata['image_type'];
+                                $produit = $rowdata['nom_produit'];
+                                $marque = $rowdata['marque_produit'];
+                                $vendeur = $rowdata['raisonsociale_client'];
+                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                echo '<td>
+                                <a href="page_produit.php?id=' . $id_produit2 . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 150px; max-height: 10%;"></a><br>';
+                                echo ''.$produit."<br>".$marque.'<br>';
+                                echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€<br><br>
+                                </td>';
+                            }
+                        }
+                        echo '</tr></table>';
+                    }else{
+                        echo 'Erreur DB, veuillez revenir à la page précédente';
+                    }
+                ?>
+            </div>
         </div>
     </div> 
 
