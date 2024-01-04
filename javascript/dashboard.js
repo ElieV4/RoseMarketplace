@@ -11,8 +11,10 @@ function resetFilters() {
 		// Construire la nouvelle URL avec uniquement le paramètre 'ventes'
 		if(baseUrl.includes('ventes')){
 			var newUrl = baseUrl + '?ventes';
-		} else {
+		} else if (baseUrl.includes('historique')) {
 			var newUrl = baseUrl + '?historique_commandes';
+		} else {
+			var newUrl = baseUrl + '?commandes';
 		}
 		// Rediriger vers la nouvelle URL
 		window.location.href = newUrl;
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Ajoutez une vérification pour désactiver le bouton si l'état est 'livrée', 'validée' ou 'refusée'
             if (etatCommande === 'livrée' || etatCommande === 'validée' || etatCommande === 'refusée') {
-                console.log('Le bouton est désactivé car l\'état est ' + etatCommande);
+                console.log('Le bouton est désactivé, action à faire côté client ');
                 return;
             }
 
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Mettez à jour le texte du bouton et désactivez-le
                 etatCommande = result.trim(); // Mettez à jour l'état du bouton avec le nouvel état
                 button.innerText = etatCommande;
-                button.classList.remove('en-cours', 'livree', 'validee', 'refusee');
+                button.classList.remove('livree', 'validee', 'refusee');
                 
                 // Mettez à jour la classe du bouton en fonction de l'état
                 switch (etatCommande) {
@@ -61,28 +63,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     case 'en préparation':
                     case "en cours d'envoi":
                     case 'en cours de livraison':
-                        button.classList.add('en-cours');
-                        break;
-
                     case 'livrée':
                         button.classList.add('livree');
                         break;
-
+            
                     case 'validée':
                         button.classList.add('validee');
                         break;
-
+            
                     case 'refusée':
                         button.classList.add('refusee');
                         break;
-
+            
                     default:
                         // Ne rien faire si l'état n'est pas géré
                 }
-
+            
                 button.disabled = true;
-
-                // Rechargez la page après la mise à jour réussie
+            
+                // Maintenant, après la mise à jour réussie, rechargez la page
                 location.reload();
             })
             .catch(function (error) {

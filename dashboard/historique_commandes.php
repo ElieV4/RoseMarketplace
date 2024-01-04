@@ -119,7 +119,7 @@
                     return $options;
                 }
             ?>
-            <form action="espace_client_particulier.php?ventes" id="filters-form" method="get">
+            <form action="" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">
                     <option value="all">Toutes</option>
@@ -203,14 +203,14 @@
                         $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
                     }
                     if ($categoriefiltre !== 'all') {
-                        $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
+                        $select_query .= " AND pr.categorie_produit = '$categoriefiltre'";
                     }                    
                     if ($marquefiltre !== 'all') {
-                        $select_query .= " AND p.marque_produit = '$marquefiltre'";
+                        $select_query .= " AND pr.marque_produit = '$marquefiltre'";
                     }
 
                     if ($valuefiltre !== 'all') {
-                        $select_query .= " AND c.id_produit = '$valuefiltre'";
+                        $select_query .= " AND nom_produit = '$valuefiltre'";
                     }
                     if (isset($_GET['reinit'])) {
                         $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
@@ -236,68 +236,74 @@
                             break;
                     }
                 $result = mysqli_query($con, $select_query);
-                echo "<table>";
-                if ($result) {
-                    // Parcourir les résultats et afficher chaque ligne dans le tableau
-                    $evenRow = false;
-                    while ($rowdata = mysqli_fetch_assoc($result)) {
-                        $id_commande = $rowdata['id_commande'];
-                        $fournisseur = $rowdata['raisonsociale_client'];
-                        $date_commande = $rowdata['date_commande'];
-                        $type_client = $rowdata['type_client'];
+                $rows = mysqli_num_rows($result);
+                if($rows == 0){
+                    echo "Aucun résultat";
+                } else { 
+                    if ($result) {
+                        // Parcourir les résultats et afficher chaque ligne dans le tableau
+                        $evenRow = false;
+                        echo "<table>";
+                        while ($rowdata = mysqli_fetch_assoc($result)) {
+                            $id_commande = $rowdata['id_commande'];
+                            $fournisseur = $rowdata['raisonsociale_client'];
+                            $date_commande = $rowdata['date_commande'];
+                            $montant = $rowdata['montant_total'];
+                            $type_client = $rowdata['type_client'];
 
-                        $id_produit = $rowdata['id_produit'];
-                        $nom_produit = $rowdata['nom_produit'];
-                        $marque_produit = $rowdata['marque_produit'];
-                        $quantité_produit = $rowdata['quantité_produit'];
-                        $produit = $rowdata['nom_produit'];
-                        
-                        //select first photo
-                        $photo_query = "SELECT MIN(id_photo_produit) AS min_photo_id, image_type, image
-                            FROM photo 
-                            WHERE id_produit = '$id_produit'
-                            GROUP BY id_produit";
-                        $photoresult = mysqli_query($con, $photo_query);
-                        $photodata = mysqli_fetch_assoc($photoresult);
-                        $filepath = $photodata['image'];
-                        $image_type = $photodata['image_type'];
-                        
-                        $adresse = $rowdata['numetrue_adresse'];
-                        $codepostal = $rowdata['codepostal_adresse'];
-                        $ville = $rowdata['villeadresse_adresse'];
-                        $statut = $rowdata['etat_commande'];
+                            $id_produit = $rowdata['id_produit'];
+                            $nom_produit = $rowdata['nom_produit'];
+                            $marque_produit = $rowdata['marque_produit'];
+                            $quantité_produit = $rowdata['quantité_produit'];
+                            $produit = $rowdata['nom_produit'];
+                            
+                            //select first photo
+                            $photo_query = "SELECT MIN(id_photo_produit) AS min_photo_id, image_type, image
+                                FROM photo 
+                                WHERE id_produit = '$id_produit'
+                                GROUP BY id_produit";
+                            $photoresult = mysqli_query($con, $photo_query);
+                            $photodata = mysqli_fetch_assoc($photoresult);
+                            $filepath = $photodata['image'];
+                            $image_type = $photodata['image_type'];
+                            
+                            $adresse = $rowdata['numetrue_adresse'];
+                            $codepostal = $rowdata['codepostal_adresse'];
+                            $ville = $rowdata['villeadresse_adresse'];
+                            $statut = $rowdata['etat_commande'];
 
-                        $type_paiement = $rowdata['type_paiement'];
-                        $titulaire =  $rowdata['titulaire'];      
+                            $type_paiement = $rowdata['type_paiement'];
+                            $titulaire =  $rowdata['titulaire'];      
 
-                        echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
-                            <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 50px;"></a></td>
-                            <td>Commande N°'.$id_commande.'<br>effectuée le <br>'.$date_commande.'</td>
-                            <td>('.$quantité_produit.') '.$nom_produit.'<br>'.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'</td>
-                            <td><button>'.$statut.'</button><br>
-                            <button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>
-                        </tr>
-                        <tr id="details-'.$id_commande.'" class="details" style="display: none;">
-                            <td></td>
-                            <td>Adresse de livraison :<br>'.$adresse.'<br>'.$codepostal. ' '.$ville.'</td>';
-                            if($type_paiement == 'iban'){
-                                $iban = $rowdata['iban'];
-                                echo '<td>Payée par :<br>Compte Courant '.$iban.'</td>';
-                            } else {
-                            $banquecb = $rowdata['banquecb'];
-                            $numcb = $rowdata['numcb'];
-                            $expirationcb = $rowdata['expirationcb'];
-                            echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
-                            <td></td>';
-                        }                        
-                        echo '</tr>';
-                        $evenRow = !$evenRow; // Alterner les couleurs de fond
+                            echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
+                                <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>
+                                <br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>
+                                <td>Commande N°'.$id_commande.'<br>effectuée le '.$date_commande.'</td>
+                                <td>('.$quantité_produit.') '.$nom_produit.' '.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'<br>'.$montant.'€</td>
+                                <td><button>'.$statut.'</button></td>
+                            </tr>
+                            <tr id="details-'.$id_commande.'" class="details" style="display: none;">
+                                <td></td>
+                                <td>Adresse de livraison :<br>'.$adresse.'<br>'.$codepostal. ' '.$ville.'</td>';
+                                if($type_paiement == 'iban'){
+                                    $iban = $rowdata['iban'];
+                                    echo '<td>Payée par :<br>Compte Courant '.$iban.'</td>';
+                                } else {
+                                $banquecb = $rowdata['banquecb'];
+                                $numcb = $rowdata['numcb'];
+                                $expirationcb = $rowdata['expirationcb'];
+                                echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
+                                <td><button onclick="toggleDetails('.$id_commande.')">Voir la facture</button></td>';
+                            }                        
+                            echo '</tr>';
+                            $evenRow = !$evenRow; // Alterner les couleurs de fond
 
+                        }
+                        echo "</table>";
+                    } else {
+                        // En cas d'erreur lors de l'exécution de la requête
+                        echo "Erreur dans la requête : " . mysqli_error($con);
                     }
-                    echo "</table>";
-                } else {
-                    // En cas d'erreur lors de l'exécution de la requête
-                    echo "Erreur dans la requête : " . mysqli_error($con);
                 }
             ?>  
         </div>

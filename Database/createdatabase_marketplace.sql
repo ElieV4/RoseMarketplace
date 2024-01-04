@@ -67,6 +67,10 @@ CREATE TABLE commande (
 	id_commande_produit VARCHAR(50),
     id_commande INT(11),
     date_commande TIMESTAMP,
+    date_preparation TIMESTAMP,
+    date_envoi TIMESTAMP,
+    date_livraison TIMESTAMP,
+    date_livree TIMESTAMP,
     etat_commande ENUM('à valider', 'en préparation', "en cours d'envoi", 'en cours de livraison', 'livrée', 'refusée','validée'),
     id_produit INT(11),
     quantité_produit INT(11),
@@ -86,7 +90,7 @@ CREATE TABLE commande (
 
 CREATE TABLE message (
 	id_message INT(11) AUTO_INCREMENT,
-	date_message datetime,
+	date_message TIMESTAMP,
 	contenu_message text(1000),
 	sens binary(1),
 	idclient_message INT(11),

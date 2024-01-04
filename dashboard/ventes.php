@@ -190,7 +190,7 @@
                     }
 
                     if ($valuefiltre !== 'all') {
-                        $select_query .= " AND c.id_produit = '$valuefiltre'";
+                        $select_query .= " AND nom_produit = '$valuefiltre'";
                     }
                     if (isset($_GET['reinit'])) {
                         $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';

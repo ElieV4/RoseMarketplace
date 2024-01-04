@@ -142,6 +142,9 @@
                 else if(isset($_GET['commandes'])){
                     include('dashboard/commandes.php');
                 }
+                else if(isset($_GET['tri_comm'])){
+                    include('dashboard/commandes.php');
+                }
                 else if(isset($_GET['ajouter_un_produit'])){
                     include('dashboard/ajouter_un_produit.php');
                 }                
