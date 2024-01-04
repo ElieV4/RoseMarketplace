@@ -10,26 +10,44 @@
     $user = $_SESSION['user_id_id'];
     $form_adresse = $form_code_postal = $form_ville = "";
 
-    $currentPath = $_SERVER['PHP_SELF'];
+    $currentPath = substr($_SERVER['PHP_SELF'], 16);
+
+    $ex = false;
+    $livraison_query = "SELECT * FROM adresse WHERE id_client ='$user' AND type_adresse='livraison'";
+    $livraison_result = mysqli_query($con, $livraison_query);
+    $livraison_exist = mysqli_num_rows($livraison_result) > 0;
+    
+    if (isset($_POST["copier_adresse"])) {
+        $factu_query = "SELECT *
+        FROM adresse a
+        LEFT JOIN client c USING (id_client) 
+        WHERE c.id_client ='$user' AND type_adresse='facturation'";
+       $factu_result = mysqli_query($con, $factu_query);
+       $data = mysqli_fetch_assoc($factu_result);
+       $form_adresse = $data['numetrue_adresse'];
+       $form_code_postal = $data['codepostal_adresse'];
+       $form_ville = $data['villeadresse_adresse'];
+       $ex = true;
+    }
 
     if (isset($_POST["ajouter_adresse"])) {
-        if (isset($_POST["copie_facturation"])) {
-        
-        }
         $form_adresse = mysqli_real_escape_string($con, $_POST["adresse"]);
         $form_code_postal = mysqli_real_escape_string($con,$_POST["code_postal"]);
         $form_ville = mysqli_real_escape_string($con,$_POST["ville"]);
+        $ex = true;
+    }
 
+    if($ex == true){
         //insert query
         $insert_query_adresse = "INSERT INTO adresse (numetrue_adresse, codepostal_adresse, villeadresse_adresse, type_adresse, id_client)
-                                    VALUES ('$form_adresse', '$form_code_postal', '$form_ville', 'livraison','$user')";
+            VALUES ('$form_adresse', '$form_code_postal', '$form_ville', 'livraison','$user')";
         $sql_execute_adresse = mysqli_query($con, $insert_query_adresse);
 
         if (!$sql_execute_adresse) {
             echo "Erreur SQLquery adresse: ";
             die(mysqli_error($con));
         } else {
-            echo "<script>window.open('.$currentPath.','_self')</script>";
+            echo "<script>window.open('.$currentPath','_self')</script>";
         }
     }
 ?>
@@ -46,6 +64,13 @@
     </script>
 </head>
 <body>
+    <?php if (!$livraison_exist): ?>
+    <form method="POST" action="" enctype="multipart/form-data">
+    <button><input type="submit" value="Utiliser l'adresse de facturation" name="copier_adresse"></button><br>
+    </form>
+    <?php endif; ?>
+
+
     <form method="POST" action="" enctype="multipart/form-data">
 
     <label for="adresse" class="form-label">Adresse :</label><br>
