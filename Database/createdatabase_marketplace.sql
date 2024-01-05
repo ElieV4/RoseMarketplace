@@ -22,6 +22,7 @@ CREATE TABLE client (
     datedenaissance_client date,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_gestionnaire VARCHAR(11),
+	statut_pro ENUM('en attente', 'validé', 'refusé') NOT NULL DEFAULT 'en attente',
 		PRIMARY KEY (id_client),
 		FOREIGN KEY (id_gestionnaire) REFERENCES gestionnaire (id_gestionnaire)
 );
@@ -93,6 +94,7 @@ CREATE TABLE message (
 	date_message TIMESTAMP,
 	contenu_message text(1000),
 	sens binary(1),
+	type_message ENUM('notification', 'message'),
 	idclient_message INT(11),
 	idgestionnaire_message VARCHAR(11), 
 		PRIMARY KEY (id_message),

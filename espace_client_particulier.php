@@ -123,6 +123,7 @@
             <button class="dash-button"><a href="cart.php">Votre panier</a></button><br><br>
             <button class="dash-button"><a href="espace_client_particulier.php?historique_commandes">Historique d'achats</a></button><br><br>
             <button class="dash-button"><a href="espace_client_particulier.php?suivi_commande">Suivi de commande</a></button><br><br>
+            <button class="dash-button"><a href="espace_client_particulier.php?messagerie">Messagerie</a></button><br><br>
             <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
@@ -135,11 +136,20 @@
                 }                
                 else if(isset($_GET['suivi_commande'])){
                     include('dashboard/suivi_commande.php');
-                } else if(isset($_GET['tri_hist'])){
+                } 
+                else if(isset($_GET['tri_hist'])){
                     include('dashboard/historique_commandes.php');                
-                } else if(isset($_GET['idc'])){
-                        include('dashboard/suivi_commande.php');
-                } else {
+                } 
+                else if(isset($_GET['idc'])){
+                    include('dashboard/suivi_commande.php');
+                } 
+                else if(isset($_GET['messagerie'])){
+                    include('dashboard/messagerie.php');
+                }
+                else if(isset($_GET['msg'])){
+                    include('dashboard/messagerie.php');
+                }
+                else {
                     include('dashboard/profil.php');
                 }
             ?>

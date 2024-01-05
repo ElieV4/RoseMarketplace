@@ -13,6 +13,8 @@ function resetFilters() {
         var newUrl = baseUrl + '?historique_commandes';
     } else if (currentUrl.includes('produits.php')) {
         var newUrl = baseUrl ;
+    } else if (currentUrl.includes('?messagerie')) {
+        var newUrl = baseUrl + '?messagerie';
     } else {
         var newUrl = baseUrl + '?commandes';
     }

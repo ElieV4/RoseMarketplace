@@ -145,6 +145,9 @@
                 else if(isset($_GET['messagerie'])){
                     include('dashboard/messagerie.php');
                 }
+                else if(isset($_GET['msg'])){
+                    include('dashboard/messagerie.php');
+                }
             ?>
         </div>
     </div>

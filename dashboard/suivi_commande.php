@@ -133,8 +133,14 @@
                     LEFT JOIN client fn ON c.id_fournisseur = fn.id_client
                     LEFT JOIN paiement pm ON c.id_paiement = pm.id_paiement
                     LEFT JOIN adresse a ON c.id_adresse = a.id_adresse
-                    WHERE c.idclient_commande = '$user' AND etat_commande <> 'validée' 
-                    ORDER BY date_commande ASC";
+                    WHERE c.idclient_commande = '$user' AND etat_commande <> 'validée' ";
+
+                    if ($valuefiltre !== 'all') {
+                        $select_query .= " AND id_commande = '$valuefiltre'";
+                    }
+                    if (isset($_GET['reinit'])) {
+                        $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
+                    }
 
                 $result = mysqli_query($con, $select_query);
                 $rows = mysqli_num_rows($result);
@@ -224,7 +230,6 @@
                                             echo '<td>Informations de paiement supprimées<br></td>';
                                         }
                                     echo '<td><button onclick="editFacture('.$id_commande.')">Voir la facture</button></td>
-                                        <td></td>
                                         </tr>';
                                     echo '<br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>';
                                     echo "</table><br><br>";

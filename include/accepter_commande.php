@@ -35,9 +35,9 @@
     }
     $result = mysqli_query($con, $updateQuery);
 
-    $msg_query = "INSERT INTO message (date_message, contenu_message, sens, idclient_message, idgestionnaire_message)
-    VALUES (NOW(), '$message', 1, '$id_fournisseur', '$id_gestionnaire')";
-
+    $msg_query = "INSERT INTO message (date_message, contenu_message, sens, idclient_message, idgestionnaire_message, type_message)
+    VALUES (NOW(), '$message', 1, '$id_fournisseur', '$id_gestionnaire','notification')";
+    
     $msg_execute = mysqli_query($con,$msg_query);
 
     if (mysqli_query($con, $updateQuery)) {
