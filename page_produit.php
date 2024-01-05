@@ -114,21 +114,30 @@
                             WHERE id_produit = '$id_produit';";
                         $result = mysqli_query($con, $select_query);
 
-                        $rowdata = mysqli_fetch_assoc($result);
-                        $filepath = $rowdata['image'];
-                        $image_type = $rowdata['image_type'];
-                        $produit = $rowdata['nom_produit'];
-                        $marque = $rowdata['marque_produit'];
-                        $vendeur = $rowdata['raisonsociale_client'];
-                        $categorie = $rowdata['categorie_produit'];
-                        $prixTTC = $rowdata['prixht_produit'] * 1.2;
-                        $stock = $rowdata['quantitestock_produit'];
-                        $date_ajout = $rowdata['date_ajout_produit'];
-                        $description = $rowdata['description_produit'];
-                        $id_fournisseur = $rowdata['id_fournisseur'];
-
-                    echo '<h2>'.$produit." ".$marque.'</h2>';
-                    echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 300px; max-height: 10%;"><br>';
+                        while($rowdata = mysqli_fetch_assoc($result)){
+                            $image = $rowdata['image'];
+                            $image_type = $rowdata['image_type'];
+                            $images[] = array(
+                                'filepath' => $image,
+                                'image_type' => $image_type
+                            );
+                            $produit = $rowdata['nom_produit'];
+                            $marque = $rowdata['marque_produit'];
+                            $vendeur = $rowdata['raisonsociale_client'];
+                            $categorie = $rowdata['categorie_produit'];
+                            $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                            $stock = $rowdata['quantitestock_produit'];
+                            $date_ajout = $rowdata['date_ajout_produit'];
+                            $description = $rowdata['description_produit'];
+                            $id_fournisseur = $rowdata['id_fournisseur'];
+                        }
+                        
+                    echo '<h2>' . $produit . " " . $marque . '</h2>';
+                    echo '<div class="image-container">';
+                    foreach ($images as $imageData) {
+                        echo '<img class="imgcontainer" src="data:' . $imageData['image_type'] . ';base64,' . base64_encode($imageData['filepath']) . '" style="max-width: 300px; max-height: 10%; margin-right: 10px;">';
+                    }
+                    echo '</div>';
                     echo 'Vendu.e par <a href="page_fournisseur.php?id='.$id_fournisseur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>';
                     echo ''.$description.'<br><br>';
                 }else{
