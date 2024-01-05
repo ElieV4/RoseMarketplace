@@ -70,37 +70,33 @@
         </style>
         <script>
             function desactiverAnnonce(idProduit) {
-                var confirmation = confirm("Êtes-vous sûr de vouloir désactiver cette annonce ?");
-                
-                if (confirmation) {
-                    // Envoyer une requête AJAX pour mettre à jour le statut du produit
-                    fetch('./include/desactiver_annonce.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ idProduit: idProduit }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            // Actualisez la page ou effectuez d'autres actions nécessaires
+                // Envoyer une requête AJAX pour mettre à jour le statut du produit
+                fetch('./include/desactiver_annonce.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idProduit: idProduit }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        // Actualisez la page ou effectuez d'autres actions nécessaires
 
-                            // Mettez à jour le texte du bouton
-                            var buttonText = data.buttonText;
-                            var button = document.getElementById('desactiver-btn-' + idProduit);
-                            if (button) {
-                                button.textContent = buttonText;
-                            }
-                        } else {
-                            alert('Erreur lors de la désactivation de l\'annonce : ' + data.message);
+                        // Mettez à jour le texte du bouton
+                        var buttonText = data.buttonText;
+                        var button = document.getElementById('desactiver-btn-' + idProduit);
+                        if (button) {
+                            button.textContent = buttonText;
                         }
-                    })
-                    .catch(error => {
-                        console.error('Erreur lors de la désactivation de l\'annonce :', error);
-                    });
-                }
+                    } else {
+                        alert('Erreur lors de la désactivation de l\'annonce : ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la désactivation de l\'annonce :', error);
+                });
             }
         </script>
     </head>
