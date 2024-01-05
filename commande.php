@@ -301,7 +301,8 @@
                             <p>Total (TVA incluse) : '.$montant. '€</p>
                             <p>Frais de livraison estimés : Gratuit</p><br>
                             <p>Montant total : '.$montant. '€</p><br><br>
-                            <button id="executer_commande" onclick="executerCommande()" disabled>Passer commande</button>';
+                            <button id="executer_commande" onclick="executerCommande()" >Passer commande</button>
+                            <div id="message_erreur" style="color: red; margin-top: 10px;"></div>';
                             } else {
                                 echo "Aucun achat en cours";
                                 echo "<script>window.open('espace_client_particulier.php?suivi_commande','_self')</script>";

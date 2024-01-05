@@ -1,5 +1,15 @@
+// Ajouter un gestionnaire d'événements click sur le bouton "Exécuter commande"
+document.getElementById('executer_commande').addEventListener('click', function() {
+    executerCommande();
+});
+
+
 // Fonction pour exécuter la commande avec les éléments sélectionnés
 function executerCommande() {
+
+    // Récupérer l'élément div du message d'erreur
+    var messageErreurDiv = document.getElementById('message_erreur');
+
     // Récupérer les radios sélectionnés pour la livraison et le paiement
     var livraisonRadio = document.querySelector('input[name="livraison_radio"]:checked');
     var paiementRadio = document.querySelector('input[name="paiement_radio"]:checked');
@@ -39,8 +49,11 @@ function executerCommande() {
             console.error("Erreur AJAX: ", error);
             alert("Erreur lors de l'exécution de la commande.");
         });
+    } else {
+        messageErreurDiv.textContent = "Veuillez sélectionner une adresse de livraison et un moyen de paiement avant de passer commande.";
     }
 }
+
 
 // Fonction pour supprimer l'adresse
 function supprimerAdresse(id_adresse, callback) {
@@ -113,28 +126,3 @@ function supprimerPaiement(id_paiement, callback) {
         console.error("Erreur AJAX : ", error);
     });
 }
-
-// Valider la commande avec les éléments sélectionnés
-function checkSelection() {
-    var livraisonRadio = document.querySelector('input[name="livraison_radio"]:checked');
-    var paiementRadio = document.querySelector('input[name="paiement_radio"]:checked');
-
-    // Si une ligne est sélectionnée dans chaque tableau, activer le bouton "Exécuter commande"
-    if (livraisonRadio && paiementRadio) {
-        document.getElementById('executer_commande').disabled = false;
-    } else {
-        document.getElementById('executer_commande').disabled = true;
-    }
-}
-
-// Ajouter des écouteurs d'événements pour les boutons radio
-var livraisonRadios = document.querySelectorAll('input[name="livraison_radio"]');
-var paiementRadios = document.querySelectorAll('input[name="paiement_radio"]');
-
-livraisonRadios.forEach(function (radio) {
-    radio.addEventListener('change', checkSelection);
-});
-
-paiementRadios.forEach(function (radio) {
-    radio.addEventListener('change', checkSelection);
-});
