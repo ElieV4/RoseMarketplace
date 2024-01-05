@@ -224,13 +224,14 @@
                                 $produit = $rowdata['nom_produit'];
                                 $marque = $rowdata['marque_produit'];
                                 $vendeur = $rowdata['raisonsociale_client'];
+                                $id_fournisseur = $rowdata['id_fournisseur'];
                                 $categorie = $rowdata['categorie_produit'];
                                 $prixTTC = $rowdata['prixht_produit'] * 1.2;
 
                                 echo '<div class="product">';
                                 echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                                 echo '' . $produit . " " . $marque . '<br>';
-                                echo '<a href="produits.php?mysearch='.$vendeur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
+                                echo '<a href="page_fournisseur.php?id='.$id_fournisseur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
                                 echo '</div>';
                             }
                         }

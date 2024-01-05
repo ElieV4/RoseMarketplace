@@ -49,7 +49,7 @@
                     FROM produit 
                     LEFT JOIN photo USING (id_produit) 
                     LEFT JOIN client ON produit.id_fournisseur = client.id_client
-                    WHERE id_client = '$user' AND statut_produit = 'disponible'
+                    WHERE id_client = '$user' AND statut_produit = 'disponible' AND statut_produit = 'désactivé'
                     GROUP BY id_produit
                     ORDER BY date_ajout_produit DESC";
                     $result = mysqli_query($con, $select_query);

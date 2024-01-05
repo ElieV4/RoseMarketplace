@@ -125,9 +125,11 @@
                         $stock = $rowdata['quantitestock_produit'];
                         $date_ajout = $rowdata['date_ajout_produit'];
                         $description = $rowdata['description_produit'];
+                        $id_fournisseur = $rowdata['id_fournisseur'];
+
                     echo '<h2>'.$produit." ".$marque.'</h2>';
                     echo '<img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 300px; max-height: 10%;"><br>';
-                    echo 'Vendu.e par <a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>';
+                    echo 'Vendu.e par <a href="page_fournisseur.php?id='.$id_fournisseur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>';
                     echo ''.$description.'<br><br>';
                 }else{
                     echo 'Erreur DB, veuillez revenir à la page précédente';
@@ -203,10 +205,12 @@
                                 $marque = $rowdata['marque_produit'];
                                 $vendeur = $rowdata['raisonsociale_client'];
                                 $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                $id_fournisseur = $rowdata['id_fournisseur'];
+
                                 echo '<td>
                                 <a href="page_produit.php?id=' . $id_produit2 . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 150px; max-height: 10%;"></a><br>';
                                 echo ''.$produit."<br>".$marque.'<br>';
-                                echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>
+                                echo '<a href="page_fournisseur.php?id='.$id_fournisseur.'">'.$vendeur.'</a> '.$prixTTC.'€ TTC<br><br>
                                 </td>';
                             }
                         } else {
@@ -218,10 +222,12 @@
                                 $marque = $rowdata['marque_produit'];
                                 $vendeur = $rowdata['raisonsociale_client'];
                                 $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                $id_fournisseur = $rowdata['id_fournisseur'];
+
                                 echo '<td>
                                 <a href="page_produit.php?id=' . $id_produit2 . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 150px; max-height: 10%;"></a><br>';
                                 echo ''.$produit."<br>".$marque.'<br>';
-                                echo '<a href="produits.php?mysearch='.$vendeur.'">'.$vendeur.'</a> '.$prixTTC.'€<br><br>
+                                echo '<a href="page_fournisseur.php?id='.$id_fournisseur.'">'.$vendeur.'</a> '.$prixTTC.'€<br><br>
                                 </td>';
                             }
                         }

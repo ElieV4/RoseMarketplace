@@ -48,30 +48,6 @@
         }
     </style>
         <script>
-        function validerCompte(idClient, nouveauStatut) {
-            fetch('./include/valider_contrat.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ idClient: idClient, nouveauStatut: nouveauStatut }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('voila:', data);
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Erreur lors de la mise à jour du statut :', error);
-            });
-        }
-
-
         function editerContrat(idClient) {
             // Ajouter la logique pour éditer le contrat
             alert('Éditer le contrat pour le client avec ID ' + idClient);
@@ -120,6 +96,7 @@
         <div class="actions">
             <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'validé')">Valider le compte</button>
             <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'refusé')">Bloquer le compte</button>
+            <a href="page_fournisseur.php?id=<?php echo urldecode($id_client); ?>"><button class="action-button">Gérer les annonces</button></a>
             <button class="action-button" onclick="editerContrat($id_client)">Éditer le contrat</button>
             <button class="action-button" onclick="voirFactures($id_client)">Voir les factures</button>
         </div>

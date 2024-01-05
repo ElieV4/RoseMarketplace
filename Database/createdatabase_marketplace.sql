@@ -59,7 +59,7 @@ CREATE TABLE produit (
 	categorie_produit varchar(50),
 	date_ajout_produit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	marque_produit varchar(50),
-	statut_produit ENUM('supprimé', 'disponible') NOT NULL DEFAULT 'disponible',
+	statut_produit ENUM('supprimé', 'disponible','désactivé') NOT NULL DEFAULT 'disponible',
 		PRIMARY KEY (id_produit),
 		FOREIGN KEY (id_fournisseur) REFERENCES client (id_client)
 );

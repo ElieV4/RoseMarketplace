@@ -11,8 +11,15 @@
         }
         if(isset($_GET['id'])){
             $id_fournisseur = $_GET['id'];
+            $fournquery = "SELECT *, COUNT(DISTINCT id_commande) AS nb_commandes, COUNT(DISTINCT pr.id_produit) AS nb_produits
+                FROM client cl
+                LEFT JOIN produit pr ON cl.id_client = pr.id_fournisseur
+                LEFT JOIN commande co on cl.id_client = co.id_fournisseur
+                WHERE cl.id_client = '$id_fournisseur' AND statut_produit = 'disponible'";
+            $data = singleQuery($fournquery);
+            $fournisseur = $data['raisonsociale_client'];
         } else {
-            
+            // lien vers page 404
         }
  
     ?>
@@ -54,7 +61,48 @@
             .result {
                 margin-bottom: 20px;
             }
-        </style>    
+            .desactiver-btn {
+                padding: 5px;
+                cursor: pointer;
+                background-color: black; /* Changez la couleur du bouton selon vos besoins */
+                border-radius: 3px;
+            }
+        </style>
+        <script>
+            function desactiverAnnonce(idProduit) {
+                var confirmation = confirm("Êtes-vous sûr de vouloir désactiver cette annonce ?");
+                
+                if (confirmation) {
+                    // Envoyer une requête AJAX pour mettre à jour le statut du produit
+                    fetch('./include/desactiver_annonce.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ idProduit: idProduit }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            // Actualisez la page ou effectuez d'autres actions nécessaires
+
+                            // Mettez à jour le texte du bouton
+                            var buttonText = data.buttonText;
+                            var button = document.getElementById('desactiver-btn-' + idProduit);
+                            if (button) {
+                                button.textContent = buttonText;
+                            }
+                        } else {
+                            alert('Erreur lors de la désactivation de l\'annonce : ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la désactivation de l\'annonce :', error);
+                    });
+                }
+            }
+        </script>
     </head>
     <body>
         <nav class="navbar">
@@ -118,9 +166,15 @@
     
         <div class="outer-container">
             <div class="content">
-                <div class="slogan">
-                    <h1>Produits ROSE.</h1><br>
+                <div class="entete">
+                    <h1>Boutique <?php echo $fournisseur ?>.</h1><br>
+                    <div class="infos">
+                        <p>Inscrit depuis le <?php echo date('d/m/y', strtotime($data['date_creation'])); ?></p>
+                        <p><?php echo $data['nb_commandes']; ?> commandes</p>
+                        <p>Actuellement <?php echo $data['nb_produits']; ?> produits en boutique</p>
+                    </div>
                 </div>
+                <br>
                 <form action="produits.php" id="filters-form" method="get">
                     <label for="categorie">Catégorie :</label>
                     <select name="cat" id="cat">
@@ -174,9 +228,12 @@
                             FROM produit p
                             LEFT JOIN photo ph USING (id_produit) 
                             LEFT JOIN client c ON p.id_fournisseur = c.id_client                    
-                            WHERE statut_produit = 'disponible' ";
+                            WHERE statut_produit <> 'supprimé' AND id_fournisseur = '$id_fournisseur'";
                         
                         //rajout des filtres
+                            if ($_SESSION['user_type'] !== 'X') {
+                                $select_query .= " AND statut_produit <> 'désactivé'";
+                            }  
                             if ($categoriefiltre !== 'all') {
                                 $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
                             }                    
@@ -217,7 +274,7 @@
                             echo '<div class="result">
                                 Aucun résultat actuellement sur le site, veuillez reformuler votre requête.';
                         } else {
-                            echo '<i>'.$rows.' résultats pour votre recherche '. $search.'</i><br><br>
+                            echo '<i>'.$rows.' résultats dans la boutique '. $search.'</i><br><br>
                             </div>';
                         }
 
@@ -236,7 +293,10 @@
                                 echo '<div class="product">';
                                 echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                                 echo '' . $produit . " " . $marque . '<br>';
-                                echo '<a href="produits.php?mysearch='.$vendeur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
+                                echo '<a href="page_fournisseur.php?id='.$id_fournisseur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
+                                if ($_SESSION['user_type'] === 'X') {
+                                    echo '<button id="desactiver-btn-' . $id_produit . '" class="desactiver-btn" onclick="desactiverAnnonce(' . $id_produit . ')">Désactiver l\'annonce</button>';
+                                }
                                 echo '</div>';
                             }
                         }

@@ -24,7 +24,7 @@ function resetFilters() {
 }
 
 
-// commandes > bouton update état de commande 
+// commandes.php > bouton update état de commande 
 document.addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('.statut-btn');
 
@@ -92,3 +92,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+//FONCTION ADMIN > page contrats.php
+function validerCompte(idClient, nouveauStatut) {
+    fetch('include/valider_contrat.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idClient: idClient, nouveauStatut: nouveauStatut }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('voila:', data);
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Erreur lors de la mise à jour du statut :', error);
+    });
+}
