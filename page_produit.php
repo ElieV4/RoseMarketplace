@@ -178,6 +178,7 @@
                             LEFT JOIN photo USING (id_produit) 
                             LEFT JOIN client ON produit.id_fournisseur = client.id_client 
                             WHERE categorie_produit='$categorie' AND id_produit <> '$id_produit'
+                            GROUP BY id_produit
                             LIMIT 5;";
                         $result = mysqli_query($con, $select_query);
                         $rows = mysqli_num_rows($result);
@@ -189,6 +190,7 @@
                                 LEFT JOIN photo USING (id_produit) 
                                 LEFT JOIN client ON produit.id_fournisseur = client.id_client 
                                 WHERE categorie_produit<>'$categorie' AND id_produit <> '$id_produit'
+                                GROUP BY id_produit
                                 LIMIT 5;";
                             $result2 = mysqli_query($con, $select_query2);
                             $rows2 = mysqli_num_rows($result2);
