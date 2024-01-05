@@ -40,7 +40,7 @@
     </style>
     <script src="./javascript/produits.js"></script>
 </head>
-<body>  
+<body>
     <div class="outer-container">
         <div class="content">
             <h3>Votre boutique ROSE.</h3><br>

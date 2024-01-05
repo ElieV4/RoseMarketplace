@@ -197,7 +197,7 @@
                                     <button onclick="updateStatut('.$id_commande.', \'refusée\')">Refuser</button>';
                                 }
                                 if ($statut == 'refusée') {
-                                    echo '<button onclick="#">Contacter le SAV</button>';
+                                    echo '<button><a href="espace_client_particulier.php?messagerie">Contacter le SAV</a></button>';
                                 }
                             echo '</tr>';
                         }

@@ -135,6 +135,7 @@
 </head>
 <body>  
     <div class="outer-container">
+    <?php if ($statut_pro == 'validé') : ?>
         <br><h2>Ajouter un produit</h2><br>   
 
             <form method="POST" action="" enctype="multipart/form-data">
@@ -187,5 +188,9 @@
         </form>
         <br>
     </div>
+    <?php endif; ?>
+    <?php if ($statut_pro == 'validé') : ?>
+    <?php endif; ?>
+
 </body>
 </html>

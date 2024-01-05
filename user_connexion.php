@@ -30,7 +30,8 @@
                     id_client AS id,
                     email_client AS email,
                     password_client AS password,
-                    type_client AS type
+                    type_client AS type,
+                    statut_pro AS statut
                 FROM client
                 WHERE email_client='$email'
                 UNION
@@ -38,7 +39,8 @@
                     id_gestionnaire AS id,
                     email_gestionnaire AS email,
                     password_gestionnaire AS password,
-                    'gestionnaire' AS type
+                    'gestionnaire' AS type,
+                    'admin' AS statut
                 FROM gestionnaire
                 WHERE email_gestionnaire='$email';";
             $result1 = mysqli_query($con,$select_query1);
@@ -49,6 +51,7 @@
             if(password_verify($mot_de_passe,$rowdata['password'])){
                 $_SESSION['user_id']=$email;
                 $_SESSION['user_id_id']=$rowdata['id'];
+                $_SESSION['statut']=$rowdata['statut'];
                 if($type==0){
                     $_SESSION['user_type'] = 0;
                     echo "<script>alert('Connexion réussie')</script>";

@@ -4,6 +4,7 @@
     session_start();
 
     if (isset($_SESSION['user_id'])) {
+        $statut = $_SESSION['statut'];
         //echo $_SESSION['user_id'];
         //echo $_SESSION['user_type'];
         // Si l'utilisateur est connecté et type 0, redirige vers espace_client_particulier.php
@@ -58,6 +59,37 @@
 
         .dash-button {
             width: 200px;
+        }
+        .statut-error {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* 100% de la hauteur de la vue */
+        background-color: #f8f9fa; /* Changez la couleur de fond selon vos besoins */
+        font-size: 24px; /* Taille du texte */
+        }
+
+        .statut-error h2 {
+            margin-bottom: 20px;
+        }
+
+        .statut-error p {
+            margin-bottom: 40px;
+        }
+
+        .statut-error button {
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            background-color: #007bff; /* Changez la couleur du bouton selon vos besoins */
+            color: white; /* Couleur du texte du bouton */
+            border: none;
+        }
+
+        .statut-error button:hover {
+            background-color: #0056b3; /* Changez la couleur du bouton au survol selon vos besoins */
         }
     </style>
 </head>
@@ -123,6 +155,7 @@
         ?>        
     </nav>
 
+    <?php if ($statut == 'validé') : ?>
     <div class="two-columns">
         <div class="leftbar">
             <h1>Espace Entreprise</h1><br>
@@ -162,6 +195,22 @@
             ?>
         </div>
     </div>
+    <?php endif; ?>
+
+    <?php if ($statut == 'refusé') : ?>
+        <div class="statut-error">
+            <h2>Votre accès professionel a été refusé par le gestionnaire.</h2>
+            <p>Veuillez <a href="espace_client_particulier.php?messagerie">le contacter</a> pour régulariser votre situation.</p>
+            <p><button><a href="espace_client_particulier.php?">Retourner à l'espace client</a></button></p>
+        </div>
+    <?php endif; ?>
+    <?php if ($statut == 'en attente') : ?>
+        <div class="statut-error">
+            <h2>Votre accès professionel est en cours de traitement par votre gestionnaire référent.</h2>
+            <p>Veuillez nous en excusez, votre compte devrait être disponible sous peu.</p>
+            <p><button><a href="espace_client_particulier.php?">Retourner à l'espace client</a></button></p>
+        </div>
+    <?php endif; ?>
 
 
     <div class="chatbox">
