@@ -1,6 +1,7 @@
 <?php
     include 'connect.php';
     include 'fonctions.php';
+    
     session_start();
     $id_gestionnaire = $_SESSION['user_id_id'];
 
@@ -20,8 +21,10 @@
             $updateQuery = "UPDATE client SET statut_pro = '$nouveauStatut' WHERE id_client = '$id_client'";
             break;
         case 'refusé':
-            $message = "Votre compte professionnel a été refusé par votre gestionnaire ROSE. Contactez-le pour régulariser votre situation.";
+            $message = "Votre compte professionnel a été bloqué par votre gestionnaire ROSE. Contactez-le pour régulariser votre situation.";
             $updateQuery = "UPDATE client SET statut_pro = '$nouveauStatut' WHERE id_client = '$id_client'";
+            $desactivateProductsQuery = "UPDATE produit SET statut_produit = 'désactivé' WHERE id_fournisseur = '$id_client' AND statut_produit = 'disponible'";
+            $desactivateProductsResult = mysqli_query($con, $desactivateProductsQuery);
             break;
         default:
             $response = array('status' => 'error', 'message' => 'Erreur : statut non géré');

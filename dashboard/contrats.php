@@ -1,5 +1,4 @@
 <?php
-    // Inclure les fichiers nécessaires (connexion à la base de données, fonctions, etc.)
     include("./include/connect.php");
     include("./include/fonctions.php");
     $user = $_SESSION['user_id_id'];
@@ -11,6 +10,7 @@
     <meta charset="utf-8">
     <title>Rose. | Contrats</title>
     <script src="javascript/dashboard.js"></script>
+    <script src="javascript/admin.js"></script>
     <style>
         .vignette {
             border: 3px solid #ccc;
