@@ -35,7 +35,7 @@
         }
 
         .leftbar {
-            width: 250px;
+            width: 20%;
             background-color: #f8f9fa; /* Change the background color as needed */
             padding: 20px;
             box-sizing: border-box;
@@ -48,7 +48,7 @@
         }
 
         .dashboard {
-            width: auto;
+            width: 80%;
             text-align: left;
         }
 

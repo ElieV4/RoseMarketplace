@@ -46,8 +46,7 @@
         // Insérer le message dans la table "message"
         if (sendMessage($con, $messageText, $id_client, $id_gestionnaire, $sens)) {
             unset($_POST['message_text']);
-
-            echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie';</script>";
+            echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie&msg={$id_client}';</script>";
         } else {
             echo "Erreur lors de l'envoi du message.";
         }
@@ -60,7 +59,7 @@
 
         // Supprimer le message en utilisant la fonction deleteMessage
         if (deleteMessage($con, $messageIdToDelete)) {
-            echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie';</script>";
+            echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie&msg={$id_client}';</script>";
         } else {
             echo "Erreur lors de la suppression du message.";
         }
@@ -73,28 +72,48 @@
 <head>
     <title>Messagerie</title>
     <style>
+        .container {
+            display: flex; /* Utiliser la flexbox pour organiser les éléments en ligne ou en colonne */
+        }
+        .vignette-container {
+            width: 20%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .vignette {
+            cursor: pointer;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
         .message-container {
             max-width: 600px;
             margin: auto;
         }
 
         .message {
+            width: fit-content;
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 8px;
             max-width: 80%;
+            word-wrap: break-word; /* Force le texte à passer à la ligne si nécessaire */
         }
 
         .message-recu {
-            background-color: #2196f3; /* Couleur de fond pour les messages reçus */
-            color: #fff; /* Couleur du texte */
+            background-color: #ddd; /* Couleur de fond pour les messages envoyés */
+            color: #000; /* Couleur du texte */
             text-align: left; /* Aligner le texte à gauche */
         }
 
         .message-envoye {
-            background-color: #ddd; /* Couleur de fond pour les messages envoyés */
-            color: #000; /* Couleur du texte */
+            background-color: #2196f3; /* Couleur de fond pour les messages reçus */
+            color: #fff; /* Couleur du texte */
             text-align: right; /* Aligner le texte à droite */
+            margin-left: auto; /* Pousse la div à droite du conteneur */
+            max-width: 70%; /* Ajout d'une largeur maximale */        
         }
 
         .message-form {
@@ -102,13 +121,11 @@
             margin: auto;
             margin-top: 20px;
         }
-
         .message-form input {
-            width: 70%;
+            width: 80%;
             padding: 8px;
             margin-right: 5px;
         }
-
         .message-form button {
             padding: 8px;
         }
@@ -116,49 +133,71 @@
     </style>
 </head>
 <body>
-    <br>
     <h2>Messagerie</h2>
-    <?php if ($user_type == 'X') : ?>
-        <form action="" method="get">
-            <label for="msg">Client :</label>
-            <select name="msg" id="msg">
-                <?php
-                $query_client = "SELECT DISTINCT id_client AS value FROM client WHERE id_gestionnaire = '$user'";
-                echo generateOptions(isset($_GET['msg']) ? $_GET['msg'] : 'all', $query_client, $con);
-                ?>
-            </select>
-            <button type="submit">Voir les messages</button>
-        </form>
-    <?php endif; ?>
-    <br>
-    <div class="message-container">
-        <?php foreach ($messages as $message) : ?>
-            <?php
-            if($user_type =='X'){
-                $messageClass = ($message['sens'] == 1) ? 'msg-envoye' : 'message-recu';
-            } else {
-                $messageClass = ($message['sens'] == 1) ? 'msg-recu' : 'message-envoye';
-            }
-            ?>
-            <p class="message <?= $messageClass; ?>">
-                <strong><?= ($message['sens'] == 1) ? $id_gestionnaire : $client; ?></strong><br>
-                <?= $message['contenu_message']; ?>
-                <br>
-                <em><?= date('d/m/y H:i', strtotime($message['date_message'])); ?></em>
-                <em><?= $messageClass ?></em>
-                <form action="" method="post" style="display:inline;">
-                <input type="hidden" name="message_id" value="<?= $message['id_message']; ?>">
-                <button type="submit" name="delete" style="color: red;">x</button>
-            </form>
-            </p>
-        <?php endforeach; ?>
-        <form action="" method="post" class="message-form">
-            <input type="text" name="message_text" placeholder="Votre message">
-            <button type="submit" name="send">Envoyer</button>
-        </form>
-        <br>
-    </div>
+    <div class="container">
+        <?php if ($user_type == 'X') : ?>
+            <div class="vignette-container">
+                    <?php
+                    $query_clients = "SELECT id_client, prenom_client, nom_client FROM client WHERE id_gestionnaire = '$user'";
+                    $result_clients = $con->query($query_clients);
 
+                    while ($client = $result_clients->fetch_assoc()) {
+                        $id_client = $client['id_client'];
+                        $last_message_query = "SELECT contenu_message, date_message FROM message WHERE idclient_message = '$id_client' AND type_message = 'message' ORDER BY date_message DESC LIMIT 1";
+                        $last_message = singleQuery($last_message_query);
+                        if ($last_message !== null) {
+                            $truncated_message = (strlen($last_message['contenu_message']) > 20) ? substr($last_message['contenu_message'], 0, 20) . '...' : $last_message['contenu_message'];
+                        } else {
+                            $truncated_message = '';
+                        }
+                    ?>
+                        <div class="vignette" onclick="submitForm(<?php echo $id_client; ?>)">
+                            <p><strong><?php echo $client['prenom_client'] . ' ' . $client['nom_client']; ?></strong></p>
+                            <p><?php echo ($last_message) ? $truncated_message : ''; ?></p>
+                            <p><?php echo ($last_message) ? date('d/m/y H:i', strtotime($last_message['date_message'])) : ''; ?></p>
+                            <form id="form_<?php echo $id_client; ?>" action="" method="get" style="display: none;">
+                                <input type="hidden" name="msg" value="<?php echo $id_client; ?>">
+                            </form>
+                        </div>
+                    <?php
+                    }
+                    ?>
+            </div>
+        <?php endif; ?>
+        <div class="message-container">
+            <?php foreach ($messages as $message) : ?>
+                <?php
+                if ($user_type == 'X') {
+                    $messageClass = ($message['sens'] == 1) ? 'message-envoye' : 'message-recu';
+                } else {
+                    $messageClass = ($message['sens'] == 1) ? 'message-recu' : 'message-envoye';
+                }
+                ?>
+                <p class="message <?= $messageClass; ?>">
+                    <strong><?= ($message['sens'] == 1) ? $id_gestionnaire : $client; ?></strong><br>
+                    <?= $message['contenu_message']; ?>
+                    <br>
+                    <em><?= date('d/m/y H:i', strtotime($message['date_message'])); ?></em>
+                    <?php if ($messageClass == 'message-envoye') : ?>
+                        <form action="" method="post" style="display:inline;">
+                            <input type="hidden" name="message_id" value="<?= $message['id_message']; ?>">
+                            <button type="submit" name="delete" style="color: red;">x</button>
+                        </form>
+                    <?php endif; ?>
+                </p>
+            <?php endforeach; ?>
+            <form action="" method="post" class="message-form">
+                <input type="text" name="message_text" placeholder="Votre message">
+                <button type="submit" name="send">Envoyer</button>
+            </form>
+            <br>
+        </div>
+    </div>
+    <script>
+        function submitForm(clientId) {
+            document.getElementById('form_' + clientId).submit();
+        }
+    </script>
 </body>
 </html>
 

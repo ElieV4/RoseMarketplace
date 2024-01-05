@@ -115,20 +115,6 @@
                 <div class="slogan">
                     <h1>Produits ROSE.</h1><br>
                 </div>
-                <?php
-                    function generateOptions($selectedValue, $query, $con) {
-                        $options = '<option value="all">Tous</option>';
-                    
-                        $result = mysqli_query($con, $query);
-                        while ($row = mysqli_fetch_array($result)) {
-                            $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
-                            $selected = ($selectedValue == $value) ? 'selected' : '';
-                            $options .= "<option value='$value' $selected>$value</option>";
-                        }
-                    
-                        return $options;
-                    }                
-                ?>
                 <form action="produits.php" id="filters-form" method="get">
                     <label for="categorie">Catégorie :</label>
                     <select name="cat" id="cat">
