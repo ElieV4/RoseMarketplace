@@ -13,7 +13,7 @@
     <script src="javascript/dashboard.js"></script>
     <style>
         .vignette {
-            border: 1px solid #ccc;
+            border: 3px solid #ccc;
             padding: 10px;
             margin: 10px;
             border-radius: 8px;
@@ -32,60 +32,45 @@
         .action-button {
             padding: 5px;
             cursor: pointer;
+            background-color: black; /* Changez la couleur du bouton selon vos besoins */
+            border-radius: 3px;
+        }
+        .en-attente-border {
+        border-color: gray;
+        }
+
+        .valide-border {
+            border-color: green;
+        }
+
+        .refuse-border {
+            border-color: red;
         }
     </style>
-</head>
-<body>
-    <?php
-        // Récupérer les clients rattachés au gestionnaire
-        $query_clients = "SELECT * FROM client LEFT JOIN adresse USING (id_client) WHERE id_gestionnaire = '$user' AND type_adresse='facturation'";
-        $result_clients = mysqli_query($con, $query_clients);
-
-        // Afficher les clients sous forme de vignettes
-        while ($client = mysqli_fetch_assoc($result_clients)) {
-            $id_client = $client['id_client'];
-            $nom_client = $client['nom_client'];
-            $prenom_client = $client['prenom_client'];
-            $email_client = $client['email_client'];
-
-            $query_adresse = "SELECT * FROM adresse WHERE id_adresse = '{$client['id_adresse']}'";
-            $adresse = singleQuery($query_adresse);
-
-            // Vérifier le type de client
-            $type_client = $client['type_client'];
-            $infos_societe = ($type_client == 1) ? "SIREN: {$client['siren_client']}, Raison sociale: {$client['raisonsociale_client']}" : '';
-
-            // Afficher la vignette du client
-            echo "
-                <div class='vignette'>
-                    <p><strong>ID Client:</strong> $id_client</p>
-                    <p><strong>Nom:</strong> $nom_client</p>
-                    <p><strong>Prénom:</strong> $prenom_client</p>
-                    <p><strong>Email:</strong> $email_client</p>
-                    <p><strong>Adresse de Facturation:</strong> {$adresse['numetrue_adresse']}, {$adresse['codepostal_adresse']}, {$adresse['villeadresse_adresse']}</p>
-                    <p><strong>Infos Société:</strong> $infos_societe</p>
-
-                    <div class='actions'>
-                        <button class='action-button' onclick='validerCompte($id_client)'>Valider le compte</button>
-                        <button class='action-button' onclick='bloquerCompte($id_client)'>Bloquer le compte</button>
-                        <button class='action-button' onclick='editerContrat($id_client)'>Éditer le contrat</button>
-                        <button class='action-button' onclick='voirFactures($id_client)'>Voir les factures</button>
-                    </div>
-                </div>
-            ";
-        }
-    ?>
-
-    <script>
-        function validerCompte(idClient) {
-            // Ajouter la logique pour valider le compte
-            alert('Valider le compte pour le client avec ID ' + idClient);
+        <script>
+        function validerCompte(idClient, nouveauStatut) {
+            fetch('./include/valider_contrat.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ idClient: idClient, nouveauStatut: nouveauStatut }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('voila:', data);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erreur lors de la mise à jour du statut :', error);
+            });
         }
 
-        function bloquerCompte(idClient) {
-            // Ajouter la logique pour bloquer le compte
-            alert('Bloquer le compte pour le client avec ID ' + idClient);
-        }
 
         function editerContrat(idClient) {
             // Ajouter la logique pour éditer le contrat
@@ -97,5 +82,48 @@
             alert('Voir les factures pour le client avec ID ' + idClient);
         }
     </script>
+</head>
+<body>
+
+    <?php
+        // Récupérer les clients rattachés au gestionnaire
+        $query_clients = "SELECT * FROM client LEFT JOIN adresse USING (id_client) WHERE id_gestionnaire = '$user' AND type_adresse='facturation'";
+        $result_clients = mysqli_query($con, $query_clients);
+
+
+        // Afficher les clients sous forme de vignettes
+        while ($client = mysqli_fetch_assoc($result_clients)) {
+            $id_client = $client['id_client'];
+            $nom_client = $client['nom_client'];
+            $prenom_client = $client['prenom_client'];
+            $email_client = $client['email_client'];
+            $statut = $client['statut_pro'];
+
+            $query_adresse = "SELECT * FROM adresse WHERE id_adresse = '{$client['id_adresse']}'";
+            $adresse = singleQuery($query_adresse);
+
+            // Vérifier le type de client
+            $type_client = $client['type_client'];
+            $infos_societe = ($type_client == 1) ? "SIREN: {$client['siren_client']}, Raison sociale: {$client['raisonsociale_client']}" : '';
+    ?>
+
+<div class='vignette <?php echo getBorderColorClass($statut); ?>'>
+        <p><strong>ID Client:</strong> <?php echo $id_client;?></p>
+        <p><strong>Nom:</strong> <?php echo $nom_client;?></p>
+        <p><strong>Prénom:</strong> <?php echo $prenom_client;?></p>
+        <p><strong>Email:</strong> <?php echo $email_client;?></p>
+        <p><strong>Adresse de Facturation:</strong> <?php echo "{$adresse['numetrue_adresse']}, {$adresse['codepostal_adresse']}, {$adresse['villeadresse_adresse']}" ?></p>
+        <?php if($type_client==1) : ;?>
+            <p><strong>Infos Société:</strong> <?php echo $infos_societe;?></p>
+        <?php endif;?>
+        <p><strong>Statut pro ROSE:</strong> <?php echo $statut;?></p>
+        <div class="actions">
+            <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'validé')">Valider le compte</button>
+            <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'refusé')">Bloquer le compte</button>
+            <button class="action-button" onclick="editerContrat($id_client)">Éditer le contrat</button>
+            <button class="action-button" onclick="voirFactures($id_client)">Voir les factures</button>
+        </div>
+    </div>
+        <?php };?> 
 </body>
 </html>
