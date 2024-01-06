@@ -8,10 +8,10 @@ if (isset($_GET['idc'])) {
 
     $sqlfr = "SELECT *
     FROM commande c 
-    LEFT JOIN client fr ON c.id_fournisseur = cl.id_client
+    LEFT JOIN client fr ON c.id_fournisseur = fr.id_client
     LEFT JOIN adresse afr ON c.id_fournisseur = afr.id_client
     WHERE id_commande = $id_commande";
-    $rowfr = signleQuery($sqlfr);
+    $rowfr = singleQuery($sqlfr);
     $adressefr = $rowfr['numetrue_adresse'];
     $codepostalfr = $rowfr['codepostal_adresse'];
     $villefr = $rowfr['villeadresse_adresse'];
@@ -30,10 +30,10 @@ if (isset($_GET['idc'])) {
         // Récupérer les détails de la commande
         while ($rowdata = $result->fetch_assoc()){
         $id_commande = $rowdata['id_commande'];
-        $fournisseur = $rowdata['fr.raisonsociale_client'];
+        $fournisseur = $rowdata['raisonsociale_client'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
-        $type_client = $rowdata['cl.type_client'];
+        $type_client = $rowdata['type_client'];
 
         $id_produit = $rowdata['id_produit'];
         $nom_produit = $rowdata['nom_produit'];
@@ -41,9 +41,9 @@ if (isset($_GET['idc'])) {
         $quantité_produit = $rowdata['quantité_produit'];
         $produit = $rowdata['nom_produit'];
 
-        $adressecl = $rowdata['cl.numetrue_adresse'];
-        $codepostalcl = $rowdata['cl.codepostal_adresse'];
-        $villecl = $rowdata['cl.villeadresse_adresse'];
+        $adressecl = $rowdata['numetrue_adresse'];
+        $codepostalcl = $rowdata['codepostal_adresse'];
+        $villecl = $rowdata['villeadresse_adresse'];
     
         }
 
