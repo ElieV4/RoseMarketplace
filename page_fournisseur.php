@@ -30,7 +30,6 @@
             return 'Action indéfinie';
         }
     }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -39,6 +38,9 @@
     <title>Rose. | Fournisseur</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <script>
+        var idFournisseur = <?php echo json_encode($id_fournisseur); ?>;
+    </script>
     <script src="javascript/dashboard.js"></script>
     <script src="javascript/admin.js"></script>
     <style>
@@ -139,6 +141,7 @@
     </nav>
 
     <div class="outer-container">
+        <?php if(isset($_GET['id'])) : ?>
         <div class="content">
             <div class="entete">
                 <h1>Boutique <?php echo $fournisseur ?>.</h1><br>
@@ -149,7 +152,7 @@
                 </div>
             </div>
             <br>
-            <form action="produits.php" id="filters-form" method="get">
+            <form action="page_fournisseur.php" id="filters-form" method="get">
                 <label for="categorie">Catégorie :</label>
                 <select name="cat" id="cat">
                     <?php
@@ -173,11 +176,12 @@
                     <option value="prixasc">Prix croissant</option>
                     <option value="prixdesc">Prix décroissant</option>
                 </select>
+                <input type="hidden" name="id" value="<?php echo $id_fournisseur; ?>">
                 <input type="text" name="search" id="search">
                 <br>
-                <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
+                <button type="submit">Filtrer & trier</button>
             </form>
-        
+            <button onclick="resetFilters()"><i>Réinitialiser</i></button>
             <br>
             <div class="product-container">
                 <?php                                     
@@ -281,6 +285,14 @@
                 ?>
             </div>
         </div>
+        <?php endif;?>
+        <?php if(!isset($_GET['id'])) : ?>
+            <div class="statut-error">
+            <h2>Error 404</h2>
+            <p>Veuillez nous en excusez, cette page est introuvable.</p>
+            <p><button><a href="index.php">Retourner en lieu sûr</a></button></p>
+        </div>
+        <?php endif;?>
     </div> 
 
     <button class="questionmark">

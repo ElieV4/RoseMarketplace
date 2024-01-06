@@ -1,26 +1,24 @@
-// ventes / historique / commandes > bouton réinitialiser la page
+// ventes / historique / commandes / page fournisseur > bouton réinitialiser la page
 function resetFilters() {
-	// Récupérer l'URL actuelle
-	var currentUrl = window.location.href;
-
-    // Extraire la partie de l'URL avant le premier paramètre GET
+    // Récupérer l'URL actuelle
+    var currentUrl = window.location.href;
     var baseUrl = currentUrl.split('?')[0];
+    var idFournisseur = window.idFournisseur;
 
-    // Construire la nouvelle URL avec uniquement le paramètre 'ventes'
-    if(currentUrl.includes('ventes')){
+    if (currentUrl.includes('ventes')) {
         var newUrl = baseUrl + '?ventes';
     } else if (currentUrl.includes('historique')) {
         var newUrl = baseUrl + '?historique_commandes';
     } else if (currentUrl.includes('produits.php')) {
-        var newUrl = baseUrl ;
+        var newUrl = baseUrl;
     } else if (currentUrl.includes('?messagerie')) {
-        var newUrl = baseUrl + '?messagerie'; 
+        var newUrl = baseUrl + '?messagerie';
+    } else if (currentUrl.includes('page_fournisseur.php')) {
+        var newUrl = baseUrl + '?id=' + idFournisseur;
     } else {
         var newUrl = baseUrl + '?commandes';
     }
-    // Rediriger vers la nouvelle URL
     window.location.href = newUrl;
-
 }
 
 
