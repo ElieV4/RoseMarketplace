@@ -87,7 +87,7 @@
         ?>
         <a href="produits.php">Tous les produits</a>
         <a href="produits.php?categorie=outillerie&marque=all">Outillerie</a>
-        <a href="produits.php?categorie=peinture&droguerie&marque=all">Peinture</a>
+        <a href="produits.php?categorie=peinture_droguerie&marque=all">Peinture</a>
         <a href="aproposde.php">A propos de ROSE.</a>
         <?php 
         if(isset($_SESSION['user_id'])){
