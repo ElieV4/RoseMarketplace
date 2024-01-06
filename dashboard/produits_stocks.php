@@ -24,7 +24,7 @@
             margin-right:5%;
             background-color: white;
             align-items: center;
-            text-align: center;x²
+            text-align: center;
         }
         .imgcontainer sideimg {
                 display:flex;

@@ -1,13 +1,15 @@
 <?php 
 
-
+    include('include/fonctions.php');
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id']." est connecté";
     } else {
         //echo "déconnecté";
     }
     $user = $_SESSION['user_id_id'];
-
+    $userquery = "SELECT * FROM client WHERE id_client = '$user'";
+    $userrow = singleQuery($userquery);
+    $statut_pro = $userrow['statut_pro'];
 
 
     //reload clean var
