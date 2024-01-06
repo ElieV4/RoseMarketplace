@@ -156,7 +156,7 @@
                 <label for="categorie">Catégorie :</label>
                 <select name="cat" id="cat">
                     <?php
-                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit";
+                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit WHERE id_fournisseur = '$id_fournisseur'";
                     echo generateOptions(isset($_GET['cat']) ? $_GET['cat'] : 'all', $query_cat, $con);
                     ?>
                 </select>
@@ -164,7 +164,7 @@
                 <label for="br">Marque :</label>
                 <select name="br" id="bran">
                     <?php
-                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit ";
+                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit WHERE id_fournisseur = '$id_fournisseur'";
                     echo generateOptions(isset($_GET['br']) ? $_GET['br'] : 'all', $query_brands, $con);
                     ?>
                 </select>
