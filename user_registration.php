@@ -134,8 +134,8 @@
             background-color: white;
         }
         .outer-container{
-            margin-left:20%;
-            margin-right:20%;
+            margin-left:30%;
+            margin-right:30%;
             margin-top:10%;
             margin-bottom:10%;
             background-color: white;
