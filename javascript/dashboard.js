@@ -16,7 +16,7 @@ function resetFilters() {
     } else if (currentUrl.includes('page_fournisseur.php')) {
         var newUrl = baseUrl + '?id=' + idFournisseur;
     } else {
-        var newUrl = baseUrl + '?commandes';
+        var newUrl
     }
     window.location.href = newUrl;
 }
