@@ -1,0 +1,21 @@
+.outer-container{
+    margin-left:25%;
+    margin-right:25%;
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color: white;
+    align-items: center;
+    text-align: left;
+    padding:20px;
+}
+.content{
+    text-align: justify;
+}
+.imgcontainer sideimg {
+        display:flex;
+        align-items: center;
+        margin:5%;
+        padding:10px;
+        width:30%;
+        height:auto;
+    }

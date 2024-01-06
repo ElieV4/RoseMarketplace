@@ -59,6 +59,48 @@
                 detailsRow.style.display = 'none';
             }
         }
+
+        function editerFacture(idCommande) {
+    var details = getOrderDetails(idCommande);
+
+    // Ouvrir un nouvel onglet avec les détails de la commande
+    var factureWindow = window.open('', '_blank');
+    factureWindow.document.write('<html><head><title>Facture Commande ' + idCommande + '</title></head><body>');
+
+    // Ajouter les détails de la commande à la page
+    factureWindow.document.write('<h1>Facture Commande ' + idCommande + '</h1>');
+    // Ajouter d'autres détails de la commande en utilisant les données récupérées
+
+    // Ajouter un bouton imprimer
+    factureWindow.document.write('<button onclick="imprimerFacture()">Imprimer</button>');
+
+    factureWindow.document.write('</body></html>');
+}
+
+function getOrderDetails(idCommande) {
+    // Effectuez une requête Ajax ou utilisez une autre méthode pour récupérer les détails de la commande
+    // Adapté en fonction de la structure réelle de votre base de données et de la logique métier
+
+    $.ajax({
+        type: 'POST',
+        url: 'include/editer_facture.php', // Remplacez par le chemin correct
+        data: { idCommande: idCommande },
+        success: function (response) {
+            // Traitez la réponse du serveur (les détails de la commande)
+            var details = JSON.parse(response);
+
+            // Appelez la fonction qui ouvrira la facture avec les détails récupérés
+            // editerFactureAvecDetails(details);
+        },
+        error: function (error) {
+            console.error('Erreur lors de la récupération des détails de la commande:', error);
+        }
+    });
+
+    // Remarque : Vous devrez probablement utiliser une méthode différente selon votre environnement et vos besoins.
+    // Cette méthode est un exemple générique utilisant jQuery pour effectuer une requête Ajax.
+}
+
     </script>
 </head>
 <body>  
@@ -294,7 +336,7 @@
                                 $numcb = $rowdata['numcb'];
                                 $expirationcb = $rowdata['expirationcb'];
                                 echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
-                                <td><button onclick="toggleDetails('.$id_commande.')">Voir la facture</button></td>';
+                                <td><button><a href="dashboard/facture.php?idc='.$id_commande.'">Voir la facture</a></button></td>';
                             }                        
                             echo '</tr>';
                             $evenRow = !$evenRow; // Alterner les couleurs de fond

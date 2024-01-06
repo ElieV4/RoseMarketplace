@@ -47,17 +47,6 @@
             border-color: red;
         }
     </style>
-        <script>
-        function editerContrat(idClient) {
-            // Ajouter la logique pour éditer le contrat
-            alert('Éditer le contrat pour le client avec ID ' + idClient);
-        }
-
-        function voirFactures(idClient) {
-            // Ajouter la logique pour voir les factures
-            alert('Voir les factures pour le client avec ID ' + idClient);
-        }
-    </script>
 </head>
 <body>
 

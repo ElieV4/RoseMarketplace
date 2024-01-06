@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.leftbar {
+    width: 250px;
+    background-color: #f8f9fa; /* Change the background color as needed */
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.two-columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard {
+    width: auto;
+    text-align: left;
+}
+
+.dash-button {
+    width: 200px;
+}

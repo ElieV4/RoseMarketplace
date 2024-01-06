@@ -38,108 +38,16 @@
     <title>Rose. | Fournisseur</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/chatbox.css">
+    <link rel="stylesheet" type="text/css" href="css/produits.css">
     <script>
         var idFournisseur = <?php echo json_encode($id_fournisseur); ?>;
     </script>
     <script src="javascript/dashboard.js"></script>
     <script src="javascript/admin.js"></script>
-    <style>
-        .outer-container{
-            margin-left:15%;
-            margin-right:15%;
-            margin-top:10px;
-            margin-bottom:10px;
-            background-color: white;
-            align-items: center;
-            text-align: left;
-            padding:20px;
-        }
-        .imgcontainer {
-                align-items: center;
-                width:250px;
-                heigth:auto;
-        }
-        .product-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .product {
-            width: 23%; 
-            min-width: 200px;
-            margin-bottom: 20px;
-        }
-        .result {
-            margin-bottom: 20px;
-        }
-        .desactiver-btn {
-            padding: 5px;
-            cursor: pointer;
-            background-color: black; /* Changez la couleur du bouton selon vos besoins */
-            border-radius: 3px;
-        }
-    </style>
+    
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navdiv"> 
-            <div class="search">
-                <form action="" method="GET">
-                    <div class="icon"></div>
-                    <div class="input">
-                            <input type="text" placeholder="Rechercher" id="mysearch" name="mysearch">
-                            <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
-                            <a href="produits.php?"></a><button type="submit">Go</button></a>
-                    </div>
-                </form>
-            </div>
-            <div ></div>
-            <div class="logo">
-                <a href="index.php"><img src="images/rose.png"></a>
-            </div>
-            <ul>
-                <?php
-                    if(isset($_SESSION['user_id'])){
-                        echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
-                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
-                    } else {
-                        echo '<li ><a href="user_registration.php">Inscription</a></li>';
-                        echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
-                    }
-                ?>
-                <li ><a href="cart.php"><img src="images/cart.png"></a></li>
-                <div ></div>
-                <button class="hamburger">
-                    <div class="bar"></div>
-                </button>
-            </ul>
-        </div>
-    </nav>
-
-    <nav class="mobile-nav">
-        <a href="index.php">Accueil</a>
-        <?php 
-        if(isset($_SESSION['user_id'])&&$_SESSION['user_type']==1){
-            echo '<a href="espace_client_entreprise.php">Espace Entreprise</a>';
-        } else if (isset($_SESSION['user_id'])&&$_SESSION['user_type']=='X'){
-            echo '<a href="user_connexion.php">Espace Admin</a>';
-        } else {
-            echo '<a href="user_connexion.php">Espace Client</a>';
-        }
-        ?>
-        <a href="produits.php">Tous les produits</a>
-        <a href="produits.php?categorie=outillerie&marque=all">Outillerie</a>
-        <a href="produits.php?categorie=peinture_droguerie&marque=all">Peinture</a>
-        <a href="aproposde.php">A propos de ROSE.</a>
-        <?php 
-        if(isset($_SESSION['user_id'])){
-            echo '<a href="include/logout.php">Déconnexion</a>';
-        } else {
-            echo '<a href="user_connexion.php">Connexion</a>';
-        }
-        ?>        
-    </nav>
-
+    <?php include('entete.php')?>
     <div class="outer-container">
         <?php if(isset($_GET['id'])) : ?>
         <div class="content">
@@ -299,29 +207,6 @@
         <?php endif;?>
     </div> 
 
-    <button class="questionmark">
-        <div class="bar"></div>
-    </button>
-    <div class="chatbox">
-        <div class="chat-header">
-            Chat en direct
-            <span class="close-chat" id="closeNavBtn">&times;</span>
-        </div>
-        <div class="chat-content">
-            <!-- Contenu de la boîte de chat -->
-        </div>
-        <div class="chat-input">
-            <input type="text" placeholder="Tapez votre message...">
-            <button><!--Envoyer--></button>
-        </div>
-    </div>
-
-    <footer class="footer">
-        <br><br>
-        <div class="terms"><a target="_blank" href="confidentialite.php" id="privacy-policy" class="qa-privacypolicy-link" rel="noopener">Politique de confidentialité</a> | <a href="conditions-generales.php" id="terms-and-conditions" class="qa-tandc-link" target="_blank" rel="noopener">Termes et Conditions</a><p>Copyright © ROSE. 2023<br></p></div>
-        <br><br>
-    </footer>
-
     <script>
         const chatbox_btn = document.querySelector('.questionmark');
         const mobile_chatbox = document.querySelector('.chatbox')
@@ -330,7 +215,6 @@
         mobile_chatbox.classList.toggle('is-active');
         });
     </script>
-    <script src="javascript/burgernavbar.js"></script>
-    <script src="javascript/search.js"></script>
+    <?php include('footer.php')?>
 </body>
 </html>

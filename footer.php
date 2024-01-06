@@ -5,6 +5,11 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body>
+
+<button class="questionmark">
+        <div class="bar"></div>
+    </button>
+
 <div class="chatbox">
         <div class="chat-header">
             Chat en direct
@@ -29,6 +34,8 @@
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
     <script src="javascript/form_input_pro.js"></script>
+    <script src="javascript/cart.js"></script>
+    <script src="javascript/commande.js"></script>
 
 </body>
 </html>

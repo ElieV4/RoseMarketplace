@@ -1,0 +1,19 @@
+.outer-container{
+    margin-left:15%;
+    margin-right:15%;
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color: white;
+    align-items: center;
+    text-align: left;
+    padding:20px;
+}
+.imgcontainer {
+        align-items: center;
+        width:500px;
+        height:auto;
+}
+.popup{
+    border:solid grey 1px;
+    padding:4px;
+}
