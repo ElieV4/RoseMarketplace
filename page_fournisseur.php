@@ -209,9 +209,11 @@
                         WHERE statut_produit <> 'supprimé' AND id_fournisseur = '$id_fournisseur'";
                     
                     //rajout des filtres
-                        if ($_SESSION['user_type'] !== 'X') {
-                            $select_query .= " AND statut_produit <> 'désactivé'";
-                        }  
+                        if(isset($_SESSION['user_type'])){
+                            if ($_SESSION['user_type'] !== 'X') {
+                                $select_query .= " AND statut_produit <> 'désactivé'";
+                            }
+                        }
                         if ($categoriefiltre !== 'all') {
                             $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
                         }                    
@@ -273,9 +275,11 @@
                             echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';
                             echo '' . $produit . " " . $marque . '<br>';
                             echo '<a href="page_fournisseur.php?id='.$id_fournisseur.'">' . $vendeur . '</a> ' . $prixTTC . '€ TTC<br><br>';
-                            if ($_SESSION['user_type'] === 'X') {
-                                echo $statut_produit;
-                                echo '<br><button id="desactiver-btn-' . $id_produit . '" class="desactiver-btn" onclick="desactiverAnnonce(' . $id_produit . ')">' . getButtonMessage($statut_produit) . '</button>';
+                            if(isset($_SESSION['user_type'])){
+                                if ($_SESSION['user_type'] === 'X') {
+                                    echo $statut_produit;
+                                    echo '<br><button id="desactiver-btn-' . $id_produit . '" class="desactiver-btn" onclick="desactiverAnnonce(' . $id_produit . ')">' . getButtonMessage($statut_produit) . '</button>';
+                                }
                             }
                             echo '</div>';
                         }
