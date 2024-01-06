@@ -28,5 +28,7 @@
     <script src="javascript/chatbox.js"></script>
     <script src="javascript/burgernavbar.js"></script>
     <script src="javascript/search.js"></script>
+    <script src="javascript/form_input_pro.js"></script>
+
 </body>
 </html>
