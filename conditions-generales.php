@@ -5,8 +5,6 @@
 
     if (isset($_SESSION['user_id'])) {
         //echo $_SESSION['user_id']." est connecté";
-    } else {
-        //echo "déconnecté";
     }
 ?>
 <!DOCTYPE html>
