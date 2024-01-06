@@ -12,6 +12,7 @@ if (isset($_GET['idc'])) {
     LEFT JOIN adresse afr ON c.id_fournisseur = afr.id_client
     WHERE id_commande = $id_commande";
     $rowfr = singleQuery($sqlfr);
+    $fournisseur = $rowfr['raisonsociale_client'];
     $adressefr = $rowfr['numetrue_adresse'];
     $codepostalfr = $rowfr['codepostal_adresse'];
     $villefr = $rowfr['villeadresse_adresse'];
@@ -30,10 +31,15 @@ if (isset($_GET['idc'])) {
         // Récupérer les détails de la commande
         while ($rowdata = $result->fetch_assoc()){
         $id_commande = $rowdata['id_commande'];
-        $fournisseur = $rowdata['raisonsociale_client'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
+        $id_client = $rowdata['id_client'];
         $type_client = $rowdata['type_client'];
+        if($type_client == 0) {
+            $client = $rowdata['prenom_client'] . ' '.$rowdata['nom_client'] ;
+        } else {
+            $client = $rowdata['raisonsociale_client'];
+        }
 
         $id_produit = $rowdata['id_produit'];
         $nom_produit = $rowdata['nom_produit'];
@@ -99,7 +105,6 @@ $con->close();
         }
     </style>
 </head>
-
 <body>
 <div class="container">
   <div class="invoice">
@@ -108,25 +113,25 @@ $con->close();
         <img src="../images/rose.png" class="logo">
       </div>
       <div class="col-5">
-        <h1 class="document-type display-4">FACTURE</h1>
-        <p class="text-right"><strong>N°90T-17-01-0123</strong></p>
+        <h1 class="document-type display-4">FACTURE Commande N°</h1>
+        <p class="text-right"><strong>N°<?php echo $id_commande; ?></strong></p>
       </div>
     </div>
     <div class="row">
       <div class="col-7">
         <p>
-          <strong>90TECH SAS</strong><br>
-          6B Rue Aux-Saussaies-Des-Dames<br>
-          57950 MONTIGNY-LES-METZ
+          <strong><?php echo $fournisseur; ?></strong><br>
+          <?php echo $adressefr ; ?><br>
+          <?php echo $codepostalfr; ?> <?php echo $villefr; ?>
         </p>
       </div>
       <div class="col-5">
         <br><br><br>
         <p>
-          <strong>Energies54</strong><br>
-          Réf. Client <em>C00022</em><br>
-          12 Rue de Verdun<br>
-          54250 JARNY
+          <strong><?php echo $client; ?></strong><br>
+          Réf. Client <em><?php echo $id_client; ?></em><br>
+          <?php echo $adressecl; ?><br>
+          <?php echo $codepostalcl; ?> <?php echo $villecl; ?>
         </p>
       </div>
     </div>
