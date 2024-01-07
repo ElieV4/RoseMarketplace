@@ -18,7 +18,7 @@
 .action-button {
     padding: 5px;
     cursor: pointer;
-    background-color: black; /* Changez la couleur du bouton selon vos besoins */
+    background-color: black;
     border-radius: 3px;
 }
 .en-attente-border {
