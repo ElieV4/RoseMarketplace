@@ -219,6 +219,8 @@
                             $quantité_produit = $rowdata['quantité_produit'];
                             $date_commande = $rowdata['date_commande'];
                             $type_client = $rowdata['type_client'];
+                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+
                             if($type_client==0){
                                 $client = $rowdata['prenom_client']. ' ' . $rowdata['nom_client'];
                             } else {
@@ -247,6 +249,7 @@
                                     <td>'.$nom_produit.'<br>'.$marque_produit.'</td>
                                     <td>'.$quantité_produit.'</td>
                                     <td>'.date('d/m/y H:i', strtotime($date_commande)).'</td>
+                                    <button><a href="'.$href.'" target="_blank">Voir la facture</a></button>
                                     <td><button type="button" class="statut-btn" data-etat-commande="'.$statut.'" data-commande-id="'.$id_commande.'">'.$statut.'</button></td>
                                 </tr>';
                         }

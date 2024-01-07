@@ -14,10 +14,11 @@ function resetFilters() {
     } else if (currentUrl.includes('?messagerie')) {
         var newUrl = baseUrl + '?messagerie';
     } else if (currentUrl.includes('page_fournisseur.php')) {
-        var newUrl = baseUrl + '?id=' + idFournisseur;
+        var newUrl = baseUrl + '?id=' + idFournisseur;    
     } else {
         var newUrl
     }
+    console.log(newUrl);
     window.location.href = newUrl;
 }
 

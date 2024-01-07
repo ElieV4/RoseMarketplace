@@ -254,6 +254,7 @@ function getOrderDetails(idCommande) {
                     if ($result) {
                         // Parcourir les résultats et afficher chaque ligne dans le tableau
                         $evenRow = false;
+                        $productDetails = array();
                         echo "<table>";
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
@@ -262,6 +263,23 @@ function getOrderDetails(idCommande) {
                             $montant = $rowdata['montant_total'];
                             $type_client = $rowdata['type_client'];
 
+                            $adresse = $rowdata['numetrue_adresse'];
+                            $codepostal = $rowdata['codepostal_adresse'];
+                            $ville = $rowdata['villeadresse_adresse'];
+                            $statut = $rowdata['etat_commande'];
+
+                            $type_paiement = $rowdata['type_paiement'];
+                            $titulaire =  $rowdata['titulaire'];
+                            if($type_paiement == 'iban'){
+                                $iban = $rowdata['iban'];
+                            } else {
+                                $banquecb = $rowdata['banquecb'];
+                                $numcb = $rowdata['numcb'];
+                                $expirationcb = $rowdata['expirationcb'];
+                            }
+                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+
+                            //informations produit
                             $id_produit = $rowdata['id_produit'];
                             $nom_produit = $rowdata['nom_produit'];
                             $marque_produit = $rowdata['marque_produit'];
@@ -277,39 +295,30 @@ function getOrderDetails(idCommande) {
                             $photodata = mysqli_fetch_assoc($photoresult);
                             $filepath = $photodata['image'];
                             $image_type = $photodata['image_type'];
-                            
-                            $adresse = $rowdata['numetrue_adresse'];
-                            $codepostal = $rowdata['codepostal_adresse'];
-                            $ville = $rowdata['villeadresse_adresse'];
-                            $statut = $rowdata['etat_commande'];
+                            ?>
 
-                            $type_paiement = $rowdata['type_paiement'];
-                            $titulaire =  $rowdata['titulaire'];      
-
-                            echo '<tr class="'.($evenRow ? 'even' : 'odd').'">
-                                <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>
-                                <br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>
-                                <td>Commande N°'.$id_commande.'<br>effectuée le '.date('d/m/y à H:i', strtotime($date_commande)).'</td>
-                                <td>('.$quantité_produit.') '.$nom_produit.' '.$marque_produit.'<br>Vendu.e par : '.$fournisseur.'<br>'.$montant.'€</td>
-                                <td><button>'.$statut.'</button></td>
+                            <tr>
+                                <?php echo '<td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a>'?>
+                                <br><button onclick="toggleDetails(<?php echo $id_commande; ?>)">Plus de détails</button></td>
+                                <td>Commande N°<?php echo $id_commande; ?><br>effectuée le <?php echo date('d/m/y à H:i', strtotime($date_commande)) ?></td>
+                                <td>(<?php echo $quantité_produit; ?>) <?php echo $nom_produit; ?> <?php echo $marque_produit; ?><br>Vendu.e par : <?php echo $fournisseur; ?><br><?php echo $montant; ?>€</td>
+                                <td><button><?php echo $statut; ?></button></td>
                             </tr>
-                            <tr id="details-'.$id_commande.'" class="details" style="display: none;">
+                            <tr id="details-<?php echo $id_commande; ?>" class="details" style="display: none;">
                                 <td></td>
-                                <td>Adresse de livraison :<br>'.$adresse.'<br>'.$codepostal. ' '.$ville.'</td>';
-                                if($type_paiement == 'iban'){
-                                    $iban = $rowdata['iban'];
-                                    echo '<td>Payée par :<br>Compte Courant '.$iban.'</td>';
-                                } else {
-                                $banquecb = $rowdata['banquecb'];
-                                $numcb = $rowdata['numcb'];
-                                $expirationcb = $rowdata['expirationcb'];
-                                echo '<td>Payée par :<br>Carte bancaire '.$banquecb.'<br>'.$expirationcb.'<br></td>
-                                <td><button><a href="dashboard/facture.php?idc='.$id_commande.'">Voir la facture</a></button></td>';
-                            }                        
-                            echo '</tr>';
-                            $evenRow = !$evenRow; // Alterner les couleurs de fond
+                                <td>Adresse de livraison :<br><?php echo $adresse; ?><br><?php echo $codepostal; ?> <?php echo $ville; ?></td>'
+                                <td>Payée par :<br><?php if($type_paiement == 'iban') : ?>
+                                        Compte Courant <?php echo $iban; ?>
+                                    <?php endif ?>
+                                    <?php if($type_paiement == 'cb') : ?>
+                                        Carte bancaire <?php echo $banquecb; ?><br><?php echo $expirationcb; ?>
+                                    <?php endif ?>
+                                </td>
+                                <td><button><a href="<?php echo $href; ?>" target="_blank">Voir la facture</a></button></td>';
+                            </tr>
 
-                        }
+                            
+                        <?php } //endwhile et endtable
                         echo "</table>";
                     } else {
                         // En cas d'erreur lors de l'exécution de la requête
