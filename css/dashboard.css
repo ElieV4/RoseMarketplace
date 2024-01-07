@@ -12,11 +12,12 @@ body {
 }
 
 .two-columns {
-    display: flex;
-    justify-content: space-between;
+    display: inline-flex;
+
 }
 
 .dashboard {
+    min-width: 1000px;
     width: auto;
     text-align: left;
 }

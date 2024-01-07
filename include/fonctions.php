@@ -74,7 +74,7 @@
 	function getMessages($con, $id_client, $id_gestionnaire) {
 		$msg_query = "SELECT * FROM message ";
 		$user_type = $_SESSION['user_type'];
-		$msg_query .= " WHERE idclient_message = '$id_client' AND idgestionnaire_message = '$id_gestionnaire' AND type_message = 'message'";
+		$msg_query .= " WHERE idclient_message = '$id_client' AND idgestionnaire_message = '$id_gestionnaire'";
 		$msg_query .= " ORDER BY date_message ASC";
 		$result = $con->query($msg_query);
 		$messages = array();
