@@ -174,15 +174,15 @@ $con->close();
         <table class="table table-sm text-right">
           <tr>
             <td><strong>Total HT</strong></td>
-            <td class="text-right"><?php echo $montantht; ?></td>
+            <td class="text-right"><?php echo $montantht; ?>€</td>
           </tr>
           <tr>
             <td>TVA 20%</td>
-            <td class="text-right"><?php echo $tva; ?></td>
+            <td class="text-right"><?php echo $tva; ?>€</td>
           </tr>          
           <tr>
             <td>Commission ROSE. 5%</td>
-            <td class="text-right"><?php echo $tva; ?></td>
+            <td class="text-right"><?php echo $tva; ?>€</td>
           </tr>
           <tr>
             <td><strong>Total TTC</strong></td>
@@ -197,13 +197,12 @@ $con->close();
       <br>
       Et avec nos remerciements.
       <br><br>
-      Conditions de paiement : paiement à réception de facture, à 15 jours.
+      Conditions de paiement : paiement à la commande.
       <br>
       Aucun escompte consenti pour règlement anticipé.
       <br>
       Règlement par virement bancaire.
       <br><br>
-      En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement : 40 euros (art. L.4413 et L.4416 code du commerce).
     </p>
     
     <br>
@@ -212,8 +211,8 @@ $con->close();
     <br>
     
     <p class="bottom-page text-right">
-      90TECH SAS - N° SIRET 80897753200015 RCS METZ<br>
-      6B, Rue aux Saussaies des Dames - 57950 MONTIGNY-LES-METZ 03 55 80 42 62 - www.90tech.fr<br>
+      ROSE. SAS - N° SIRET 80908753399015 RCS PARIS<br>
+      Pl. du Maréchal de Lattre de Tassigny - 75016 Paris 01 22 83 98 45 - www.rosemarketplace.com<br>
       Code APE 6201Z - N° TVA Intracom. FR 77 808977532<br>
       IBAN FR76 1470 7034 0031 4211 7882 825 - SWIFT CCBPFRPPMTZ
     </p>
