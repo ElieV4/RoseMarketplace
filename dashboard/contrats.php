@@ -9,44 +9,10 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Contrats</title>
+    <link rel="stylesheet" type="text/css" href="./css/contrats.css">
     <script src="javascript/dashboard.js"></script>
     <script src="javascript/admin.js"></script>
-    <style>
-        .vignette {
-            border: 3px solid #ccc;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .action-button {
-            padding: 5px;
-            cursor: pointer;
-            background-color: black; /* Changez la couleur du bouton selon vos besoins */
-            border-radius: 3px;
-        }
-        .en-attente-border {
-        border-color: gray;
-        }
-
-        .valide-border {
-            border-color: green;
-        }
-
-        .refuse-border {
-            border-color: red;
-        }
-    </style>
+    
 </head>
 <body>
 

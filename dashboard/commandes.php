@@ -15,28 +15,9 @@
     <meta charset="utf-8">
     <title>Rose. | Commandes</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
     <script src="javascript/dashboard.js"></script>
-    <style>
-        .outer-container{
-            margin-top:50px;
-            margin-left:5%;
-            margin-right:10%;
-            background-color: white;
-            align-items: center;
-            text-align: center;
-        }
-        .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:20%;
-                height:auto;
-        }
-        .main {
-            background-color: white;
-        }
-    </style>
+    
 </head>
 <body>  
     <div class="outer-container">

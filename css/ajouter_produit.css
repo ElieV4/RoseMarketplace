@@ -1,0 +1,16 @@
+.outer-container{
+    margin-left:20%;
+    margin-right:20%;
+    margin-bottom:10%;
+    background-color: white;
+    align-items: center;
+    text-align: center;
+}
+.imgcontainer sideimg {
+        display:flex;
+        align-items: center;
+        margin:5%;
+        padding:10px;
+        width:20%;
+        height:auto;
+}
