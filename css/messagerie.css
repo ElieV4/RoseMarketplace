@@ -5,6 +5,8 @@
     width: 20%;
     padding: 10px;
     box-sizing: border-box;
+    max-height: 700px;
+    overflow-y: auto;
 }
 
 .vignette {
@@ -17,6 +19,8 @@
 .message-container {
     max-width: 600px;
     margin: auto;
+    max-height: 700px;
+    overflow-y: auto; 
 }
 
 .message {

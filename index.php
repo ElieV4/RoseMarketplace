@@ -24,11 +24,13 @@
         <div class="content">
             <div class="slogan">
                 <h1>Construisez la vie en ROSE.</h1>
+                <br>
                 <?php
                 if(!isset($_SESSION['user_id'])){
                     echo '<h1><a href="user_registration.php"><button class="bigbutton">Rejoignez-nous !</button></a></h1><br>';
                 }
                 ?>
+                <br>
             </div>
             <div class="images-container">
                 <a href="produits.php?categorie=jardin&marque=all"><img src="images/jardinerie_tools.png" class="category-img">Jardinerie</a>
