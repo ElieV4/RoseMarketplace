@@ -3,6 +3,13 @@
             margin:0;
             font-family:arial;
         }
+        button {
+            background-color: #FFCFDE;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
         .navbar{
             background : #FFCFDE; 
             font-family:calibri; 

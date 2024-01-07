@@ -37,7 +37,6 @@
     <meta charset="utf-8">
     <title>Rose. | Fournisseur</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/produits.css">
     <script>
         var idFournisseur = <?php echo json_encode($id_fournisseur); ?>;
