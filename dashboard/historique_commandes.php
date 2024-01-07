@@ -149,7 +149,7 @@
                         // Parcourir les résultats et afficher chaque ligne dans le tableau
                         $evenRow = false;
                         $productDetails = array();
-                        echo "<table>";
+                        echo '<table class="profil-table">';
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
                             $fournisseur = $rowdata['raisonsociale_client'];
@@ -200,7 +200,7 @@
                             </tr>
                             <tr id="details-<?php echo $id_commande; ?>" class="details" style="display: none;">
                                 <td></td>
-                                <td>Adresse de livraison :<br><?php echo $adresse; ?><br><?php echo $codepostal; ?> <?php echo $ville; ?></td>'
+                                <td>Adresse de livraison :<br><?php echo $adresse; ?><br><?php echo $codepostal; ?> <?php echo $ville; ?></td>
                                 <td>Payée par :<br><?php if($type_paiement == 'iban') : ?>
                                         Compte Courant <?php echo $iban; ?>
                                     <?php endif ?>
@@ -208,7 +208,7 @@
                                         Carte bancaire <?php echo $banquecb; ?><br><?php echo $expirationcb; ?>
                                     <?php endif ?>
                                 </td>
-                                <td><button><a href="<?php echo $href; ?>" target="_blank">Voir la facture</a></button></td>';
+                                <td><button><a href="<?php echo $href; ?>" target="_blank">Voir la facture</a></button></td>
                             </tr>
 
                             

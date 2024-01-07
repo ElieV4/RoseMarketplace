@@ -58,8 +58,8 @@
             <br>
             <?php
                 //declaration des variables pour la requete
-
                     $idf = isset($_GET['idf']) ? $_GET['idf'] : null;
+                    $idf = isset($id_fournisseur) ? $id_fournisseur : null;
                     $tri = isset($_GET['tri-fact']) ? $_GET['tri-fact'] : 'datedesc';
                     $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
                     $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;

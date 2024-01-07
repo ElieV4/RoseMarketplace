@@ -10,7 +10,7 @@
     $userquery = "SELECT * FROM client WHERE id_client = '$user'";
     $userrow = singleQuery($userquery);
     $statut_pro = $userrow['statut_pro'];
-
+ 
 
     //reload clean var
     $nom_produit = $categorie =  $marque = $prixht = $quantite_stock = $description = "";
@@ -99,8 +99,7 @@
             }
             
             if ($sql_execute2) {
-                echo "<script>alert('Image(s) ajoutée(s) avec succès')</script>"; 
-                echo "<script>window.open('../espace_client_entreprise.php?produits_stocks','_self')</script>";
+                echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
             } else {
                 echo "Erreur SQLquery_insimg2 : ";
                 die(mysqli_error($con));
