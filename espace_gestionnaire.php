@@ -36,9 +36,6 @@
         <div class="leftbar">
             <h1>Espace Admin</h1><br>
                     <?php echo "{$_SESSION['user_id']}"; ?><br><br>
-                    <?php if($_SESSION['user_id_id']=='G1'){
-                        echo '<button class="dash-button"><a href="espace_gestionnaire.php?gestionnaires">Gestionnaires</a></button><br><br>';
-                    }?>
                     <button class="dash-button"><a href="espace_gestionnaire.php?contrats">Contrats</a></button><br><br>
                     <button class="dash-button"><a href="espace_gestionnaire.php?factures">Factures</a></button><br><br>
                     <button class="dash-button"><a href="espace_gestionnaire.php?messagerie">Messagerie</a></button><br><br>
@@ -46,15 +43,9 @@
         </div>
         <div class="dashboard">
             <?php
-                if(isset($_GET['gestionnaires'])){
-                    include('dashboard/gestionnaires.php');
-                } 
                 if(isset($_GET['contrats'])){
                     include('dashboard/contrats.php');
                 } 
-                else if(isset($_GET['factures'])){
-                    include('dashboard/factures.php');
-                }
                 else if(isset($_GET['messagerie'])){
                     include('dashboard/messagerie.php');
                 }                
