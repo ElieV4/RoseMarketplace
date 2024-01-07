@@ -86,8 +86,7 @@
 <body> 
     <?php include('entete.php')?>
 
-    <main class="main">
-    <div class="outer-container">
+    <div class="connect-container">
         <h2>Connexion</h2>
     
         <form method="POST" action="" enctype="multipart/form-data">
@@ -108,7 +107,6 @@
         <br>
 		<br>
     </div>
-    </main>
     <?php include('footer.php')?>
 </body>
 </html>

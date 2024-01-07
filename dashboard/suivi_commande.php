@@ -5,7 +5,7 @@
     } else {
         echo "Veuillez vous reconnectez pour accéder à cette page";
     }
-
+    include('./include/fonctions.php');
 ?>
 
 <!DOCTYPE html>
@@ -17,62 +17,15 @@
     <link rel="stylesheet" type="text/css" href="./css/historique.css">
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
-   
-    <script>
-        function toggleDetails(commandeId) {
-            var detailsRow = document.getElementById('details-' + commandeId);
-
-            if (detailsRow) {
-                if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
-                    detailsRow.style.display = 'table-row';
-                } else {
-                    detailsRow.style.display = 'none';
-                }
-            } else {
-                console.error('Element not found: details-' + commandeId);
-            }
-        }
-    </script>
-    <script>
-    function updateStatut(commandeId, nouveauStatut) {
-        // Utilisez AJAX pour envoyer une demande au serveur pour mettre à jour le statut et envoyer un message
-        // Ici, j'utilise l'API Fetch comme exemple
-
-        fetch('include/accepter_commande.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ commandeId: commandeId, nouveauStatut: nouveauStatut }),
-        })
-        .then(data => {
-            // Actualisez la page ou effectuez d'autres actions nécessaires
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Erreur lors de la mise à jour du statut :', error);
-        });
-    }
-    </script>
 </head>
 <body>  
     <div class="outer-container">
         <div class="content">
-        <h3>Suivre vos commandes en cours</h3><br>
-            <?php
-                function generateOptions($selectedValue, $query, $con) {
-                    $options = '<option value="all">Tous</option>';
-                
-                    $result = mysqli_query($con, $query);
-                    while ($row = mysqli_fetch_array($result)) {
-                        $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
-                        $selected = ($selectedValue == $value) ? 'selected' : '';
-                        $options .= "<option value='$value' $selected>$value</option>";
-                    }
-                
-                    return $options;
-                }
-            ?>
+        <h3>Suivre vos commandes en cours</h3>
+        <br>
+        <p>Vous retrouvez ici vos commandes en cours, une fois validées, vous pouvez les retrouver <a href="espace_client_particulier.php?historique_commandes">ici</a>.</p>
+        <p>Pour plus de détails, veuillez sélectionner une commande ci-dessous :</p>
+        <br>
             <form action="" id="filters-form" method="get">
 
                 <label for="idc">Commande N° :</label>
@@ -105,9 +58,6 @@
 
                     if ($valuefiltre !== 'all') {
                         $select_query .= " AND id_commande = '$valuefiltre'";
-                    }
-                    if (isset($_GET['reinit'])) {
-                        $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
                     }
 
                 $result = mysqli_query($con, $select_query);
@@ -177,6 +127,9 @@
                             $fin = false;
                             while($rowdata = mysqli_fetch_assoc($result)){
                                 if($fin==false){
+                                    $id_commande = $rowdata['id_commande'];
+                                    $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+                                    echo $href;
                                     //celle ci que quand on a demandé plus de détails 
                                     echo '<tr id="details-'.$id_commande.'" class="details" style="display: none;">
                                         <td></td>';
@@ -197,7 +150,7 @@
                                         } else {
                                             echo '<td>Informations de paiement supprimées<br></td>';
                                         }
-                                    echo '<td><button onclick="editFacture('.$id_commande.')">Voir la facture</button></td>
+                                    echo '<td><button><a href="'.$href.'" target="_blank">Voir la facture</a></button></td>
                                         </tr>';
                                     echo '<br><button onclick="toggleDetails('.$id_commande.')">Plus de détails</button></td>';
                                     echo "</table><br><br>";

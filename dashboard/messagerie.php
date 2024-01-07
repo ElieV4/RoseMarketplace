@@ -70,6 +70,10 @@
 <head>
     <title>Messagerie</title>
     <link rel="stylesheet" type="text/css" href="./css/messagerie.css">
+    <script src="javascript/dashboard.js"></script>
+    <script>
+        window.onload = scrollToBottomOfMessages;
+    </script>
 </head>
 <body>
     <h2>Messagerie</h2>
@@ -77,7 +81,7 @@
         <?php if ($user_type == 'X') : ?>
             <div class="vignette-container">
                     <?php
-                    $query_clients = "SELECT id_client, prenom_client, nom_client FROM client WHERE id_gestionnaire = '$user'";
+                    $query_clients = "SELECT id_client, prenom_client, nom_client FROM client LEFT JOIN message ON id_client = idclient_message WHERE id_gestionnaire = '$user' ORDER BY date_message DESC";
                     $result_clients = $con->query($query_clients);
 
                     while ($client = $result_clients->fetch_assoc()) {

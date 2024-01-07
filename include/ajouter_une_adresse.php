@@ -57,11 +57,7 @@
     <meta charset="utf-8">
     <title>Rose. | Passer commande</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
-    <script>
-    function annuler() {
-        window.location.href = '<?php echo $currentPath; ?>';
-    }
-    </script>
+    <script src="./javascript/dashboard.js"></script>
 </head>
 <body>
     <?php if (!$livraison_exist): ?>
@@ -82,7 +78,7 @@
     <label for="ville" class="form-label">Ville :</label><br>
     <input type="text" id="ville" name="ville" placeholder= "Paris" required value="<?php echo htmlspecialchars($form_ville); ?>"><br><br>
     
-    <button><input type="submit" value="Ajouter" name="ajouter_adresse"></button></button><button onclick="annuler()">Annuler</button>
+    <button><input type="submit" value="Ajouter" name="ajouter_adresse"></button></button><button onclick="resetFilters()">Annuler</button>
     </form>
     <br>
 </body>

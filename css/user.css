@@ -1,17 +1,14 @@
-.main {
-    background-color: white;
-}
-.outer-container{
-    margin-left:25%;
-    margin-right:25%;
-    margin-top:10%;
-    margin-bottom:10%;
-    background-color: white;
+.connect-container{
+    margin-left:30%;
+    margin-right:30%;
+    margin-top:5%;
+    margin-bottom:5%;
     align-items: center;
     text-align: center;
-    border: 2px solid deeppink;
+    border: 2px solid rgb(148, 141, 145);
     background-color : #FFCFDE;
-}
-.hidden {
-    display: none;
+    max-width: 600px;
+    width: 100%; 
+    padding: 20px;
+    box-sizing: border-box; 
 }

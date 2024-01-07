@@ -1,4 +1,4 @@
-// ventes / historique / commandes / page fournisseur > bouton réinitialiser la page
+// ventes / historique / commandes / page fournisseur / ajouter une adresse > bouton réinitialiser la page
 function resetFilters() {
     // Récupérer l'URL actuelle
     var currentUrl = window.location.href;
@@ -14,7 +14,11 @@ function resetFilters() {
     } else if (currentUrl.includes('?messagerie')) {
         var newUrl = baseUrl + '?messagerie';
     } else if (currentUrl.includes('page_fournisseur.php')) {
-        var newUrl = baseUrl + '?id=' + idFournisseur;    
+        var newUrl = baseUrl + '?id=' + idFournisseur;     
+    } else if (currentUrl.includes('profil')) {
+            var newUrl = baseUrl + '?profil';     
+    } else if (currentUrl.includes('commande.php')) {
+            var newUrl = baseUrl ;    
     } else {
         var newUrl
     }
@@ -91,3 +95,49 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+
+// messagerie > Fonction pour faire défiler la boîte de messages vers le bas
+function scrollToBottomOfMessages() {
+    var messageContainer = document.querySelector('.message-container');
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+
+
+// suivi_commande > voir les détails 
+function toggleDetails(commandeId) {
+    var detailsRow = document.getElementById('details-' + commandeId);
+
+    if (detailsRow) {
+        if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+            detailsRow.style.display = 'table-row';
+        } else {
+            detailsRow.style.display = 'none';
+        }
+    } else {
+        console.error('Element not found: details-' + commandeId);
+    }
+}
+
+//suivi_commande > bouton accepter / refuser la commmande
+function updateStatut(commandeId, nouveauStatut) {
+    // Utilisez AJAX pour envoyer une demande au serveur pour mettre à jour le statut et envoyer un message
+    // Ici, j'utilise l'API Fetch comme exemple
+
+    fetch('include/accepter_commande.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ commandeId: commandeId, nouveauStatut: nouveauStatut }),
+    })
+    .then(data => {
+        // Actualisez la page ou effectuez d'autres actions nécessaires
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Erreur lors de la mise à jour du statut :', error);
+    });
+}
