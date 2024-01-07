@@ -38,8 +38,8 @@
 
     //envoyer un message
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send'])) {
-        $messageText = $_POST['message_text']; // Assurez-vous de valider/sanitiser les données entrées par l'utilisateur
-        $sens = ($_SESSION['user_type'] == 'X') ? 1 : 0; // 1 pour gestionnaire>client, 0 pour client>gestionnaire
+        $messageText = $_POST['message_text'];
+        $sens = ($_SESSION['user_type'] == 'X') ? 1 : 0;
 
         if(isset($_POST['message_text'])){
 
@@ -53,11 +53,9 @@
         }
     }
 
-    // Gérer la suppression du message
+    // supprimer un message
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
         $messageIdToDelete = $_POST['message_id'];
-
-        // Supprimer le message en utilisant la fonction deleteMessage
         if (deleteMessage($con, $messageIdToDelete)) {
             echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie&msg={$id_client}';</script>";
         } else {
@@ -84,7 +82,7 @@
 
                     while ($client = $result_clients->fetch_assoc()) {
                         $id_client = $client['id_client'];
-                        $last_message_query = "SELECT contenu_message, date_message FROM message WHERE idclient_message = '$id_client' AND type_message = 'message' ORDER BY date_message DESC LIMIT 1";
+                        $last_message_query = "SELECT contenu_message, date_message FROM message WHERE idclient_message = '$id_client' ORDER BY date_message DESC LIMIT 1";
                         $last_message = singleQuery($last_message_query);
                         if ($last_message !== null) {
                             $truncated_message = (strlen($last_message['contenu_message']) > 20) ? substr($last_message['contenu_message'], 0, 20) . '...' : $last_message['contenu_message'];

@@ -2,22 +2,22 @@
 include('../include/connect.php');
 include('../include/fonctions.php');
 
-// Vérifier si l'identifiant de commande est défini dans l'URL
 if (isset($_GET['idc'])) {
     $id_commande = $_GET['idc'];
 
+    //détails fournisseur
     $sqlfr = "SELECT *
     FROM commande c 
     LEFT JOIN client fr ON c.id_fournisseur = fr.id_client
     LEFT JOIN adresse afr ON c.id_fournisseur = afr.id_client
-    WHERE id_commande = $id_commande";
+    WHERE id_commande = $id_commande AND type_adresse = 'facturation'";
     $rowfr = singleQuery($sqlfr);
     $fournisseur = $rowfr['raisonsociale_client'];
     $adressefr = $rowfr['numetrue_adresse'];
     $codepostalfr = $rowfr['codepostal_adresse'];
     $villefr = $rowfr['villeadresse_adresse'];
 
-    // Exécuter la requête SQL pour récupérer les détails de la commande
+    // détails commande + client
     $sql = "SELECT *
     FROM commande c 
     LEFT JOIN produit pr USING (id_produit)
@@ -33,21 +33,16 @@ if (isset($_GET['idc'])) {
         $id_commande = $rowdata['id_commande'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
-        $tva = $montant * 0.2;
-        $montantht = $montant * 0.8;
-        $id_client = $rowdata['id_client'];
+        $montantht = $montant / 1.2;
+        $commission = $montantht * 0.05;
+        $tvatotal = $montantht * 0.2;
+        $id_client = $rowdata['idclient_commande'];
         $type_client = $rowdata['type_client'];
         if($type_client == 0) {
             $client = $rowdata['prenom_client'] . ' '.$rowdata['nom_client'] ;
         } else {
             $client = $rowdata['raisonsociale_client'];
         }
-
-        $id_produit = $rowdata['id_produit'];
-        $nom_produit = $rowdata['nom_produit'];
-        $marque_produit = $rowdata['marque_produit'];
-        $quantité_produit = $rowdata['quantité_produit'];
-        $produit = $rowdata['nom_produit'];
 
         $adressecl = $rowdata['numetrue_adresse'];
         $codepostalcl = $rowdata['codepostal_adresse'];
@@ -62,49 +57,14 @@ if (isset($_GET['idc'])) {
     echo "Identifiant de commande non spécifié dans l'URL.";
 }
 
-// Fermer la connexion à la base de données
 $con->close();
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Rose. | Facture N°</title>
-    <style>
-        body {
-        background: #ccc;
-        padding: 30px;
-        }
-
-        .container {
-        width: 21cm;
-        min-height: 29.7cm;
-        }
-
-        .invoice {
-        background: #fff;
-        width: 100%;
-        padding: 50px;
-        }
-
-        .logo {
-        width: 200px;
-        }
-
-        .document-type {
-        text-align: right;
-        color: #444;
-        }
-
-        .conditions {
-        font-size: 0.7em;
-        color: #666;
-        }
-
-        .bottom-page {
-        font-size: 0.7em;
-        }
-    </style>
+    <title>Rose. | Facture N°<?php echo $id_commande; ?></title>
+    <link rel="stylesheet" type="text/css" href="../css/facture.css">
 </head>
 <body>
 <div class="container">
@@ -141,32 +101,39 @@ $con->close();
     <h6>Détails de la commande</h6>
     <br>
     <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Quantité</th>
-          <th>PU HT</th>
-          <th>TVA</th>
-          <th>Total HT</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Audits et rapports mensuels</td>
-          <td>1</td>
-          <td class="text-right">500,00€</td>
-          <td>20%</td>
-          <td class="text-right">500,00€</td>
-        </tr>
-        <tr>
-          <td>Génération des rapports d'activité</td>
-          <td>Rapport</td>
-          <td class="text-right">800,00€</td>
-          <td>20%</td>
-          <td class="text-right">3 200,00€</td>
-        </tr>
+        <thead>
+            <tr>
+            <th>Description</th>
+            <th>Quantité</th>
+            <th>PU HT</th>
+            <th>TVA</th>
+            <th>Total HT</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $result->data_seek(0);
+            while ($rowdata = $result->fetch_assoc()) {
+                $id_produit = $rowdata['id_produit'];
+                $nom_produit = $rowdata['nom_produit'];
+                $marque_produit = $rowdata['marque_produit'];
+                $quantité_produit = $rowdata['quantité_produit'];
+                $produit = $rowdata['nom_produit'];
+                $prixht = $rowdata['prixht_produit'];
+                $totalht = $quantité_produit * $prixht;
+            ?>
+            <tr>
+                <td><?php echo $produit. ' '. $marque_produit; ?></td>
+                <td><?php echo $quantité_produit; ?></td>
+                <td class="text-right"><?php echo $prixht; ?>€</td>
+                <td>20%</td>
+                <td class="text-right"><?php echo $totalht; ?>€</td>
+            </tr>
+        <?php };?>    
+  </tbody>
       </tbody>
     </table>
+    <br>
     <div class="row">
       <div class="col-8">
       </div>
@@ -178,11 +145,11 @@ $con->close();
           </tr>
           <tr>
             <td>TVA 20%</td>
-            <td class="text-right"><?php echo $tva; ?>€</td>
+            <td class="text-right"><?php echo $tvatotal; ?>€</td>
           </tr>          
           <tr>
             <td>Commission ROSE. 5%</td>
-            <td class="text-right"><?php echo $tva; ?>€</td>
+            <td class="text-right"><?php echo $commission; ?>€</td>
           </tr>
           <tr>
             <td><strong>Total TTC</strong></td>
@@ -218,5 +185,6 @@ $con->close();
     </p>
   </div>
 </div>
+
 <body>
 </html>

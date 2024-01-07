@@ -5,6 +5,7 @@
 
     if (isset($_SESSION['user_id'])) {
         $statut = $_SESSION['statut'];
+        $user_id = $_SESSION['user_id_id'];
         //echo $_SESSION['user_id'];
         //echo $_SESSION['user_type'];
         // Si l'utilisateur est connecté et type 0, redirige vers espace_client_particulier.php
@@ -47,6 +48,7 @@
                     <button class="dash-button"><a href="espace_client_entreprise.php?produits_stocks">Produits & Stocks</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?commandes">Commandes en cours</a></button><br><br>
                     <button class="dash-button"><a href="espace_client_entreprise.php?ventes">Ventes</a></button><br><br>
+                    <button class="dash-button"><a href='espace_client_entreprise.php?factures&idf='.$user_id>Factures</a></button><br><br>
                     <button class="dash-button"><a href="include/logout.php">Déconnexion</a></button><br><br>
         </div>
         <div class="dashboard">
@@ -72,6 +74,12 @@
                 }               
                 else if(isset($_GET['tri-vt'])){
                         include('dashboard/ventes.php');
+                }
+                else if(isset($_GET['factures'])){
+                    include('dashboard/factures.php');
+                }                
+                else if(isset($_GET['tri-fact'])){
+                    include('dashboard/factures.php');
                 } else {
                     include('dashboard/ventes.php');
                 }
