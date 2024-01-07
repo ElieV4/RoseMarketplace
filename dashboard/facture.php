@@ -33,6 +33,8 @@ if (isset($_GET['idc'])) {
         $id_commande = $rowdata['id_commande'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
+        $tva = $montant * 0.2;
+        $montantht = $montant * 0.8;
         $id_client = $rowdata['id_client'];
         $type_client = $rowdata['type_client'];
         if($type_client == 0) {
@@ -65,7 +67,6 @@ $con->close();
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <title>Rose. | Facture N°</title>
@@ -113,7 +114,7 @@ $con->close();
         <img src="../images/rose.png" class="logo">
       </div>
       <div class="col-5">
-        <h1 class="document-type display-4">FACTURE Commande N°</h1>
+        <h1 class="document-type display-4">FACTURE</h1>
         <p class="text-right"><strong>N°<?php echo $id_commande; ?></strong></p>
       </div>
     </div>
@@ -137,14 +138,13 @@ $con->close();
     </div>
     <br>
     <br>
-    <h6>Audits et rapports mensuels (1er Novembre 2016 - 30 Novembre 2016)</h6>
+    <h6>Détails de la commande</h6>
     <br>
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Description</th>
           <th>Quantité</th>
-          <th>Unité</th>
           <th>PU HT</th>
           <th>TVA</th>
           <th>Total HT</th>
@@ -154,14 +154,12 @@ $con->close();
         <tr>
           <td>Audits et rapports mensuels</td>
           <td>1</td>
-          <td>Jour</td>
           <td class="text-right">500,00€</td>
           <td>20%</td>
           <td class="text-right">500,00€</td>
         </tr>
         <tr>
           <td>Génération des rapports d'activité</td>
-          <td>4</td>
           <td>Rapport</td>
           <td class="text-right">800,00€</td>
           <td>20%</td>
@@ -176,15 +174,19 @@ $con->close();
         <table class="table table-sm text-right">
           <tr>
             <td><strong>Total HT</strong></td>
-            <td class="text-right">3 700,00€</td>
+            <td class="text-right"><?php echo $montantht; ?></td>
           </tr>
           <tr>
             <td>TVA 20%</td>
-            <td class="text-right">740,00€</td>
+            <td class="text-right"><?php echo $tva; ?></td>
+          </tr>          
+          <tr>
+            <td>Commission ROSE. 5%</td>
+            <td class="text-right"><?php echo $tva; ?></td>
           </tr>
           <tr>
             <td><strong>Total TTC</strong></td>
-            <td class="text-right">4 440,00€</td>
+            <td class="text-right"><?php echo $montant; ?>€</td>
           </tr>
         </table>
       </div>
