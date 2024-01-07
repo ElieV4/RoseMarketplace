@@ -13,9 +13,9 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Historique de commandes</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
     <link rel="stylesheet" type="text/css" href="./css/historique.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
    
     <script>

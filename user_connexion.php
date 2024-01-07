@@ -80,8 +80,8 @@
 <html>
 <head>
     <title>ROSE. | Connexion</title>
-    <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/user.css">
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body> 
     <?php include('entete.php')?>

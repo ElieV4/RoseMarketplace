@@ -11,9 +11,9 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Politique de confidentialité</title>
-    <link rel="stylesheet" type="text/css" href="css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="css/page_basique.css">
     <link rel="stylesheet" type="text/css" href="css/confidentialite.css">
+    <link rel="stylesheet" type="text/css" href="css/page_basique.css">
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
   </head>
   
 <body>  

@@ -125,13 +125,13 @@
                     <?php endif; ?>
                 </p>
             <?php endforeach; ?>
-            <form action="" method="post" class="message-form">
-                <input type="text" name="message_text" placeholder="Votre message">
-                <button type="submit" name="send">Envoyer</button>
-            </form>
             <br>
         </div>
     </div>
+    <form action="" method="post" class="message-form">
+                <input type="text" name="message_text" placeholder="Votre message">
+                <button type="submit" name="send">Envoyer</button>
+        </form>
     <script>
         function submitForm(clientId) {
             document.getElementById('form_' + clientId).submit();

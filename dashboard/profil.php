@@ -15,10 +15,9 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Profil</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="./css/profil.css">
-    
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">    
 </head>
 <body>  
     <div class="outer-container">

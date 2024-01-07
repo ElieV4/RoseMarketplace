@@ -114,8 +114,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Ajouter un produit</title>
-    <link rel="stylesheet" type="text/css" href="../css/main_style.css">
     <link rel="stylesheet" type="text/css" href="../css/produit_dashboard.css">
+    <link rel="stylesheet" type="text/css" href="../css/main_style.css">
 </head>
 <body>  
     <div class="outer-container">

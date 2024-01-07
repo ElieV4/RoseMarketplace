@@ -1,14 +1,10 @@
 .outer-container{
-    margin-left:25%;
-    margin-right:25%;
     margin-top:10px;
     margin-bottom:10px;
-    background-color: white;
+    padding-left: 200px;
+    padding-right: 200px;
     align-items: center;
-    text-align: left;
-    padding:20px;
-}
-.content{
+    padding:50px;
     text-align: justify;
 }
 .imgcontainer sideimg {
