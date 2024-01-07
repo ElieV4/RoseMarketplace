@@ -23,6 +23,8 @@
     <div class="outer-container">
         <div class="content">
         <h3>Vos commandes en cours</h3><br>
+        <p>Cliquez sur le statut pour passer au suivant. Une notification est envoyée à votre client pour le prévenir de l'avancée de la commande.</p>
+        <br>
             <form action="" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">

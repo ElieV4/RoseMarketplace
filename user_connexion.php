@@ -97,7 +97,6 @@
             <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
             <span style="color: red;" class="error"><?php if(isset($Err1)){
                 echo $Err1;}else{}?></span><br>
-            <p><a href="forgot_password_form.php">Mot de passe oublié ?</a></p>
             <br>
        
             <input type="submit" value="Connexion" name="user_login">
