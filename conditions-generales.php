@@ -13,7 +13,6 @@
     <meta charset="utf-8">
     <title>Rose. | Conditions générales</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/page_basique.css">
 </head>
 <body>

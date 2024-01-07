@@ -20,7 +20,6 @@
     <meta charset="utf-8">
     <title>Rose. | Espace Client</title>
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
 </head>
 <body>
