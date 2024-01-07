@@ -71,66 +71,7 @@
 <html>
 <head>
     <title>Messagerie</title>
-    <style>
-        .container {
-            display: flex; /* Utiliser la flexbox pour organiser les éléments en ligne ou en colonne */
-        }
-        .vignette-container {
-            width: 20%;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        .vignette {
-            cursor: pointer;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        .message-container {
-            max-width: 600px;
-            margin: auto;
-        }
-
-        .message {
-            width: fit-content;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            max-width: 80%;
-            word-wrap: break-word; /* Force le texte à passer à la ligne si nécessaire */
-        }
-
-        .message-recu {
-            background-color: #ddd; /* Couleur de fond pour les messages envoyés */
-            color: #000; /* Couleur du texte */
-            text-align: left; /* Aligner le texte à gauche */
-        }
-
-        .message-envoye {
-            background-color: #2196f3; /* Couleur de fond pour les messages reçus */
-            color: #fff; /* Couleur du texte */
-            text-align: right; /* Aligner le texte à droite */
-            margin-left: auto; /* Pousse la div à droite du conteneur */
-            max-width: 70%; /* Ajout d'une largeur maximale */        
-        }
-
-        .message-form {
-            max-width: 600px;
-            margin: auto;
-            margin-top: 20px;
-        }
-        .message-form input {
-            width: 80%;
-            padding: 8px;
-            margin-right: 5px;
-        }
-        .message-form button {
-            padding: 8px;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="./css/messagerie.css">
 </head>
 <body>
     <h2>Messagerie</h2>
