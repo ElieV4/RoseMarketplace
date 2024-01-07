@@ -15,6 +15,7 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Espace Client</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/cart.css">
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
@@ -109,7 +110,7 @@
                                     echo '<button disabled>Stock insuffisant</button>';
                                 }                            
                             }
-                            echo '<br><br><a href="produits.php"><button>Continuer vos achats</button></a>';
+                            echo '<br><br><button class="bigbutton"><a href="produits.php">Continuer vos achats</a></button>';
                         }
                     ?>
                 </div>
