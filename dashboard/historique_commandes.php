@@ -14,42 +14,10 @@
     <meta charset="utf-8">
     <title>Rose. | Historique de commandes</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
+    <link rel="stylesheet" type="text/css" href="./css/historique.css">
     <script src="javascript/dashboard.js"></script>
-    <style>
-        .outer-container{
-            margin-top:50px;
-            margin-left:10%;
-            margin-right:10%;
-            background-color: white;
-            align-items: center;
-            text-align: center;
-        }
-        .imgcontainer sideimg {
-            display:flex;
-            align-items: center;
-            margin:5%;
-            padding:10px;
-            width:20%;
-            height:auto;
-        }
-        .content {
-            text-align : justify;
-        }
-        .table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        .th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        .tr:nth-child(even) {
-            background-color: lightgrey;
-        }
-    </style>
+   
     <script>
         function toggleDetails(commandeId) {
             var detailsRow = document.getElementById('details-' + commandeId);

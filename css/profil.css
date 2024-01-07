@@ -1,0 +1,23 @@
+.outer-container{
+    border : solid lightgray 1px;
+    padding-top : 20px;
+    padding-bottom : 20px;
+}
+.content{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+}
+.col1 {
+    width: 50%;
+}
+.col2 {
+    width: 20%;
+    margin-left : 50px;
+    min-width : 300px;
+    text-align: center;
+}
+.info {
+    width : 400px;
+    background : lightgray;
+}

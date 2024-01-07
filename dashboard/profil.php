@@ -17,31 +17,8 @@
     <title>Rose. | Profil</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
-    <style>
-        .outer-container{
-            border : solid lightgray 1px;
-            padding-top : 20px;
-            padding-bottom : 20px;
-        }
-        .content{
-            display: flex;
-            justify-content: space-between;
-            text-align: left;
-        }
-        .col1 {
-            width: 50%;
-        }
-        .col2 {
-            width: 20%;
-            margin-left : 50px;
-            min-width : 300px;
-            text-align: center;
-        }
-        .info {
-            width : 400px;
-            background : lightgray;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./css/profil.css">
+    
 </head>
 <body>  
     <div class="outer-container">

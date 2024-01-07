@@ -108,24 +108,8 @@
     <meta charset="utf-8">
     <title>Rose. | Modifier un produit</title>
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
-    <style>
-    .outer-container{
-            margin-left:20%;
-            margin-right:20%;
-            margin-bottom:10%;
-            background-color: white;
-            align-items: center;
-            text-align: center;
-        }
-        .imgcontainer sideimg {
-                display:flex;
-                align-items: center;
-                margin:5%;
-                padding:10px;
-                width:20%;
-                height:auto;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./css/produit_dashboard.css">
+    
 </head>
 <body>
     <div class="outer-container">
