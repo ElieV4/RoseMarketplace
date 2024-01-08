@@ -79,7 +79,7 @@
                 else if(isset($_GET['tri-fact'])){
                     include('dashboard/factures.php');
                 } else {
-                    include('dashboard/produits_stocks.php');
+                    include('dashboard/messagerie.php');
                 }
             ?>
         </div>
