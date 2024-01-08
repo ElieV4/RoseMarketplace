@@ -1,5 +1,5 @@
 .container {
-    display: flex; /* Utiliser la flexbox pour organiser les éléments en ligne ou en colonne */
+    display: flex; 
 }
 .vignette-container {
     width: 20%;
@@ -29,21 +29,21 @@
     margin-bottom: 10px;
     border-radius: 8px;
     max-width: 80%;
-    word-wrap: break-word; /* Force le texte à passer à la ligne si nécessaire */
+    word-wrap: break-word; 
 }
 
 .message-recu {
-    background-color: #ddd; /* Couleur de fond pour les messages envoyés */
-    color: #000; /* Couleur du texte */
-    text-align: left; /* Aligner le texte à gauche */
+    background-color: #ddd; 
+    color: #000; 
+    text-align: left; 
 }
 
 .message-envoye {
-    background-color: #2196f3; /* Couleur de fond pour les messages reçus */
-    color: #fff; /* Couleur du texte */
-    text-align: right; /* Aligner le texte à droite */
-    margin-left: auto; /* Pousse la div à droite du conteneur */
-    max-width: 70%; /* Ajout d'une largeur maximale */        
+    background-color: #2196f3; 
+    color: #fff; 
+    text-align: right; 
+    margin-left: auto; 
+    max-width: 70%;        
 }
 
 .message-form {
