@@ -120,7 +120,12 @@
                     if (isset($_GET['reinit'])) {
                         $moisfiltre = $anneefiltre = $categoriefiltre = $marquefiltre = $valuefiltre = 'all';
                     }
-                    $select_query .= "GROUP BY mois, nom_produit ORDER BY";
+
+                    $select_query .= "GROUP BY mois ";
+                    if($valuefiltre !== 'all'){
+                    $select_query .= " ,nom_produit ";
+                    } 
+                    $select_query .= " ORDER BY";
 
                     //rajout du tri
                     switch ($tri) {
