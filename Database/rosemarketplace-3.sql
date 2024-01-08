@@ -11,9 +11,6 @@ CREATE TABLE IF NOT EXISTS `photo` (
   KEY `id_produit` (`id_produit`)
 ) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Déchargement des données de la table `photo`
---
 
 INSERT INTO `photo` (`id_photo_produit`, `file_photo_produit`, `id_produit`, `image`, `image_type`) VALUES
 (9, 'product1.png', 14, './images/product1.png' , 'image/png');
