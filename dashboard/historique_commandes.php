@@ -171,7 +171,7 @@
                                 $numcb = $rowdata['numcb'];
                                 $expirationcb = $rowdata['expirationcb'];
                             }
-                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+                            $href = 'dashboard/facture.php?idc='.$id_commande;
 
                             //informations produit
                             $id_produit = $rowdata['id_produit'];

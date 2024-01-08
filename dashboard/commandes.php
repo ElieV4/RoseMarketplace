@@ -17,7 +17,6 @@
     <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
     <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
-    
 </head>
 <body>  
     <div class="outer-container">
@@ -168,7 +167,7 @@
                             $quantité_produit = $rowdata['quantité_produit'];
                             $date_commande = $rowdata['date_commande'];
                             $type_client = $rowdata['type_client'];
-                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+                            $href = 'dashboard/facture.php?idc='.$id_commande;
 
                             if($type_client==0){
                                 $client = $rowdata['prenom_client']. ' ' . $rowdata['nom_client'];

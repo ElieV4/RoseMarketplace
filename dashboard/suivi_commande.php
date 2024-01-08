@@ -128,8 +128,7 @@
                             while($rowdata = mysqli_fetch_assoc($result)){
                                 if($fin==false){
                                     $id_commande = $rowdata['id_commande'];
-                                    $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
-                                    echo $href;
+                                    $href = 'dashboard/facture.php?idc='.$id_commande;
                                     //celle ci que quand on a demandé plus de détails 
                                     echo '<tr id="details-'.$id_commande.'" class="details" style="display: none;">
                                         <td></td>';
