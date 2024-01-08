@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS rosemarketplace;
+CREATE DATABASE IF NOT EXISTS rosemarketplace1;
 
-USE rosemarketplace;
+USE rosemarketplace1;
 
 CREATE TABLE gestionnaire (
 	id_gestionnaire VARCHAR(11), 
