@@ -36,9 +36,9 @@ if (isset($_GET['idc'])) {
         $id_commande = $rowdata['id_commande'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
-        $montantht = round($montant / 1.25 ,2);
         $commission = round($montantht * 0.05 ,2);
         $tva = round($montantht * 0.2, 2);
+        $montantht = round($montant - $tva - $commission ,2);
         $id_client = $rowdata['idclient_commande'];
         $type_client = $rowdata['type_client'];
         if($type_client == 0) {
