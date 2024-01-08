@@ -183,7 +183,7 @@
                                 $nom_produit = $rowdata['nom_produit'];
                                 $marque_produit = $rowdata['marque_produit'];
                                 $montant_commande = $rowdata['montant_commande'];
-                                $commission = $montant_commande * 0.05 ;
+                                $commission = $montant_commande /1.25 * 0.05 ;
                                 $ca_fournisseur = $montant_commande - $commission;
 
                                 //incrément des totaux
