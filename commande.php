@@ -1,7 +1,6 @@
 
 <?php 
     include("include/connect.php");
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
@@ -191,7 +190,6 @@
                         GROUP BY id_produit";
                         $result = mysqli_query($con, $select_query);
                         if ($result) {
-                            // Parcourir les résultats et afficher chaque ligne dans le tableau
 
                             while ($rowdata = mysqli_fetch_assoc($result)) {
                                 $id_produit = $rowdata['id_produit'];

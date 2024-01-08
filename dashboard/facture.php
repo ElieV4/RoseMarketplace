@@ -27,7 +27,6 @@ if (isset($_GET['idc'])) {
     $result = mysqli_query($con,$sql);
 
     if ($result->num_rows > 0) {
-        // Récupérer les détails de la commande
         $montanthtaddition = 0;
         $montantttcaddition = 0;
         $tvaaddition = 0;
