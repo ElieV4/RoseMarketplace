@@ -80,14 +80,13 @@
 <html>
 <head>
     <title>ROSE. | Connexion</title>
-    <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/user.css">
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body> 
     <?php include('entete.php')?>
 
-    <main class="main">
-    <div class="outer-container">
+    <div class="connect-container">
         <h2>Connexion</h2>
     
         <form method="POST" action="" enctype="multipart/form-data">
@@ -98,7 +97,6 @@
             <input type="password" id="mot_de_passe" name="mot_de_passe" required><br>
             <span style="color: red;" class="error"><?php if(isset($Err1)){
                 echo $Err1;}else{}?></span><br>
-            <p><a href="forgot_password_form.php">Mot de passe oublié ?</a></p>
             <br>
        
             <input type="submit" value="Connexion" name="user_login">
@@ -108,7 +106,6 @@
         <br>
 		<br>
     </div>
-    </main>
     <?php include('footer.php')?>
 </body>
 </html>

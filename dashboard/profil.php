@@ -15,10 +15,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Profil</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="./css/profil.css">
-    
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">   
 </head>
 <body>  
     <div class="outer-container">
@@ -46,24 +44,24 @@
                                 $client = $prenom_client . ' ' . $nom_client;
                             }
 
-                            echo "<table border='1'>
-                            <tr>
-                                <th>ID Client</th>
-                                <th>Email</th>
-                                <th>Titulaire du compte</th>";
-                                if(isset($entreprise)){
-                                    echo "<th>Entreprise</th>";
-                                    echo "<th>SIREN</th>";
-                                }
+                            echo "<table class='profil-table' border='1'>
+                                    <tr>
+                                        <th>ID Client</th>
+                                        <th>Email</th>
+                                        <th>Titulaire du compte</th>";
+                            if (isset($entreprise)) {
+                                echo "<th>Entreprise</th>";
+                                echo "<th>SIREN</th>";
+                            }
                             echo "</tr>";
                             echo '<tr>
-                                <td>'.$id_client.'</td>
-                                <td>'.$email_client.'</td>
-                                <td>'.$client.'</td>';
-                                if(isset($entreprise)){
-                                    echo '<td>'.$entreprise.'</td>';
-                                    echo '<td>'.$siren.'</td>';
-                                }
+                                    <td>'.$id_client.'</td>
+                                    <td>'.$email_client.'</td>
+                                    <td>'.$client.'</td>';
+                            if (isset($entreprise)) {
+                                echo '<td>'.$entreprise.'</td>';
+                                echo '<td>'.$siren.'</td>';
+                            }
                             echo '</tr>';
                         }
                         echo '</table><br>';

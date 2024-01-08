@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="./css/contrats.css">
     <script src="javascript/dashboard.js"></script>
     <script src="javascript/admin.js"></script>
-    
 </head>
 <body>
 
@@ -52,7 +51,6 @@
             <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'validé')">Valider le compte</button>
             <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'refusé')">Bloquer le compte</button>
             <a href="page_fournisseur.php?id=<?php echo urldecode($id_client); ?>"><button class="action-button">Gérer les annonces</button></a>
-            <button class="action-button" onclick="editerContrat($id_client)">Éditer le contrat</button>
             <button class="action-button"><a href="espace_gestionnaire.php?factures&idf=<?php echo $id_client; ?>">Voir les factures</a></button>
         </div>
     </div>

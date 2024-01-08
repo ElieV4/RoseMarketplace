@@ -7,7 +7,7 @@
         //echo "déconnecté";
     }
     $user = $_SESSION['user_id_id'];
-
+    include('./include/fonctions.php');
 ?>
 
 <!DOCTYPE html>
@@ -23,62 +23,6 @@
     <div class="outer-container">
         <div class="content">
             <h3>Ventes</h3><br>
-            <?php
-                // Code PHP pour générer les options des menus déroulants
-                function generateMonthOptions($selectedMonth) {
-                    $months = [
-                        '01' => 'Janvier',
-                        '02' => 'Février',
-                        '03' => 'Mars',
-                        '04' => 'Avril',
-                        '05' => 'Mai',
-                        '06' => 'Juin',
-                        '07' => 'Juillet',
-                        '08' => 'Août',
-                        '09' => 'Septembre',
-                        '10' => 'Octobre',
-                        '11' => 'Novembre',
-                        '12' => 'Décembre'
-                    ];
-
-                    $options = '';
-                    foreach ($months as $monthNum => $monthName) {
-                        $selected = ($selectedMonth == $monthNum) ? 'selected' : '';
-                        $options .= "<option value='$monthNum' $selected>$monthName</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateYearOptions($selectedYear) {
-                    // Adapter la plage d'années selon vos besoins
-                    $startYear = 2023;
-                    $endYear = date('Y');
-
-                    $options = '';
-                    for ($year = $startYear; $year <= $endYear; $year++) {
-                        $selected = ($selectedYear == $year) ? 'selected' : '';
-                        $options .= "<option value='$year' $selected>$year</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateOptions($selectedValue, $query, $con) {
-                    $options = '<option value="all">Tous</option>';
-                
-                    $result = mysqli_query($con, $query);
-                    while ($row = mysqli_fetch_array($result)) {
-                        $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
-                        $selected = ($selectedValue == $value) ? 'selected' : '';
-                        $options .= "<option value='$value' $selected>$value</option>";
-                    }
-                
-                    return $options;
-                }
-
-                
-            ?>
             <form action="espace_client_entreprise.php?ventes" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">
@@ -125,9 +69,9 @@
                     <option value="cadesc">CA décroissant</option>
                 </select>
 
-                <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
+                <button type="submit">Filtrer & trier</button>
             </form>
-        
+            <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
             <br>
             <div id="result-container">
                 <?php

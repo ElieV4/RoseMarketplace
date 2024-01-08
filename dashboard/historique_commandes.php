@@ -5,7 +5,7 @@
     } else {
         echo "Veuillez vous reconnectez pour accéder à cette page";
     }
-
+    include('./include/fonctions.php');
 ?>
 
 <!DOCTYPE html>
@@ -13,122 +13,15 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Historique de commandes</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
     <link rel="stylesheet" type="text/css" href="./css/historique.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
-   
-    <script>
-        function toggleDetails(commandeId) {
-            var detailsRow = document.getElementById('details-' + commandeId);
-            if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
-                detailsRow.style.display = 'table-row';
-            } else {
-                detailsRow.style.display = 'none';
-            }
-        }
-
-        function editerFacture(idCommande) {
-    var details = getOrderDetails(idCommande);
-
-    // Ouvrir un nouvel onglet avec les détails de la commande
-    var factureWindow = window.open('', '_blank');
-    factureWindow.document.write('<html><head><title>Facture Commande ' + idCommande + '</title></head><body>');
-
-    // Ajouter les détails de la commande à la page
-    factureWindow.document.write('<h1>Facture Commande ' + idCommande + '</h1>');
-    // Ajouter d'autres détails de la commande en utilisant les données récupérées
-
-    // Ajouter un bouton imprimer
-    factureWindow.document.write('<button onclick="imprimerFacture()">Imprimer</button>');
-
-    factureWindow.document.write('</body></html>');
-}
-
-function getOrderDetails(idCommande) {
-    // Effectuez une requête Ajax ou utilisez une autre méthode pour récupérer les détails de la commande
-    // Adapté en fonction de la structure réelle de votre base de données et de la logique métier
-
-    $.ajax({
-        type: 'POST',
-        url: 'include/editer_facture.php', // Remplacez par le chemin correct
-        data: { idCommande: idCommande },
-        success: function (response) {
-            // Traitez la réponse du serveur (les détails de la commande)
-            var details = JSON.parse(response);
-
-            // Appelez la fonction qui ouvrira la facture avec les détails récupérés
-            // editerFactureAvecDetails(details);
-        },
-        error: function (error) {
-            console.error('Erreur lors de la récupération des détails de la commande:', error);
-        }
-    });
-
-    // Remarque : Vous devrez probablement utiliser une méthode différente selon votre environnement et vos besoins.
-    // Cette méthode est un exemple générique utilisant jQuery pour effectuer une requête Ajax.
-}
-
-    </script>
 </head>
 <body>  
     <div class="outer-container">
         <div class="content">
         <h3>Votre historique d'achats</h3><br>
-            <?php
-                // Code PHP pour générer les options des menus déroulants
-                function generateMonthOptions($selectedMonth) {
-                    $months = [
-                        '01' => 'Janvier',
-                        '02' => 'Février',
-                        '03' => 'Mars',
-                        '04' => 'Avril',
-                        '05' => 'Mai',
-                        '06' => 'Juin',
-                        '07' => 'Juillet',
-                        '08' => 'Août',
-                        '09' => 'Septembre',
-                        '10' => 'Octobre',
-                        '11' => 'Novembre',
-                        '12' => 'Décembre'
-                    ];
-
-                    $options = '';
-                    foreach ($months as $monthNum => $monthName) {
-                        $selected = ($selectedMonth == $monthNum) ? 'selected' : '';
-                        $options .= "<option value='$monthNum' $selected>$monthName</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateYearOptions($selectedYear) {
-                    // Adapter la plage d'années selon vos besoins
-                    $startYear = 2023;
-                    $endYear = date('Y');
-
-                    $options = '';
-                    for ($year = $startYear; $year <= $endYear; $year++) {
-                        $selected = ($selectedYear == $year) ? 'selected' : '';
-                        $options .= "<option value='$year' $selected>$year</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateOptions($selectedValue, $query, $con) {
-                    $options = '<option value="all">Tous</option>';
-                
-                    $result = mysqli_query($con, $query);
-                    while ($row = mysqli_fetch_array($result)) {
-                        $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
-                        $selected = ($selectedValue == $value) ? 'selected' : '';
-                        $options .= "<option value='$value' $selected>$value</option>";
-                    }
-                
-                    return $options;
-                }
-            ?>
             <form action="" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">
@@ -174,8 +67,9 @@ function getOrderDetails(idCommande) {
                     <option value="prixdesc">Prix décroissant</option>
                 </select>
 
-                <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
+                <button type="submit">Filtrer & trier</button>
             </form>
+            <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
             <br>
             <?php
                 //declaration des variables pour la requete
@@ -255,7 +149,7 @@ function getOrderDetails(idCommande) {
                         // Parcourir les résultats et afficher chaque ligne dans le tableau
                         $evenRow = false;
                         $productDetails = array();
-                        echo "<table>";
+                        echo '<table class="profil-table">';
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
                             $fournisseur = $rowdata['raisonsociale_client'];
@@ -277,7 +171,7 @@ function getOrderDetails(idCommande) {
                                 $numcb = $rowdata['numcb'];
                                 $expirationcb = $rowdata['expirationcb'];
                             }
-                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+                            $href = 'dashboard/facture.php?idc='.$id_commande;
 
                             //informations produit
                             $id_produit = $rowdata['id_produit'];
@@ -306,7 +200,7 @@ function getOrderDetails(idCommande) {
                             </tr>
                             <tr id="details-<?php echo $id_commande; ?>" class="details" style="display: none;">
                                 <td></td>
-                                <td>Adresse de livraison :<br><?php echo $adresse; ?><br><?php echo $codepostal; ?> <?php echo $ville; ?></td>'
+                                <td>Adresse de livraison :<br><?php echo $adresse; ?><br><?php echo $codepostal; ?> <?php echo $ville; ?></td>
                                 <td>Payée par :<br><?php if($type_paiement == 'iban') : ?>
                                         Compte Courant <?php echo $iban; ?>
                                     <?php endif ?>
@@ -314,7 +208,7 @@ function getOrderDetails(idCommande) {
                                         Carte bancaire <?php echo $banquecb; ?><br><?php echo $expirationcb; ?>
                                     <?php endif ?>
                                 </td>
-                                <td><button><a href="<?php echo $href; ?>" target="_blank">Voir la facture</a></button></td>';
+                                <td><button><a href="<?php echo $href; ?>" target="_blank">Voir la facture</a></button></td>
                             </tr>
 
                             

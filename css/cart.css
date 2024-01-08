@@ -42,3 +42,14 @@ justify-content: space-between;
 .emptycart {
     align-items : center;
 }
+.bigbutton {
+    align-items: center;
+    font-size: 40px; 
+    border-radius: 10px; 
+    background-color: rgb(73, 73, 156);
+    padding: 10px 20px;
+    cursor: pointer;    
+}
+.bigbutton:hover {
+    background-color: rgb(43, 19, 86); 
+}

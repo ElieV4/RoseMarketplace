@@ -21,8 +21,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Factures</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/historique.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
     <script>
         var idFournisseur = <?php echo json_encode($id_fournisseur); ?>;
@@ -58,6 +58,8 @@
             <br>
             <?php
                 //declaration des variables pour la requete
+                    $idf = isset($_GET['idf']) ? $_GET['idf'] : null;
+                    $idf = isset($id_fournisseur) ? $id_fournisseur : null;
                     $tri = isset($_GET['tri-fact']) ? $_GET['tri-fact'] : 'datedesc';
                     $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
                     $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
@@ -79,9 +81,10 @@
                     if ($anneefiltre && $anneefiltre !== 'all') {
                         $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
                     }
-                    if (isset($_GET['reinit'])) {
-                        $moisfiltre = $anneefiltre = 'all';
+                    if ($idf !== null) {
+                        $select_query .= " AND  c.id_fournisseur = '$idf'";
                     }
+
                     $select_query .= "ORDER BY";
                 //rajout du tri
                     switch ($tri) {

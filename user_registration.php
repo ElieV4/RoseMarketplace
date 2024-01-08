@@ -135,7 +135,7 @@
     <?php include('entete.php')?>
 
     <main class="main">
-    <div class="outer-container">
+    <div class="connect-container">
         <br><h2>Rejoignez notre communauté de bricoleurs</h2><br>   
     
         <form method="POST" action="" enctype="multipart/form-data">
@@ -162,11 +162,11 @@
             </div>
             
             <label for="prenom" class="form-label">Prénom :</label><br>
-            <input type="text" id="prenom" name="prenom" placeholder= "Dupond" value="<?php echo htmlspecialchars($prenom); ?>" required><br>
+            <input type="text" id="prenom" name="prenom" placeholder= "Julien" value="<?php echo htmlspecialchars($prenom); ?>" required><br>
             <span style="color: red;">*</span><br> 
 
             <label for="nom" class="form-label">Nom :</label><br>
-            <input type="text" id="nom" name="nom" placeholder= "Julien" value="<?php echo htmlspecialchars($nom); ?>" required><br>
+            <input type="text" id="nom" name="nom" placeholder= "Dupond" value="<?php echo htmlspecialchars($nom); ?>" required><br>
             <span style="color: red;">*</span><br>
             
             <label for="adresse" class="form-label">Adresse :</label><br>
@@ -204,7 +204,6 @@
         <br>
 		<br>
     </div>
-    </main>
 
     <?php include('footer.php')?>
 </body>

@@ -15,9 +15,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Produits & Stocks</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="./css/chatbox.css">
     <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="./javascript/produits.js"></script>
 </head>
 

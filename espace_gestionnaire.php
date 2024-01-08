@@ -25,8 +25,8 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Admin</title>
-    <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/main_style.css">
     <script src="javascript/produits.js"></script>
 </head>
 

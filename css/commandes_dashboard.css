@@ -2,15 +2,23 @@
     margin-top:50px;
     margin-left:5%;
     margin-right:10%;
-    background-color: white;
     align-items: center;
     text-align: center;
 }
-.imgcontainer sideimg {
-        display:flex;
-        align-items: center;
-        margin:5%;
-        padding:10px;
-        width:20%;
-        height:auto;
+.profil-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.profil-table th, .profil-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.profil-table td img {
+    max-width: 100px;
+    border-radius: 5px;
+}
+.profil-table .details td {
+    padding: 10px;
+    background-color: #f9f9f9;
 }

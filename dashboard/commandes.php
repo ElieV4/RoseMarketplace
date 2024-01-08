@@ -6,7 +6,7 @@
         //echo "déconnecté";
     }
     $user = $_SESSION['user_id_id'];
-
+    include('./include/fonctions.php');
 ?>
 
 <!DOCTYPE html>
@@ -14,69 +14,16 @@
 <head>
     <meta charset="utf-8">
     <title>Rose. | Commandes</title>
-    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <link rel="stylesheet" type="text/css" href="./css/commandes_dashboard.css">
+    <link rel="stylesheet" type="text/css" href="./css/main_style.css">
     <script src="javascript/dashboard.js"></script>
-    
 </head>
 <body>  
     <div class="outer-container">
         <div class="content">
         <h3>Vos commandes en cours</h3><br>
-            <?php
-                // Code PHP pour générer les options des menus déroulants
-                function generateMonthOptions($selectedMonth) {
-                    $months = [
-                        '01' => 'Janvier',
-                        '02' => 'Février',
-                        '03' => 'Mars',
-                        '04' => 'Avril',
-                        '05' => 'Mai',
-                        '06' => 'Juin',
-                        '07' => 'Juillet',
-                        '08' => 'Août',
-                        '09' => 'Septembre',
-                        '10' => 'Octobre',
-                        '11' => 'Novembre',
-                        '12' => 'Décembre'
-                    ];
-
-                    $options = '';
-                    foreach ($months as $monthNum => $monthName) {
-                        $selected = ($selectedMonth == $monthNum) ? 'selected' : '';
-                        $options .= "<option value='$monthNum' $selected>$monthName</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateYearOptions($selectedYear) {
-                    // Adapter la plage d'années selon vos besoins
-                    $startYear = 2023;
-                    $endYear = date('Y');
-
-                    $options = '';
-                    for ($year = $startYear; $year <= $endYear; $year++) {
-                        $selected = ($selectedYear == $year) ? 'selected' : '';
-                        $options .= "<option value='$year' $selected>$year</option>";
-                    }
-
-                    return $options;
-                }
-
-                function generateOptions($selectedValue, $query, $con) {
-                    $options = '<option value="all">Tous</option>';
-                
-                    $result = mysqli_query($con, $query);
-                    while ($row = mysqli_fetch_array($result)) {
-                        $value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
-                        $selected = ($selectedValue == $value) ? 'selected' : '';
-                        $options .= "<option value='$value' $selected>$value</option>";
-                    }
-                
-                    return $options;
-                }
-            ?>
+        <p>Cliquez sur le statut pour passer au suivant. Une notification est envoyée à votre client pour le prévenir de l'avancée de la commande.</p>
+        <br>
             <form action="" id="filters-form" method="get">
                 <label for="annee">Année :</label>
                 <select name="annee" id="annee">
@@ -122,8 +69,9 @@
                     <option value="prixdesc">Prix décroissant</option>
                 </select>
 
-                <button type="submit">Filtrer & trier</button>        <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
+                <button type="submit">Filtrer & trier</button>        
             </form>
+            <a href="#" onclick="resetFilters()"><i>Réinitialiser</i></a>
             <br>
             <?php
                 //declaration des variables pour la requete
@@ -219,7 +167,7 @@
                             $quantité_produit = $rowdata['quantité_produit'];
                             $date_commande = $rowdata['date_commande'];
                             $type_client = $rowdata['type_client'];
-                            $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
+                            $href = 'dashboard/facture.php?idc='.$id_commande;
 
                             if($type_client==0){
                                 $client = $rowdata['prenom_client']. ' ' . $rowdata['nom_client'];
@@ -244,12 +192,11 @@
 
                             echo '<tr>
                                     <td><a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100px;"></a></td>
-                                    <td>'.$id_commande.'</td>
+                                    <td>'.$id_commande.'<br><button><a href="'.$href.'" target="_blank">Voir la facture</a></button></td>
                                     <td>'.$client.'<br>'.$adresse.'<br>'.$codepostal.' '.$ville.'</td>
                                     <td>'.$nom_produit.'<br>'.$marque_produit.'</td>
                                     <td>'.$quantité_produit.'</td>
                                     <td>'.date('d/m/y H:i', strtotime($date_commande)).'</td>
-                                    <button><a href="'.$href.'" target="_blank">Voir la facture</a></button>
                                     <td><button type="button" class="statut-btn" data-etat-commande="'.$statut.'" data-commande-id="'.$id_commande.'">'.$statut.'</button></td>
                                 </tr>';
                         }
