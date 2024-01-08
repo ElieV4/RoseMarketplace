@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body> 
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
     <div class="outer-container">
         <div class="content">
             <h1>Notre Histoire</h1>
@@ -38,6 +38,6 @@
             <p>C'est ainsi qu'est née la première marketplace de bricolage rose. Notre passion commune pour le bricolage a donné naissance à une aventure passionnante. ROSE. est bien plus qu'un projet pour nous, c'est une aventure que nous sommes fiers de partager avec vous.</p>
         </div>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

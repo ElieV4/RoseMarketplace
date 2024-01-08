@@ -36,7 +36,7 @@
 </head>
 
 <body>
-<?php include('entete.php')?>
+<?php include('include/entete.php')?>
     <?php if ($statut == 'validé') : ?>
     <div class="two-columns">
         <div class="leftbar">
@@ -100,6 +100,6 @@
             <p><button><a href="espace_client_particulier.php?">Retourner à l'espace client</a></button></p>
         </div>
     <?php endif; ?>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

@@ -127,7 +127,7 @@
 </head>
 
 <body> 
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
 
     <main class="main">
     <div class="connect-container">
@@ -200,7 +200,7 @@
 		<br>
     </div>
 
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>
 

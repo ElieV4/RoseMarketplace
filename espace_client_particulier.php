@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body>
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
     <div class="two-columns">
         <div class="leftbar">
             <h1>Espace Client</h1><br>
@@ -68,6 +68,6 @@
             ?>
         </div>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

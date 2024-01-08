@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body> 
-<?php include('entete.php')?>
+<?php include('include/entete.php')?>
     <div class="outer-container">
         <div class="content">
             <h1>Votre panier</h1><br>
@@ -116,6 +116,6 @@
             </div>
         </div>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

@@ -82,7 +82,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body> 
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
 
     <div class="connect-container">
         <h2>Connexion</h2>
@@ -104,6 +104,6 @@
         <br>
 		<br>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body>
-    <?php include('entete.php')?>   
+    <?php include('include/entete.php')?>   
     <div class="outer-container">
         <div class="content">
             <div class="goback"><?php echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';?></div>
@@ -176,6 +176,6 @@
         mobile_chatbox.classList.toggle('is-active');
         });
     </script>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

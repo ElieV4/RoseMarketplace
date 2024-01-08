@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="css/main_style.css">
 </head>
 <body>
-<?php include('entete.php')?>
+<?php include('include/entete.php')?>
     <div class="outer-container">
         <div class="content">
             <h1>Conditions Générales de ROSE.</h1><br>
@@ -55,6 +55,6 @@
             <p>Nous vous remercions d'utiliser ROSE.</p><br>
         </div>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

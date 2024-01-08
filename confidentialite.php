@@ -17,7 +17,7 @@
   </head>
   
 <body>  
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
     <div class="outer-container">
         <div class="content">
             <h1>Politique de Confidentialité de ROSE.</h1><br>
@@ -64,6 +64,6 @@
             <p>Merci de faire confiance à ROSE.</p><br>
         </div>
     </div>
-    <?php include('footer.php')?>
+    <?php include('include/footer.php')?>
 </body>
 </html>

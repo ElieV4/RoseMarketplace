@@ -20,7 +20,7 @@
     </head>
 
     <body>  
-    <?php include('entete.php')?>
+    <?php include('include/entete.php')?>
         <div class="outer-container">
             <div class="content">
                 <div class="slogan">
@@ -161,6 +161,6 @@
             mobile_chatbox.classList.toggle('is-active');
             });
         </script>
-        <?php include('footer.php')?>
+        <?php include('include/footer.php')?>
     </body>
     </html>
