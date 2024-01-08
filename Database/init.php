@@ -20,8 +20,8 @@ $sql = file_get_contents("createdatabase_marketplace.sql");
         if (!$con) {
             die(mysqli_error($con));
         } else {
-            $sql2 = file_get_contents("photo.sql");
-            if ($mysqli->multi_query($sql2)) {
+            $sql2 = file_get_contents("test.sql");
+            if ($result = mysqli_query($con, $sql2)) {
                 echo 'Base de données rosemarketplace créée avec succès !.<br>';
                 echo '<a href="../index.php">Cliquez sur le lien suivant pour accéder au site</a>';
             } else {
