@@ -2,7 +2,6 @@
     include 'connect.php';
     session_start();
 
-    // Récupérez les données envoyées depuis JavaScript
     $data = json_decode(file_get_contents("php://input"));
     $id_commande = $data->commandeId;
     $nouveauStatut = $data->nouveauStatut;
@@ -29,7 +28,6 @@
             $updateQuery = "UPDATE commande SET etat_commande = '$nouveauStatut' WHERE id_commande = '$id_commande'";
             break;
         default:
-            // Si l'état n'est pas géré, renvoyez une erreur
             $response = 'Erreur : État non géré';
             break;
     }
@@ -41,7 +39,6 @@
     $msg_execute = mysqli_query($con,$msg_query);
 
     if (mysqli_query($con, $updateQuery)) {
-        // Envoi du message au fournisseur (ajoutez ici le code pour envoyer un message)
 
         $response = array('status' => 'success', 'message' => 'Statut mis à jour avec succès.');
         echo json_encode($response);

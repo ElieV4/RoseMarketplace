@@ -27,7 +27,6 @@
 	
 	//fonction filtre année
 	function generateYearOptions($selectedYear) {
-		// Adapter la plage d'années selon vos besoins
 		$startYear = 2023;
 		$endYear = date('Y');
 
@@ -46,7 +45,7 @@
 	
 		$result = mysqli_query($con, $query);
 		while ($row = mysqli_fetch_array($result)) {
-			$value = $row["value"]; // Remplacez "value" par le nom de la colonne contenant les valeurs
+			$value = $row["value"]; 
 			$selected = ($selectedValue == $value) ? 'selected' : '';
 			$options .= "<option value='$value' $selected>$value</option>";
 		}
@@ -69,8 +68,6 @@
 	}
 
 	//fonctions messagerie
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	// Fonction pour récupérer les messages entre un gestionnaire et un client
 	function getMessages($con, $id_client, $id_gestionnaire) {
 		$msg_query = "SELECT * FROM message ";
 		$user_type = $_SESSION['user_type'];
@@ -87,39 +84,32 @@
 		return $messages;
 	}
 
-	// Fonction pour insérer un nouveau message dans la table "message"
 	function sendMessage($con, $contenu, $clientId, $gestionnaireId, $sens) {
-		$contenu = mysqli_real_escape_string($con, $contenu); // Éviter les injections SQL
+		$contenu = mysqli_real_escape_string($con, $contenu); 
 
 		$query = "INSERT INTO message (date_message, contenu_message, idclient_message, idgestionnaire_message, sens, type_message)
 				VALUES (NOW(), '$contenu', '$clientId', '$gestionnaireId', '$sens','message')";
-			// Exécution de la requête
 		$result = $con->query($query);
 
-		// Vérifier si l'insertion a réussi
 		if ($result) {
-			return $result; // Retourner true si l'insertion a réussi
+			return $result; 
 		} else {
-			return false; // Retourner false si l'insertion a échoué
+			return false; 
 		}
 	}
 
-	// Fonction pour supprimer un message dans la table "message"
 	function deleteMessage($con, $messageId){
-		$messageId = mysqli_real_escape_string($con, $messageId); // Éviter les injections SQL
-
+		$messageId = mysqli_real_escape_string($con, $messageId); 
 		$query = "DELETE FROM message WHERE id_message = '$messageId'";
-		// Exécution de la requête
 		$result = $con->query($query);
 
-		// Vérifier si la suppression a réussi
 		if ($result) {
-			return $result; // Retourner true si la suppression a réussi
+			return $result; 
 		} else {
-			return false; // Retourner false si la suppression a échoué
+			return false; 
 		}
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	//protege des injections sql
 	function test_input($data) {
     $data = trim($data);
@@ -129,11 +119,9 @@
 	}
 
 	function get_user_ip() {
-    // Si l'adresse IP est disponible dans l'en-tête HTTP_X_FORWARDED_FOR
     if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
-    // Sinon, utilise l'adresse IP normale
     else {
         $ip = $_SERVER['REMOTE_ADDR'];
     }

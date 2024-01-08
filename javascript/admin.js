@@ -1,7 +1,6 @@
 //page_fournisseur > désactiver / réactiver les annonces
 // s'execute quand le gestionnaire bloque un contrat pro
 function desactiverAnnonce(idProduit) {
-    // Envoyer une requête AJAX pour mettre à jour le statut du produit
     fetch('include/desactiver_annonce.php', {
         method: 'POST',
         headers: {

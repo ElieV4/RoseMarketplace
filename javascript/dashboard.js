@@ -1,6 +1,5 @@
 // ventes / historique / commandes / page fournisseur / ajouter une adresse > bouton réinitialiser la page
 function resetFilters() {
-    // Récupérer l'URL actuelle
     var currentUrl = window.location.href;
     var baseUrl = currentUrl.split('?')[0];
     var idFournisseur = window.idFournisseur;
@@ -36,13 +35,11 @@ document.addEventListener('DOMContentLoaded', function () {
             var commandeId = this.getAttribute('data-commande-id');
             var etatCommande = this.getAttribute('data-etat-commande');
 
-            // Ajoutez une vérification pour désactiver le bouton si l'état est 'livrée', 'validée' ou 'refusée'
             if (etatCommande === 'livrée' || etatCommande === 'validée' || etatCommande === 'refusée') {
                 console.log('Le bouton est désactivé, action à faire côté client ');
                 return;
             }
 
-            // Mettez à jour le statut en appelant le script PHP
             fetch('include/update_statut.php', {
                 method: 'POST',
                 headers: {
@@ -57,12 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.text();
             })
             .then(function (result) {
-                // Mettez à jour le texte du bouton et désactivez-le
-                etatCommande = result.trim(); // Mettez à jour l'état du bouton avec le nouvel état
+                etatCommande = result.trim(); 
                 button.innerText = etatCommande;
                 button.classList.remove('livree', 'validee', 'refusee');
                 
-                // Mettez à jour la classe du bouton en fonction de l'état
                 switch (etatCommande) {
                     case 'à valider':
                     case 'en préparation':
@@ -81,12 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         break;
             
                     default:
-                        // Ne rien faire si l'état n'est pas géré
                 }
             
                 button.disabled = true;
             
-                // Maintenant, après la mise à jour réussie, rechargez la page
                 location.reload();
             })
             .catch(function (error) {
@@ -123,9 +116,7 @@ function toggleDetails(commandeId) {
 
 //suivi_commande > bouton accepter / refuser la commmande
 function updateStatut(commandeId, nouveauStatut) {
-    // Utilisez AJAX pour envoyer une demande au serveur pour mettre à jour le statut et envoyer un message
-    // Ici, j'utilise l'API Fetch comme exemple
-
+    
     fetch('include/accepter_commande.php', {
         method: 'POST',
         headers: {
@@ -134,7 +125,6 @@ function updateStatut(commandeId, nouveauStatut) {
         body: JSON.stringify({ commandeId: commandeId, nouveauStatut: nouveauStatut }),
     })
     .then(data => {
-        // Actualisez la page ou effectuez d'autres actions nécessaires
         location.reload();
     })
     .catch(error => {

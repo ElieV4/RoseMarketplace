@@ -5,12 +5,10 @@
     session_start();
     $id_gestionnaire = $_SESSION['user_id_id'];
 
-    // Récupérez les données envoyées depuis JavaScript
     $data = json_decode(file_get_contents("php://input"));
-    $id_client = $data->idClient; // Modifié le nom de la propriété pour correspondre à celle utilisée dans JavaScript
+    $id_client = $data->idClient; 
     $nouveauStatut = $data->nouveauStatut;
 
-    // Récupérer le statut actuel du client
     $clientQuery = "SELECT * FROM client WHERE id_client = '$id_client'";
     $clientRow = singleQuery($clientQuery);
     $statut = $clientRow['statut_pro'];
@@ -29,8 +27,7 @@
         default:
             $response = array('status' => 'error', 'message' => 'Erreur : statut non géré');
             echo json_encode($response);
-            exit(); // Ajout de l'instruction exit() pour éviter tout affichage HTML non souhaité
-    }
+            exit(); 
 
     $updateresult = mysqli_query($con, $updateQuery);
 
