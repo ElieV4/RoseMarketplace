@@ -48,8 +48,8 @@ if (isset($_GET['idc'])) {
           $villecl = $rowdata['villeadresse_adresse'];
           
           $montantttc = $rowdata['montant_total'];
-          $commission = round($montantttc * 0.05 ,2);
-          $tva = round($montantttc * 0.2, 2);
+          $commission = round($montantttc / 1.25 * 0.05 ,2);
+          $tva = round($montantttc / 1.25 * 0.2, 2);
           $montantht = round($montantttc /1.25 ,2);
 
           $tvatotal = round($tvatotal + $tva, 2);
