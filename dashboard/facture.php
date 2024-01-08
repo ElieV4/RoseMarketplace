@@ -29,13 +29,18 @@ if (isset($_GET['idc'])) {
     // Vérifier s'il y a des résultats
     if ($result->num_rows > 0) {
         // Récupérer les détails de la commande
+        $montanthtaddition = 0;
+        $montantttcaddition = 0;
+        $tvaaddition = 0;
+        $commissionaddition = 0;
+
         while ($rowdata = $result->fetch_assoc()){
         $id_commande = $rowdata['id_commande'];
         $date_commande = $rowdata['date_commande'];
         $montant = $rowdata['montant_total'];
-        $montantht = $montant / 1.2;
-        $commission = $montantht * 0.05;
-        $tvatotal = $montantht * 0.2;
+        $montantht = round($montant / 1.25 ,2);
+        $commission = round($montantht * 0.05 ,2);
+        $tva = round($montantht * 0.2, 2);
         $id_client = $rowdata['idclient_commande'];
         $type_client = $rowdata['type_client'];
         if($type_client == 0) {
@@ -47,7 +52,12 @@ if (isset($_GET['idc'])) {
         $adressecl = $rowdata['numetrue_adresse'];
         $codepostalcl = $rowdata['codepostal_adresse'];
         $villecl = $rowdata['villeadresse_adresse'];
-    
+        
+
+        $montanthtaddition = round($montanthtaddition + $montantht, 2);
+        $montantttcaddition = round($montantttcaddition + $montant, 2);
+        $tvaaddition = round($tvaaddition + $tva, 2);
+        $commissionaddition = round($commissionaddition + $commission, 2);
         }
 
     } else {
@@ -107,6 +117,7 @@ $con->close();
             <th>Quantité</th>
             <th>PU HT</th>
             <th>TVA</th>
+            <th>Commission ROSE.</th>
             <th>Total HT</th>
             </tr>
         </thead>
@@ -120,13 +131,14 @@ $con->close();
                 $quantité_produit = $rowdata['quantité_produit'];
                 $produit = $rowdata['nom_produit'];
                 $prixht = $rowdata['prixht_produit'];
-                $totalht = $quantité_produit * $prixht;
+                $totalht = round($quantité_produit * $prixht,2);
             ?>
             <tr>
                 <td><?php echo $produit. ' '. $marque_produit; ?></td>
                 <td><?php echo $quantité_produit; ?></td>
                 <td class="text-right"><?php echo $prixht; ?>€</td>
                 <td>20%</td>
+                <td>5%</td>
                 <td class="text-right"><?php echo $totalht; ?>€</td>
             </tr>
         <?php };?>    
@@ -141,19 +153,19 @@ $con->close();
         <table class="table table-sm text-right">
           <tr>
             <td><strong>Total HT</strong></td>
-            <td class="text-right"><?php echo $montantht; ?>€</td>
+            <td class="text-right"><?php echo $montanthtaddition; ?>€</td>
           </tr>
           <tr>
             <td>TVA 20%</td>
-            <td class="text-right"><?php echo $tvatotal; ?>€</td>
+            <td class="text-right"><?php echo $tvaaddition; ?>€</td>
           </tr>          
           <tr>
             <td>Commission ROSE. 5%</td>
-            <td class="text-right"><?php echo $commission; ?>€</td>
+            <td class="text-right"><?php echo $commissionaddition; ?>€</td>
           </tr>
           <tr>
             <td><strong>Total TTC</strong></td>
-            <td class="text-right"><?php echo $montant; ?>€</td>
+            <td class="text-right"><?php echo $montantttcaddition; ?>€</td>
           </tr>
         </table>
       </div>

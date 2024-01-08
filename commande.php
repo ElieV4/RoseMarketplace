@@ -183,7 +183,7 @@
                 </div>
                 <div class="col2">
                     <?php
-                        $select_query = "SELECT SUM(quantité_produit * prixht_produit * 1.2) OVER() AS montant, 
+                        $select_query = "SELECT SUM(quantité_produit * prixht_produit * 1.25) OVER() AS montant, 
                             id_produit,quantité_produit,quantitestock_produit, prixht_produit, date_ajout_produit, MIN(id_photo_produit) AS min_photo_id, image_type, image 
                         FROM panier 
                         LEFT JOIN produit USING (id_produit) 

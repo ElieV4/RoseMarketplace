@@ -56,7 +56,7 @@
                                     $produit = $rowdata['nom_produit'];
                                     $marque = $rowdata['marque_produit'];
                                     $vendeur = $rowdata['raisonsociale_client'];
-                                    $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                    $prixTTC = $rowdata['prixht_produit'] * 1.25;
                                     $quantitepanier = $rowdata['quantité_produit'];
                                     $quantitestock = $rowdata['quantitestock_produit'];
                                     $stock_disponible = $rowdata['stock_disponible'];
