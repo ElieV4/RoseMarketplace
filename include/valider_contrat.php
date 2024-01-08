@@ -28,7 +28,7 @@
             $response = array('status' => 'error', 'message' => 'Erreur : statut non géré');
             echo json_encode($response);
             exit(); 
-
+        }
     $updateresult = mysqli_query($con, $updateQuery);
 
     $msg_query = "INSERT INTO message (date_message, contenu_message, sens, idclient_message, idgestionnaire_message, type_message)
