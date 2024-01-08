@@ -1,11 +1,9 @@
 <?php
 include("connect.php");
 
-// Check if the action is set
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
 
-    // Check the specific action
     switch ($action) {
         case 'updateQuantite':
             updateQuantite();
@@ -14,24 +12,20 @@ if (isset($_POST['action'])) {
             supprimerProduit();
             break;
         default:
-            // Handle unknown action
             echo "Unknown action";
             break;
     }
 } else {
-    // Handle action not set
     echo "Action not set";
 }
 
-// Function to update the quantity of the product
 function updateQuantite() {
-    global $con; // Make sure $con is accessible inside the function
+    global $con; 
 
     if (isset($_POST['id_produit']) && isset($_POST['nouvelleQuantite'])) {
         $id_produit = mysqli_real_escape_string($con, $_POST['id_produit']);
         $nouvelleQuantite = mysqli_real_escape_string($con, $_POST['nouvelleQuantite']);
 
-        // Perform the update in the database without prepared statements
         $update_query = "UPDATE panier SET quantité_produit = $nouvelleQuantite WHERE id_produit = $id_produit";
         $result = mysqli_query($con, $update_query);
 
@@ -45,7 +39,6 @@ function updateQuantite() {
     }
 }
 
-// Function to delete the product from the cart
 function supprimerProduit() {
     if (isset($_POST['id_produit'])) {
         $id_produit = $_POST['id_produit'];

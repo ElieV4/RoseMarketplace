@@ -4,24 +4,20 @@
     session_start();
     $id_gestionnaire = $_SESSION['user_id_id'];
 
-    // Récupérez les données envoyées depuis JavaScript
     $data = json_decode(file_get_contents("php://input"));
-    $id_produit = $data->idProduit; // Modifié le nom de la propriété pour correspondre à celle utilisée dans JavaScript
+    $id_produit = $data->idProduit; 
 
-    // Récupérer le statut actuel du produit
     $produitQuery = "SELECT * FROM produit WHERE id_produit = '$id_produit'";
     $produitRow = singleQuery($produitQuery);
     $statut_produit = $produitRow['statut_produit'];
 
     switch ($statut_produit) {
         case 'disponible':
-            // Mettre à jour le statut du produit à 'disponible'
             $message = "Votre annonce".$produitRow['nom_produit']." a été désactivée par votre gestionnaire ROSE.";
             $updateQuery = "UPDATE produit SET statut_produit = 'désactivé' WHERE id_produit = '$id_produit'";
             $buttonText = "Réactiver l'annonce";
             break;
         case 'désactivé':
-            // Mettre à jour le statut du produit à 'désactivé'
             $message = "Votre annonce".$produitRow['nom_produit']." a été réactivée par votre gestionnaire ROSE.";
             $updateQuery = "UPDATE produit SET statut_produit = 'disponible' WHERE id_produit = '$id_produit'";
             $buttonText = "Désactiver l'annonce";

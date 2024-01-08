@@ -2,7 +2,6 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Assurez-vous que l'utilisateur est connecté
     if (!isset($_SESSION['user_id'])) {
         $response = 'Non autorisé';
     } else {
@@ -24,43 +23,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $id_client = $etatCommandeRow['id_client'];
                 $id_gestionnaire = $etatCommandeRow['id_gestionnaire'];
 
-                // Mettez à jour l'état de la commande en fonction de l'état actuel
                 switch ($etatActuel) {
                     case 'à valider':
-                        // Mettez à jour l'état à 'en préparation'
                         $message = "Votre commande N°".$id_commande." est en cours de préparation.";
                         $updateQuery = "UPDATE commande SET etat_commande = 'en préparation', date_preparation = NOW() WHERE id_commande = '$id_commande'";
                         break;
 
                     case 'en préparation':
-                        // Mettez à jour l'état à 'en cours d'envoi' et ajoutez un message
                         $message = "Votre commande N°".$id_commande." est en cours d\'envoi.";
                         $updateQuery = "UPDATE commande SET etat_commande = 'en cours d\'envoi', date_envoi = NOW() WHERE id_commande = '$id_commande'";
                         break;
 
                     case 'en cours d\'envoi':
-                        // Mettez à jour l'état à 'en cours de livraison' et ajoutez un message
                         $message = "Votre commande N°".$id_commande." est en cours de livraison.";
                         $updateQuery = "UPDATE commande SET etat_commande = 'en cours de livraison', date_livraison = NOW() WHERE id_commande = '$id_commande'";
                         break;
 
                     case 'en cours de livraison':
-                        // Mettez à jour l'état à 'livrée' et ajoutez un message
                         $message = "Votre commande N°".$id_commande." a été livrée.";
                         $updateQuery = "UPDATE commande SET etat_commande = 'livrée', date_livree = NOW() WHERE id_commande = '$id_commande'";
                         break;
 
                     case 'livrée':
-                        // Ne rien faire, car la commande est déjà livrée
                         break;
                     
                     default:
-                        // Si l'état n'est pas géré, renvoyez une erreur
                         $response = 'Erreur : État non géré';
                         break;
                 }
 
-                // Exécutez la requête de mise à jour et l'envoi du message
                 $result = mysqli_query($con, $updateQuery);
 
                 $msg_query = "INSERT INTO message (date_message, contenu_message, sens, idclient_message, idgestionnaire_message, type_message)
@@ -78,13 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Fermez la connexion à la base de données
         mysqli_close($con);
     }
 } else {
     $response = 'Méthode non autorisée';
 }
 
-// Retournez la réponse en format JSON
 echo $response;
 ?>

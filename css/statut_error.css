@@ -3,9 +3,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* 100% de la hauteur de la vue */
-    background-color: #f8f9fa; /* Changez la couleur de fond selon vos besoins */
-    font-size: 24px; /* Taille du texte */
+    height: 100vh; 
+    background-color: #f8f9fa; 
+    font-size: 24px; 
     }
 
     .statut-error h2 {
@@ -21,11 +21,11 @@
         font-size: 20px;
         border-radius: 15px;
         cursor: pointer;
-        background-color: #007bff; /* Changez la couleur du bouton selon vos besoins */
-        color: white; /* Couleur du texte du bouton */
+        background-color: #007bff; 
+        color: white; 
         border: none;
     }
 
     .statut-error button:hover {
-        background-color: #0056b3; /* Changez la couleur du bouton au survol selon vos besoins */
+        background-color: #0056b3; 
     }

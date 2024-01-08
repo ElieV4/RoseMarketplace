@@ -56,8 +56,8 @@
             }
             .navdiv ul {
                 display: flex;
-                align-items: center; /* Aligner les éléments verticalement au centre */
-                height: 100%; /* Ajuster la hauteur de l'ul à 100% de la navbar */
+                align-items: center; 
+                height: 100%; 
             }
 
         .hamburger{

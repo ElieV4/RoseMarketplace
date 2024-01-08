@@ -1,7 +1,6 @@
 <?php 
     include("include/connect.php");
     include("include/fonctions.php");
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
@@ -47,7 +46,7 @@
                                 $montant_commande = 0;
                                 $validerok = 0;
                                 echo "<table border='0,5'>";
-                                // Parcourir les résultats et afficher chaque ligne dans le tableau
+                    
                                 while ($rowdata = mysqli_fetch_assoc($result)) {
 
                                     $id_produit = $rowdata['id_produit'];
@@ -88,7 +87,7 @@
                                 }
                                 echo '</table><br>';
                             } else {
-                                // En cas d'erreur lors de l'exécution de la requête
+                                
                                 echo 'Erreur dans la requête : ' . mysqli_error($con);
                             }
                         }

@@ -1,10 +1,9 @@
 <?php
 include("connect.php");
 
-// Check if the action is set
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
-    // Check the specific action
+  
     switch ($action) {
         case 'updateStock':
             updateStock();
@@ -16,23 +15,19 @@ if (isset($_POST['action'])) {
             ajouterProduit();
             break;
         default:
-            // Handle unknown action
             echo "Unknown action";
             break;
     }
 } else {
-    // Handle action not set
     echo "Action not set";
 }
 
-// Function to update the quantity of the product
 function updateStock() {
     global $con;
     if (isset($_POST['id_produit']) && isset($_POST['nouveauStock'])) {
         $id_produit = mysqli_real_escape_string($con, $_POST['id_produit']);
         $nouveauStock = mysqli_real_escape_string($con, $_POST['nouveauStock']);
 
-        // Perform the update in the database without prepared statements
         $update_query = "UPDATE produit SET quantitestock_produit = $nouveauStock WHERE id_produit = $id_produit";
         $result = mysqli_query($con, $update_query);
 
@@ -46,7 +41,6 @@ function updateStock() {
     }
 }
 
-// Function to delete the product
 function retirerProduit() {
     global $con;
     if (isset($_POST['id_produit'])) {
@@ -66,9 +60,8 @@ function retirerProduit() {
     }
 }
 
-// Function to add the product
 function ajouterProduit() {
-    global $con; // Make sure $con is accessible inside the function
+    global $con; 
     if (isset($_POST['id_produit'])) {
         $id_produit = $_POST['id_produit'];
 
