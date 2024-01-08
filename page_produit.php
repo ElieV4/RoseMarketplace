@@ -44,7 +44,7 @@
                             $marque = $rowdata['marque_produit'];
                             $vendeur = $rowdata['raisonsociale_client'];
                             $categorie = $rowdata['categorie_produit'];
-                            $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                            $prixTTC = $rowdata['prixht_produit'] * 1.25;
                             $stock = $rowdata['quantitestock_produit'];
                             $date_ajout = $rowdata['date_ajout_produit'];
                             $description = $rowdata['description_produit'];
@@ -149,7 +149,7 @@
                                 $produit = $rowdata['nom_produit'];
                                 $marque = $rowdata['marque_produit'];
                                 $vendeur = $rowdata['raisonsociale_client'];
-                                $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                                $prixTTC = $rowdata['prixht_produit'] * 1.25;
                                 $id_fournisseur = $rowdata['id_fournisseur'];
 
                                 echo '<td>

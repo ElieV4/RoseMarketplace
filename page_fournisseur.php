@@ -175,7 +175,7 @@
                             $marque = $rowdata['marque_produit'];
                             $vendeur = $rowdata['raisonsociale_client'];
                             $categorie = $rowdata['categorie_produit'];
-                            $prixTTC = $rowdata['prixht_produit'] * 1.2;
+                            $prixTTC = $rowdata['prixht_produit'] * 1.25;
 
                             echo '<div class="product">';
                             echo '<a href="page_produit.php?id=' . $id_produit . '"><img class="imgcontainer" src="data:' . $image_type . ';base64,' . base64_encode($filepath) . '" style="max-width: 100%; max-height: 100%;"></a><br>';

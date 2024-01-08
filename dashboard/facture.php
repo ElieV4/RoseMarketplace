@@ -27,35 +27,36 @@ if (isset($_GET['idc'])) {
     $result = mysqli_query($con,$sql);
 
     if ($result->num_rows > 0) {
-        $montanthtaddition = 0;
-        $montantttcaddition = 0;
-        $tvaaddition = 0;
-        $commissionaddition = 0;
+        $montanthttotal = 0;
+        $montantttctotal = 0;
+        $tvatotal = 0;
+        $commissiontotal = 0;
 
         while ($rowdata = $result->fetch_assoc()){
-        $id_commande = $rowdata['id_commande'];
-        $date_commande = $rowdata['date_commande'];
-        $montant = $rowdata['montant_total'];
-        $commission = round($montantht * 0.05 ,2);
-        $tva = round($montantht * 0.2, 2);
-        $montantht = round($montant - $tva - $commission ,2);
-        $id_client = $rowdata['idclient_commande'];
-        $type_client = $rowdata['type_client'];
-        if($type_client == 0) {
-            $client = $rowdata['prenom_client'] . ' '.$rowdata['nom_client'] ;
-        } else {
-            $client = $rowdata['raisonsociale_client'];
-        }
+          $id_commande = $rowdata['id_commande'];
+          $date_commande = $rowdata['date_commande'];
+          $id_client = $rowdata['idclient_commande'];
+          $type_client = $rowdata['type_client'];
+          if($type_client == 0) {
+              $client = $rowdata['prenom_client'] . ' '.$rowdata['nom_client'] ;
+          } else {
+              $client = $rowdata['raisonsociale_client'];
+          }
 
-        $adressecl = $rowdata['numetrue_adresse'];
-        $codepostalcl = $rowdata['codepostal_adresse'];
-        $villecl = $rowdata['villeadresse_adresse'];
-        
+          $adressecl = $rowdata['numetrue_adresse'];
+          $codepostalcl = $rowdata['codepostal_adresse'];
+          $villecl = $rowdata['villeadresse_adresse'];
+          
+          $montantttc = $rowdata['montant_total'];
+          $commission = round($montantttc * 0.05 ,2);
+          $tva = round($montantttc * 0.2, 2);
+          $montantht = round($montantttc /1.25 ,2);
 
-        $montanthtaddition = round($montanthtaddition + $montantht, 2);
-        $montantttcaddition = round($montantttcaddition + $montant, 2);
-        $tvaaddition = round($tvaaddition + $tva, 2);
-        $commissionaddition = round($commissionaddition + $commission, 2);
+          $tvatotal = round($tvatotal + $tva, 2);
+          $commissiontotal = round($commissiontotal + $commission, 2);
+          $montanthttotal = round($montanthttotal + $montantht, 2);
+          $montantttctotal = round($montantttctotal + $montantttc, 2);
+
         }
 
     } else {
@@ -151,19 +152,19 @@ $con->close();
         <table class="table table-sm text-right">
           <tr>
             <td><strong>Total HT</strong></td>
-            <td class="text-right"><?php echo $montanthtaddition; ?>€</td>
+            <td class="text-right"><?php echo $montanthttotal; ?>€</td>
           </tr>
           <tr>
             <td>TVA 20%</td>
-            <td class="text-right"><?php echo $tvaaddition; ?>€</td>
+            <td class="text-right"><?php echo $tvatotal; ?>€</td>
           </tr>          
           <tr>
             <td>Commission ROSE. 5%</td>
-            <td class="text-right"><?php echo $commissionaddition; ?>€</td>
+            <td class="text-right"><?php echo $commissiontotal; ?>€</td>
           </tr>
           <tr>
             <td><strong>Total TTC</strong></td>
-            <td class="text-right"><?php echo $montantttcaddition; ?>€</td>
+            <td class="text-right"><?php echo $montantttctotal; ?>€</td>
           </tr>
         </table>
       </div>

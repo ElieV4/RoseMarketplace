@@ -96,7 +96,7 @@ function executerCommande() {
     $idPaiement = mysqli_real_escape_string($con, $_POST['idPaiement']);
     $id_commande = rand();
     $insert_commande_query = "INSERT INTO commande (id_commande, id_commande_produit, date_commande, idclient_commande, etat_commande, id_produit, quantité_produit, montant_total, id_fournisseur, id_adresse, id_paiement)
-        SELECT '$id_commande', CONCAT('$id_commande', '-',p.id_produit), NOW(), '$user', 'à valider', p.id_produit, p.quantité_produit, p.quantité_produit * prixht_produit * 1.2, pr.id_fournisseur, '$idLivraison', '$idPaiement'
+        SELECT '$id_commande', CONCAT('$id_commande', '-',p.id_produit), NOW(), '$user', 'à valider', p.id_produit, p.quantité_produit, p.quantité_produit * prixht_produit * 1.25, pr.id_fournisseur, '$idLivraison', '$idPaiement'
         FROM panier p
         INNER JOIN produit pr ON p.id_produit = pr.id_produit";
 
