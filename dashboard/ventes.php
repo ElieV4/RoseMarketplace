@@ -167,7 +167,7 @@
                             }
                             echo '<th>Montant commande</th>
                                 <th>Commission ROSE. (5%)</th>
-                                <th>CA fournisseur</th>
+                                <th>CA (HT+TVA)</th>
                             </tr>';
 
                             $total_commandes = 0;
