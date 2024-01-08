@@ -1,7 +1,6 @@
 <?php 
     include("include/connect.php");
     include('include/fonctions.php');
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {

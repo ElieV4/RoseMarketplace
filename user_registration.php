@@ -1,6 +1,5 @@
 <?php 
     include("include/connect.php");
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
@@ -39,9 +38,7 @@
         $confirmer_mot_de_passe = $_POST["confirmer_mot_de_passe"];
 
         //calcul age
-        // Créez un objet DateTime à partir des chaînes de dates
         $date_naissance_objet = new DateTime($date_de_naissance);
-        // Calcul de la différence en années
         $interval = $date_naissance_objet->diff(new DateTime(date("Y-m-d")));
         $age = $interval->y;
 
@@ -73,9 +70,7 @@
             $Err5 = "Les mots de passe ne correspondent pas";
         }
 
-        // If there are any errors, do not proceed with the insertion
         if ($Err1 || $Err2 || $Err3 || $Err4 || $Err5) {
-            // Handle errors here if needed
         } else {
             $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = "";
 

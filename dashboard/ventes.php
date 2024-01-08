@@ -152,7 +152,6 @@
                         echo "Aucun résultat";
                     } else {                   
                         if ($result) {
-                            // Afficher le tableau HTML
                             echo '<table border=1>
                             <tr>
                                 <th>Mois</th>
@@ -172,7 +171,6 @@
                             $total_commission = 0;
                             $total_ca = 0;
 
-                            // Parcourir les résultats et afficher chaque ligne dans le tableau
                             while ($rowdata = mysqli_fetch_assoc($result)) {
                                 $mois = $rowdata['mois'];
                                 $nombre_commandes = $rowdata['nombre_commandes'];
@@ -214,7 +212,6 @@
                                 <td>'.$total_ca.'€</td>
                             </tr></table>';
                         } else {
-                            // En cas d'erreur lors de l'exécution de la requête
                             echo "Erreur dans la requête : " . mysqli_error($con);
                         }
                     }

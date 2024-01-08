@@ -66,7 +66,6 @@
                     echo "Aucun résultat";
                 } else {
                     if ($result) {
-                        // Parcourir les résultats et afficher chaque ligne dans le tableau
                         $evenRow = false;
                         echo "<table>";
                         while ($rowdata = mysqli_fetch_assoc($result)) {
@@ -178,7 +177,6 @@
                         echo '</tr></table>'; 
                                                            
                     }  else {
-                    // En cas d'erreur lors de l'exécution de la requête
                     echo "Erreur dans la requête : " . mysqli_error($con);
                     }
                 }

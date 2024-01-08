@@ -1,6 +1,5 @@
 <?php 
     include("include/connect.php");
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
@@ -8,7 +7,6 @@
         $user_id = $_SESSION['user_id_id'];
         //echo $_SESSION['user_id'];
         //echo $_SESSION['user_type'];
-        // Si l'utilisateur est connecté et type 0, redirige vers espace_client_particulier.php
         if($_SESSION['user_type']==0){
             //echo "header vers particulier";
             header("Location: espace_client_particulier.php");
