@@ -1,6 +1,5 @@
 <?php 
     include("include/connect.php");
-    // Vérifie si l'utilisateur est déjà connecté
     session_start();
 
     if (isset($_SESSION['user_id'])) {
@@ -11,7 +10,6 @@
         //echo "déconnecté";
     }
 
-    // Vérifie si l'utilisateur est déjà connecté
     if (isset($_SESSION['user_id']) and !empty($_SESSION['user_id'])) {
         header("Location: espace_client_particulier.php");
         exit();
