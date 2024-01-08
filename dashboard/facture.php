@@ -26,9 +26,7 @@ if (isset($_GET['idc'])) {
     WHERE id_commande = $id_commande";
     $result = mysqli_query($con,$sql);
 
-    // Vérifier s'il y a des résultats
     if ($result->num_rows > 0) {
-        // Récupérer les détails de la commande
         while ($rowdata = $result->fetch_assoc()){
         $id_commande = $rowdata['id_commande'];
         $date_commande = $rowdata['date_commande'];

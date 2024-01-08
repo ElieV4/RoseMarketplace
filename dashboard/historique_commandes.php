@@ -146,7 +146,6 @@
                         <a href='produits.php'><button>Visiter la boutique</button></a>";
                 } else { 
                     if ($result) {
-                        // Parcourir les résultats et afficher chaque ligne dans le tableau
                         $evenRow = false;
                         $productDetails = array();
                         echo '<table class="profil-table">';
@@ -215,7 +214,6 @@
                         <?php } //endwhile et endtable
                         echo "</table>";
                     } else {
-                        // En cas d'erreur lors de l'exécution de la requête
                         echo "Erreur dans la requête : " . mysqli_error($con);
                     }
                 }

@@ -16,12 +16,9 @@
 <body>
 
     <?php
-        // Récupérer les clients rattachés au gestionnaire
         $query_clients = "SELECT * FROM client LEFT JOIN adresse USING (id_client) WHERE id_gestionnaire = '$user' AND type_adresse='facturation'";
         $result_clients = mysqli_query($con, $query_clients);
 
-
-        // Afficher les clients sous forme de vignettes
         while ($client = mysqli_fetch_assoc($result_clients)) {
             $id_client = $client['id_client'];
             $nom_client = $client['nom_client'];
@@ -32,7 +29,6 @@
             $query_adresse = "SELECT * FROM adresse WHERE id_adresse = '{$client['id_adresse']}'";
             $adresse = singleQuery($query_adresse);
 
-            // Vérifier le type de client
             $type_client = $client['type_client'];
             $infos_societe = ($type_client == 1) ? "SIREN: {$client['siren_client']}, Raison sociale: {$client['raisonsociale_client']}" : '';
     ?>

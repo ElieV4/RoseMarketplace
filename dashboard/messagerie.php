@@ -43,7 +43,6 @@
 
         if(isset($_POST['message_text'])){
 
-        // Insérer le message dans la table "message"
         if (sendMessage($con, $messageText, $id_client, $id_gestionnaire, $sens)) {
             unset($_POST['message_text']);
             echo "<script>window.location.href = '" . $_SERVER['PHP_SELF'] . "?messagerie&msg={$id_client}';</script>";
@@ -145,6 +144,6 @@
 </html>
 
 <?php
-// Fermer la connexion à la base de données
+
 $con->close();
 ?>

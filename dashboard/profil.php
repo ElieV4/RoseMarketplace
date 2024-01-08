@@ -66,7 +66,6 @@
                         }
                         echo '</table><br>';
                     } else {
-                        // En cas d'erreur lors de l'exécution de la requête
                         echo "Erreur dans la requête : " . mysqli_error($con);
                     }
                     //adresse de facturation

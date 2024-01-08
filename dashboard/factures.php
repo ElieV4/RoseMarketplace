@@ -104,7 +104,6 @@
                     echo "<p>Aucun résultat<p><br>";
                 } else { 
                     if ($result) {
-                        // Parcourir les résultats et afficher chaque ligne dans le tableau
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
                             $fournisseur = $rowdata['fournisseur'];

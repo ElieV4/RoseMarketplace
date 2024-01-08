@@ -63,15 +63,13 @@
                     $image_data = mysqli_real_escape_string($con, $image_data);
                     $image_name = $_FILES["images_produit_i"]['name'][$key];
                     $image_type = $_FILES["images_produit_i"]['type'][$key];
-        
-                    // Create an associative array for each image
+   
                     $image_info = array(
                         'name' => $image_name,
                         'type' => $image_type,
                         'file_data' => $image_data
                     );
         
-                    // Add the array to the uploaded_images_data array
                     $uploaded_images_data[] = $image_info;
                 }
 
@@ -115,8 +113,6 @@
     <br><h2>Ajouter un produit</h2><br>   
 
         <form method="POST" action="" enctype="multipart/form-data">
-
-        <!-- formulaire -->
         
         <label for="nom_produit" class="form-label">Nom du produit :</label><br>
             <input type="nom_produit" id="nom_produit" name="nom_produit" value="<?php echo htmlspecialchars($form_produit); ?>" required><br>
@@ -130,7 +126,7 @@
                 <option value="outillerie" <?php echo ($form_categorie === 'outillerie') ? 'selected' : ''; ?>>Outillerie</option>
                 <option value="quincaillerie" <?php echo ($form_categorie === 'quincaillerie') ? 'selected' : ''; ?>>Quincaillerie</option>
                 <option value="jardin" <?php echo ($form_categorie === 'jardin') ? 'selected' : ''; ?>>Jardin</option>
-                <!-- Ajoutez d'autres catégories au besoin -->
+
             </select><br><br>
 
             <label for="marque" class="form-label">Marque :</label><br>

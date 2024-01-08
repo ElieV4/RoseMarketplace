@@ -146,7 +146,6 @@
                     echo "Aucun résultat";
                 } else { 
                     if ($result) {
-                        // Afficher le tableau HTML
                         echo "<table border='1'>
                             <tr>
                                 <th></th>
@@ -158,7 +157,7 @@
                                 <th>Statut commande</th>
                             </tr>";
                         $montant_commande = 0;
-                        // Parcourir les résultats et afficher chaque ligne dans le tableau
+
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
                             $id_produit = $rowdata['id_produit'];
@@ -202,7 +201,6 @@
                         }
                         echo "</table>";
                     } else {
-                        // En cas d'erreur lors de l'exécution de la requête
                         echo "Erreur dans la requête : " . mysqli_error($con);
                     }
                 }

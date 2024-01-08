@@ -34,15 +34,12 @@
             $image_data = mysqli_real_escape_string($con, $image_data);
             $image_name = $_FILES["images_produit_i"]['name'][$key];
             $image_type = $_FILES["images_produit_i"]['type'][$key];
-
-            // Create an associative array for each image
             $image_info = array(
                 'name' => $image_name,
                 'type' => $image_type,
                 'file_data' => $image_data
             );
 
-            // Add the array to the uploaded_images_data array
             $uploaded_images_data[] = $image_info;
         }
 
@@ -59,13 +56,10 @@
         if ($quantite_stock < 1) {
             $Err2 = "Le stock initial ne peut pas être nul";
         }
-        //check file extension ?
+        //check file extension 
 
-        // If there are any errors, do not proceed with the insertion
         if ($Err1 || $Err2) {
-            // Handle errors here if needed
         } else {
-            //insert produit dans produit
             $insert_query = "INSERT INTO 
                 produit (nom_produit, categorie_produit, marque_produit,prixht_produit, quantitestock_produit,description_produit,id_fournisseur) 
                 VALUES ('$nom_produit','$categorie','$marque','$prixht','$quantite_stock','$description','$user')";
@@ -135,7 +129,7 @@
                 <option value="outillerie">Outillerie</option>
                 <option value="quincaillerie">Quincaillerie</option>
                 <option value="jardin">Jardin</option>
-                <!-- Ajoutez d'autres catégories au besoin -->
+               
             </select><br><br>
 
             <label for="marque" class="form-label">Marque :</label><br>
