@@ -30,9 +30,9 @@
                 <br>
             </div>
             <div class="images-container">
-                <a href="produits.php?categorie=jardin&marque=all"><img src="images/jardinerie_tools.png" class="category-img">Jardinerie</a>
-                <a href="produits.php?categorie=menuiserie_bois&marque=all"><img src="images/woodshopworking.png" class="category-img">Menuiserie</a>
-                <a href="produits.php?categorie=outillerie&marque=all"><img src="images/pinktools.png" class="category-img">Outillerie</a>
+                <a href="produits.php?cat=jardin&marque=all"><img src="images/jardinerie_tools.png" class="category-img">Jardinerie</a>
+                <a href="produits.php?cat=menuiserie_bois&marque=all"><img src="images/woodshopworking.png" class="category-img">Menuiserie</a>
+                <a href="produits.php?cat=outillerie&marque=all"><img src="images/pinktools.png" class="category-img">Outillerie</a>
             </div>
         </div>
     </div>
@@ -40,9 +40,9 @@
     <div class="outer-container">
         <div class="content">
             <div class="images-container">
-                <a href="produits.php?categorie=chauffage_plomberie&marque=all"><img src="images/bathroom.png" class="category-img">Plomberie</a>
-                <a href="produits.php?categorie=peinture_droguerie&marque=all"><img src="images/painting.png" class="category-img">Peinture</a>
-                <a href="produits.php?categorie=quincaillerie&marque=all"><img src="images/quincaillerie.png" class="category-img">Quincaillerie</a>
+                <a href="produits.php?cat=chauffage_plomberie&marque=all"><img src="images/bathroom.png" class="category-img">Plomberie</a>
+                <a href="produits.php?cat=peinture_droguerie&marque=all"><img src="images/painting.png" class="category-img">Peinture</a>
+                <a href="produits.php?cat=quincaillerie&marque=all"><img src="images/quincaillerie.png" class="category-img">Quincaillerie</a>
             </div>
         </div>
     </div>

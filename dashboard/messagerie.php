@@ -129,13 +129,13 @@
                     <?php endif; ?>
                 </p>
             <?php endforeach; ?>
-            <?php if (!isset($_GET['msg'])) : ?>
+            <?php if ($user_type == 'X' && !isset($_GET['msg'])) : ?>
             <p>Veuillez sélectionner un correspondant parmi vos clients</p>
             <?php endif; ?>
             <br>
         </div>
     </div>
-    <?php if (isset($_GET['msg'])) : ?>
+    <?php if ($user_type !== 'X' || isset($_GET['msg'])) : ?>
         <form action="" method="post" class="message-form">
             <input type="text" name="message_text" placeholder="Votre message">
             <button type="submit" name="send">Envoyer</button>
