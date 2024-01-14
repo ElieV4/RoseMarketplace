@@ -54,48 +54,51 @@
             die(mysqli_error($con));
         } else {
             //insert images produit dans photo
-            if (!empty($_FILES['images_produit_i']['tmp_name'])) {
+            if (isset($_FILES['images_produit_i']) && is_array($_FILES['images_produit_i']['tmp_name']) && count($_FILES['images_produit_i']['tmp_name']) > 0) {
                 $uploaded_images_data = array();
-                foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
-                    // recup file_data
-                    $image_data = file_get_contents($_FILES['images_produit_i']['tmp_name'][$key]);
-                    $image_data = mysqli_real_escape_string($con, $image_data);
-                    $image_name = $_FILES["images_produit_i"]['name'][$key];
-                    $image_type = $_FILES["images_produit_i"]['type'][$key];
-   
-                    $image_info = array(
-                        'name' => $image_name,
-                        'type' => $image_type,
-                        'file_data' => $image_data
-                    );
-        
-                    $uploaded_images_data[] = $image_info;
-                }
 
-                foreach($uploaded_images_data as $image_produit){
-
-                    $image_name = $image_produit['name'];
-                    $image_data = $image_produit['file_data'];
-                    $image_type = $image_produit['type'];
+                if ($_FILES['images_produit_i']['error'][0] == 0) {
 
                     $delete_query = "DELETE FROM photo WHERE id_produit = $id_produit";
                     $sql_execute2=mysqli_query($con,$delete_query);
-                    $insert_query2 = "INSERT INTO 
-                        photo (id_produit, file_photo_produit, image, image_type)
-                        VALUES ('$id_produit', '$image_name','$image_data', '$image_type')";
-                    $sql_execute3=mysqli_query($con,$insert_query2);
-                    if ($sql_execute3) {
-                        echo "<script>alert('Produit modifié avec succès')</script>"; 
-                        echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
-                    } else {
-                        echo "Erreur SQLquery_insimg2 : ";
-                        die(mysqli_error($con));
+                    foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
+                        // recup file_data
+                        $image_data = file_get_contents($_FILES['images_produit_i']['tmp_name'][$key]);
+                        $image_data = mysqli_real_escape_string($con, $image_data);
+                        $image_name = $_FILES["images_produit_i"]['name'][$key];
+                        $image_type = $_FILES["images_produit_i"]['type'][$key];
+    
+                        $image_info = array(
+                            'name' => $image_name,
+                            'type' => $image_type,
+                            'file_data' => $image_data
+                        );
+            
+                        $uploaded_images_data[] = $image_info;
                     }
-                } 
+
+                    foreach($uploaded_images_data as $image_produit){
+
+                        $image_name = $image_produit['name'];
+                        $image_data = $image_produit['file_data'];
+                        $image_type = $image_produit['type'];
+                        $insert_query2 = "INSERT INTO 
+                            photo (id_produit, file_photo_produit, image, image_type)
+                            VALUES ('$id_produit', '$image_name','$image_data', '$image_type')";
+                        $sql_execute3=mysqli_query($con,$insert_query2);
+                        if ($sql_execute3) {
+                            echo "<script>alert('Produit modifié avec succès')</script>"; 
+                            echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
+                        } else {
+                            echo "Erreur SQLquery_insimg2 : ";
+                            die(mysqli_error($con));
+                        }
+                    } 
+                }
             }
             //si pas d'images retour au tableau
             echo "<script>alert('Produit modifié avec succès')</script>"; 
-            //echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
+            echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
         }
     }
 ?>
@@ -142,8 +145,8 @@
             <textarea id="description" name="description" maxlength="400" rows="4" required><?php echo htmlspecialchars($form_description); ?></textarea><br><br>
 
             <label for="images_produit_i">Image(s) du produit :</label><br>
-            <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple><br><br>
-
+            <input type="file" id="images_produit_i" name="images_produit_i[]" accept=".png, .jpg, .jpeg, .gif" multiple><br>
+            <p>Attention, si vous ajoutez des images, les précédentes (ci-dessous) seront écrasées.</p><br>
             <?php
                 if (isset($id_produit)) {
                     $select_query3 = "SELECT * FROM photo WHERE id_produit = $id_produit";
