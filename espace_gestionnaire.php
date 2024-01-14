@@ -56,6 +56,8 @@
                 }
                 else if(isset($_GET['msg'])){
                     include('dashboard/messagerie.php');
+                } else {
+                    include('dashboard/messagerie.php');
                 }
             ?>
         </div>

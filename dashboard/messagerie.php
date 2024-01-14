@@ -32,6 +32,7 @@
 
     if (($user_type == 'X' && isset($_GET['msg'])) || $user_type != 'X') {
         $messages = getMessages($con, $id_client,$id_gestionnaire);
+        $count = count($messages);
     } else {
         $messages = [];
     }
@@ -128,18 +129,23 @@
                     <?php endif; ?>
                 </p>
             <?php endforeach; ?>
+            <?php if (!isset($_GET['msg'])) : ?>
+            <p>Veuillez sélectionner un correspondant parmi vos clients</p>
+            <?php endif; ?>
             <br>
         </div>
     </div>
-    <form action="" method="post" class="message-form">
-                <input type="text" name="message_text" placeholder="Votre message">
-                <button type="submit" name="send">Envoyer</button>
+    <?php if (isset($_GET['msg'])) : ?>
+        <form action="" method="post" class="message-form">
+            <input type="text" name="message_text" placeholder="Votre message">
+            <button type="submit" name="send">Envoyer</button>
         </form>
+    <?php endif; ?>
     <script>
         function submitForm(clientId) {
             document.getElementById('form_' + clientId).submit();
         }
-    </script>
+    </script>                    
 </body>
 </html>
 
