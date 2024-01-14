@@ -41,14 +41,15 @@
         <p><strong>Adresse de Facturation:</strong> <?php echo "{$adresse['numetrue_adresse']}, {$adresse['codepostal_adresse']}, {$adresse['villeadresse_adresse']}" ?></p>
         <?php if($type_client==1) : ;?>
             <p><strong>Infos Société:</strong> <?php echo $infos_societe;?></p>
+            <p><strong>Statut pro ROSE:</strong> <?php echo $statut;?></p>
+
+            <div class="actions">
+                <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'validé')">Valider le compte</button>
+                <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'refusé')">Bloquer le compte</button>
+                <a href="page_fournisseur.php?id=<?php echo urldecode($id_client); ?>"><button class="action-button">Gérer les annonces</button></a>
+                <button class="action-button"><a href="espace_gestionnaire.php?factures&idf=<?php echo $id_client; ?>">Voir les factures</a></button>
+            </div>
         <?php endif;?>
-        <p><strong>Statut pro ROSE:</strong> <?php echo $statut;?></p>
-        <div class="actions">
-            <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'validé')">Valider le compte</button>
-            <button class="action-button" onclick="validerCompte(<?php echo $id_client; ?>, 'refusé')">Bloquer le compte</button>
-            <a href="page_fournisseur.php?id=<?php echo urldecode($id_client); ?>"><button class="action-button">Gérer les annonces</button></a>
-            <button class="action-button"><a href="espace_gestionnaire.php?factures&idf=<?php echo $id_client; ?>">Voir les factures</a></button>
-        </div>
     </div>
         <?php };?> 
 </body>

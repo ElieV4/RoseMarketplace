@@ -52,6 +52,16 @@
                     <option value="dateasc">Date + ancienne</option>
                     <option value="datedesc">Date + récente</option>
                 </select>
+                
+                <?php if($type_client =='X') : ?>
+                <label for="idf">Fournisseur :</label>
+                <select name="idf" id="idf">
+                    <?php
+                    $query_fourn = "SELECT DISTINCT id_client AS value FROM client WHERE id_gestionnaire = '$user' AND type_client = 1";
+                    echo generateOptions(isset($_GET['idf']) ? $_GET['idf'] : 'all', $query_fourn, $con);
+                    ?>
+                </select>
+                <?php endif ;?>
 
                 <button type="submit">Filtrer & trier</button>
             </form>
@@ -60,11 +70,15 @@
                 //declaration des variables pour la requete
                     $idf = isset($_GET['idf']) ? $_GET['idf'] : null;
                     $idf = isset($id_fournisseur) ? $id_fournisseur : null;
+                    $idf = 'all';
+                    if (isset($_GET['idf'])) {
+                        $idf = $_GET['idf'];
+                    }                    
                     $tri = isset($_GET['tri-fact']) ? $_GET['tri-fact'] : 'datedesc';
                     $moisfiltre = isset($_GET['mois']) ? $_GET['mois'] : null;
                     $anneefiltre = isset($_GET['annee']) ? $_GET['annee'] : null;
 
-                $select_query = "SELECT *, fr.raisonsociale_client AS fournisseur,
+                $select_query = "SELECT *, fr.raisonsociale_client AS fournisseur, cl.type_client AS type_client2, cl.raisonsociale_client AS client, cl.prenom_client AS prenom, cl.nom_client AS nom,
                     DATE_FORMAT(date_commande, '%Y-%m') AS mois
                     FROM commande c
                     LEFT JOIN client cl ON c.idclient_commande = cl.id_client
@@ -81,7 +95,7 @@
                     if ($anneefiltre && $anneefiltre !== 'all') {
                         $select_query .= " AND YEAR(date_commande) = '$anneefiltre'";
                     }
-                    if ($idf !== null) {
+                    if ($idf!=='all') {
                         $select_query .= " AND  c.id_fournisseur = '$idf'";
                     }
 
@@ -100,6 +114,7 @@
                     }
                 $result = mysqli_query($con, $select_query);
                 $rows = mysqli_num_rows($result);
+                echo $select_query.'<br>'.$idf.'<br>';
                 if($rows == 0){
                     echo "<p>Aucun résultat<p><br>";
                 } else { 
@@ -107,12 +122,12 @@
                         while ($rowdata = mysqli_fetch_assoc($result)) {
                             $id_commande = $rowdata['id_commande'];
                             $fournisseur = $rowdata['fournisseur'];
-                            $type_client = $rowdata['type_client'];
+                            $type_client = $rowdata['type_client2'];
                             $href = 'dashboard/facture.php?idc="'.$id_commande.'"';
                             if($type_client==1){
-                                $client = $rowdata['raisonsociale_client'];
+                                $client = $rowdata['client'];
                             } else {
-                                $client = $rowdata['prenom_client'].' '.$rowdata['nom_client'];
+                                $client = $rowdata['prenom'].' '.$rowdata['nom'];
                             }
                             echo 'Fournisseur : '.$fournisseur.'<br>Client : '.$client.'
                             <button><a href='.$href.' target="_blank">Voir la facture N° '.$id_commande.'</a></button><br>';
