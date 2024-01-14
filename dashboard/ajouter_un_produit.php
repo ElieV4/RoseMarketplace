@@ -20,12 +20,12 @@
 
     //load new var, insert & upload files
     if (isset($_POST["add_product"])) {
-        $nom_produit = $_POST["nom_produit"];
+        $nom_produit = mysqli_real_escape_string($con,$_POST["nom_produit"]);
         $categorie = $_POST["categorie"];
-        $marque = $_POST["marque"];
+        $marque = mysqli_real_escape_string($con,$_POST["marque"]);
         $prixht = $_POST["prixht"];
         $quantite_stock = $_POST["quantite_stock"];
-        $description = $_POST["description"];
+        $description = mysqli_real_escape_string($con,$_POST["description"]);
 
         $uploaded_images_data = array();
         foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
