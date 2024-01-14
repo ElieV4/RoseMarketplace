@@ -62,7 +62,7 @@
                         $categoriefiltre = 'all';
                         if (isset($_GET['cat'])) {
                             $categoriefiltre = $_GET['cat'];
-                        }                    
+                        }                
                         $marquefiltre = 'all';
                         if (isset($_GET['br'])) {
                             $marquefiltre = $_GET['br'];
@@ -153,14 +153,6 @@
             </div>
         </div> 
 
-        <script>
-            const chatbox_btn = document.querySelector('.questionmark');
-            const mobile_chatbox = document.querySelector('.chatbox')
-            chatbox_btn.addEventListener('click', function() {
-            chatbox_btn.classList.toggle('is-active');
-            mobile_chatbox.classList.toggle('is-active');
-            });
-        </script>
         <?php include('include/footer.php')?>
     </body>
     </html>

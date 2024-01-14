@@ -119,6 +119,8 @@
                             if ($_SESSION['user_type'] !== 'X') {
                                 $select_query .= " AND statut_produit <> 'désactivé'";
                             }
+                        } else {
+                            $select_query .= " AND statut_produit <> 'désactivé'";
                         }
                         if ($categoriefiltre !== 'all') {
                             $select_query .= " AND p.categorie_produit = '$categoriefiltre'";
