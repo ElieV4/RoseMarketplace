@@ -30,8 +30,7 @@
 
     if (isset($_POST["modifier_produit"])) {
 
-
-    //load new var, insert & upload files
+        //load new var, insert & upload files
         $form_produit = mysqli_real_escape_string($con, $_POST["nom_produit"]);
         $form_categorie = mysqli_real_escape_string($con, $_POST["categorie"]);
         $form_marque = mysqli_real_escape_string($con, $_POST["marque"]);
@@ -55,7 +54,7 @@
             die(mysqli_error($con));
         } else {
             //insert images produit dans photo
-            if (isset($_FILES['images_produit_i']['tmp_name'][$key])) {
+            if (!empty($_FILES['images_produit_i']['tmp_name'])) {
                 $uploaded_images_data = array();
                 foreach ($_FILES['images_produit_i']['tmp_name'] as $key => $tmp_name) {
                     // recup file_data
@@ -96,7 +95,7 @@
             }
             //si pas d'images retour au tableau
             echo "<script>alert('Produit modifié avec succès')</script>"; 
-            echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
+            //echo "<script>window.open('./espace_client_entreprise.php?produits_stocks','_self')</script>";
         }
     }
 ?>
