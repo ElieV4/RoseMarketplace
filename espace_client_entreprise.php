@@ -52,7 +52,7 @@
         <div class="dashboard">
             <?php
 
-                if(isset($_GET['produits_stocks'])){
+                if( isset($_GET['produits_stocks'])){
                     include('dashboard/produits_stocks.php');
                 } 
                 else if(isset($_GET['commandes'])){

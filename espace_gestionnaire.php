@@ -6,7 +6,7 @@
         //echo $_SESSION['user_id'];
         //echo $_SESSION['user_type'];
         // Si l'utilisateur est connecté et type 0, redirige vers espace_client_particulier.php
-        if($_SESSION['user_type']==0){
+        if($_SESSION['user_type']==0 || $_SESSION['user_type']==1){
             echo "header vers particulier";
             header("Location: espace_client_particulier.php");
             exit();

@@ -6,39 +6,39 @@
 </head>
 <body>
 <nav class="navbar">
-        <div class="navdiv"> 
-            <div class="search">
-                    <form action="produits.php" method="GET">
-                        <div class="icon"></div>
-                        <div class="input">
-                                <input type="text" placeholder="Rechercher" id="mysearch" name="mysearch">
-                                <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
-                                <button type="submit">Go</button>
-                        </div>
-                    </form>
-            </div>
-            <div ></div>
-            <div class="logo">
-                <a href="index.php"><img src="images/rose.png"></a>
-            </div>
-            <ul>
-                <?php
-                    if(isset($_SESSION['user_id'])){
-                        echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
-                        echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
-                    } else {
-                        echo '<li ><a href="user_registration.php">Inscription</a></li>';
-                        echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
-                    }
-                ?>
-                <li ><a href="cart.php"><img src="images/cart.png"></a></li>
-                <div ></div>
-                <button class="hamburger">
-                    <div class="bar"></div>
-                </button>
-            </ul>
+    <div class="navdiv"> 
+        <div class="search">
+                <form action="produits.php" method="GET">
+                    <div class="icon"></div>
+                    <div class="input">
+                            <input type="text" placeholder="Rechercher" id="mysearch" name="mysearch">
+                            <span class="clear" onclick="document.getElementById('mysearch').value = ''"></span>
+                            <button type="submit">Go</button>
+                    </div>
+                </form>
         </div>
-    </nav>
+        <div ></div>
+        <div class="logo">
+            <a href="index.php"><img src="images/rose.png"></a>
+        </div>
+        <ul>
+            <?php
+                if(isset($_SESSION['user_id'])){
+                    echo '<li ><a href="include/logout.php"><img src="images/logout1.png"></a></li>';
+                    echo '<li ><a href="espace_client_particulier.php"><img src="images/client.png"></a></li>';
+                } else {
+                    echo '<li ><a href="user_registration.php">Inscription</a></li>';
+                    echo '<li ><a href="user_connexion.php"><img src="images/client.png"></a></li>';
+                }
+            ?>
+            <li ><a href="cart.php"><img src="images/cart.png"></a></li>
+            <div ></div>
+            <button class="hamburger">
+                <div class="bar"></div>
+            </button>
+        </ul>
+    </div>
+</nav>
 
     <nav class="mobile-nav">
         <a href="index.php">Accueil</a>

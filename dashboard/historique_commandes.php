@@ -38,7 +38,7 @@
                 <label for="categorie">Catégorie :</label>
                 <select name="cat" id="cat">
                     <?php
-                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
+                    $query_cat = "SELECT DISTINCT categorie_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande";
                     echo generateOptions(isset($_GET['cat']) ? $_GET['cat'] : 'all', $query_cat, $con);
                     ?>
                 </select>
@@ -46,7 +46,7 @@
                 <label for="br">Marque :</label>
                 <select name="br" id="bran">
                     <?php
-                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
+                    $query_brands = "SELECT DISTINCT marque_produit AS value FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande";
                     echo generateOptions(isset($_GET['br']) ? $_GET['br'] : 'all', $query_brands, $con);
                     ?>
                 </select>
@@ -54,7 +54,7 @@
                 <label for="id">Produit :</label>
                 <select name="id" id="id">
                     <?php
-                    $query_products = "SELECT DISTINCT nom_produit AS value, id_produit FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande IN ('validée','refusée')";
+                    $query_products = "SELECT DISTINCT nom_produit AS value, id_produit FROM produit LEFT JOIN commande USING (id_produit) WHERE idclient_commande = '$user' AND etat_commande";
                     echo generateOptions(isset($_GET['id']) ? $_GET['id'] : 'all', $query_products, $con);
                     ?>
                 </select>

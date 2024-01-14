@@ -20,6 +20,7 @@
 <body>
     <?php include('include/entete.php')?>   
     <div class="outer-container">
+        <?php if(isset($_GET['id'])) : ?>
         <div class="content">
             <div class="goback"><?php echo '<a href="' . $_SERVER['HTTP_REFERER'] . '">Page précédente</a><br>';?></div>
             <div class="product">
@@ -166,16 +167,16 @@
                 ?>
             </div>
         </div>
+        <?php endif;?>
+        <?php if(!isset($_GET['id'])) : ?>
+            <div class="statut-error">
+            <h2>Error 404</h2>
+            <p>Veuillez nous en excusez, cette page est introuvable.</p>
+            <p><button><a href="index.php">Retourner en lieu sûr</a></button></p>
+        </div>
+        <?php endif;?>
     </div> 
 
-      <script>
-        const chatbox_btn = document.querySelector('.questionmark');
-        const mobile_chatbox = document.querySelector('.chatbox')
-        chatbox_btn.addEventListener('click', function() {
-        chatbox_btn.classList.toggle('is-active');
-        mobile_chatbox.classList.toggle('is-active');
-        });
-    </script>
     <?php include('include/footer.php')?>
 </body>
 </html>
